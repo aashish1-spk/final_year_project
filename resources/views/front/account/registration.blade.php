@@ -7,7 +7,7 @@
         <div class="row d-flex justify-content-center">
             <div class="col-md-5">
                 <div class="card shadow border-0 p-5">
-                    <h1 class="h3">Register</h1>
+                    <h1 class="h3">jobseeker Registration</h1>
                     <form action="" name="registrationForm" id="registrationForm">
                         <div class="mb-3">
                             <label for="" class="mb-2">Name*</label>
@@ -41,6 +41,7 @@
 </section>
 @endsection
 
+
 @section('costumjs')
 <script>
 $("#registrationForm").submit(function(e){
@@ -57,18 +58,18 @@ $("#registrationForm").submit(function(e){
                 
                 // Handle 'name' field errors
                 if (errors.name) {
-                    $("#name").addClass('is-invalid') // Add 'is-invalid' class to name field
-                        .siblings('p')               // Target the <p> sibling
-                        .addClass('invalid-feedback') // Add 'invalid-feedback' class to the <p> tag
-                        .html(errors.name);          // Insert error message into the <p> tag
+                    $("#name").addClass('is-invalid') 
+                        .siblings('p')               
+                        .addClass('invalid-feedback') 
+                        .html(errors.name);          
                 } else {
                     $("#name").removeClass('is-invalid')
                         .siblings('p')
                         .removeClass('invalid-feedback')
-                        .html(''); // Clear any previous error message
+                        .html(''); 
                 }
 
-                // Handle other fields (email, password, confirm_password) similarly
+               
                 if (errors.email) {
                     $("#email").addClass('is-invalid')
                         .siblings('p')

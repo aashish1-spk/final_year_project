@@ -1,101 +1,191 @@
 @extends('front.layouts.app')
 
 @section('main')
+    <section class="section-5 bg-2">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col">
+                    <nav aria-label="breadcrumb" class=" rounded-3 p-3 mb-4">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Account Settings</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    @include('front.account.sidebar')
+                </div>
+                <div class="col-lg-9">
+                    <div class="card border-0 shadow mb-4">
+                        {{-- <div id="alertContainer"></div> --}}
 
-<section class="section-5 bg-2">
-    <div class="container py-5">
-        <div class="row">
-            <div class="col">
-                <nav aria-label="breadcrumb" class=" rounded-3 p-3 mb-4">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Account Settings</li>
-                    </ol>
-                </nav>
+                        <form action="{{ route('account.updateProfile') }}" method="post" id="userForm" name="userForm">
+                            @csrf
+                            @method('put')
+                            <div class="card-body  p-4">
+                                <h3 class="fs-4 mb-1">My Profile</h3>
+                                <div class="mb-4">
+                                    <label for="" class="mb-2">Name*</label>
+                                    <input type="text" name="name" id="name" placeholder="Enter Company Name"
+                                        class="form-control" value="{{ $user->name }}">
+                                    <p></p>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="" class="mb-2">Email*</label>
+                                    <input type="text" name="email" id="email" placeholder="Enter Email"
+                                        class="form-control" value="{{ $user->email }}">
+                                    <p></p>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="" class="mb-2">Designation*</label>
+                                    <input type="text" name="designation" id="designation" placeholder="Designation"
+                                        class="form-control" value="{{ $user->designation }}">
+                                    <p></p>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="" class="mb-2">Mobile*</label>
+                                    <input type="text" name="mobile" id="mobile" placeholder="Mobile"
+                                        class="form-control" value="{{ $user->mobile }}">
+                                    <p></p>
+                                </div>
+                            </div>
+                            <div class="card-footer  p-4">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
+
+
+
+
+
+
+
+                    </div>
+
+                    <div class="card border-0 shadow mb-4">
+                        <div class="card-body p-4">
+                            <h3 class="fs-4 mb-1">Change Password</h3>
+                            <div class="mb-4">
+                                <label for="" class="mb-2">Old Password*</label>
+                                <input type="password" placeholder="Old Password" class="form-control">
+                            </div>
+                            <div class="mb-4">
+                                <label for="" class="mb-2">New Password*</label>
+                                <input type="password" placeholder="New Password" class="form-control">
+                            </div>
+                            <div class="mb-4">
+                                <label for="" class="mb-2">Confirm Password*</label>
+                                <input type="password" placeholder="Confirm Password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="card-footer  p-4">
+                            <button type="button" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="card border-0 shadow mb-4 p-3">
-                    <div class="s-body text-center mt-3">
-                        <img src="assets/assets/images/avatar7.png" alt="avatar"  class="rounded-circle img-fluid" style="width: 150px;">
-                        <h5 class="mt-3 pb-0">Mohit Singh</h5>
-                        <p class="text-muted mb-1 fs-6">Full Stack Developer</p>
-                        <div class="d-flex justify-content-center mb-2">
-                            <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" class="btn btn-primary">Change Profile Picture</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card account-nav border-0 shadow mb-4 mb-lg-0">
-                    <div class="card-body p-0">
-                        <ul class="list-group list-group-flush ">
-                            <li class="list-group-item d-flex justify-content-between p-3">
-                                <a href="account.html">Account Settings</a>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                <a href="post-job.html">Post a Job</a>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                <a href="my-jobs.html">My Jobs</a>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                <a href="job-applied.html">Jobs Applied</a>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                <a href="saved-jobs.html">Saved Jobs</a>
-                            </li>                                                        
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-9">
-                <div class="card border-0 shadow mb-4">
-                    <div class="card-body  p-4">
-                        <h3 class="fs-4 mb-1">My Profile</h3>
-                        <div class="mb-4">
-                            <label for="" class="mb-2">Name*</label>
-                            <input type="text" placeholder="Enter Name" class="form-control" value="">
-                        </div>
-                        <div class="mb-4">
-                            <label for="" class="mb-2">Email*</label>
-                            <input type="text" placeholder="Enter Email" class="form-control">
-                        </div>
-                        <div class="mb-4">
-                            <label for="" class="mb-2">Designation*</label>
-                            <input type="text" placeholder="Designation" class="form-control">
-                        </div>
-                        <div class="mb-4">
-                            <label for="" class="mb-2">Mobile*</label>
-                            <input type="text" placeholder="Mobile" class="form-control">
-                        </div>                        
-                    </div>
-                    <div class="card-footer  p-4">
-                        <button type="button" class="btn btn-primary">Update</button>
-                    </div>
-                </div>
+    </section>
 
-                <div class="card border-0 shadow mb-4">
-                    <div class="card-body p-4">
-                        <h3 class="fs-4 mb-1">Change Password</h3>
-                        <div class="mb-4">
-                            <label for="" class="mb-2">Old Password*</label>
-                            <input type="password" placeholder="Old Password" class="form-control">
-                        </div>
-                        <div class="mb-4">
-                            <label for="" class="mb-2">New Password*</label>
-                            <input type="password" placeholder="New Password" class="form-control">
-                        </div>
-                        <div class="mb-4">
-                            <label for="" class="mb-2">Confirm Password*</label>
-                            <input type="password" placeholder="Confirm Password" class="form-control">
-                        </div>                        
-                    </div>
-                    <div class="card-footer  p-4">
-                        <button type="button" class="btn btn-primary">Update</button>
-                    </div>
-                </div>                
-            </div>
-        </div>
-    </div>
-</section>
+
+    <script>
+        document.getElementById('userForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Clear previous error messages
+            document.querySelectorAll('.error-message').forEach(msg => msg.textContent = '');
+
+            let isValid = true;
+
+            // Get form fields
+            const nameField = document.getElementById('name');
+            const emailField = document.getElementById('email');
+            const designationField = document.getElementById('designation');
+            const mobileField = document.getElementById('mobile');
+
+            // Validate Company Name
+            if (nameField.value.trim() === '') {
+                isValid = false;
+                nameField.nextElementSibling.textContent = 'Company Name is required.';
+            }
+
+            // Validate Email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailField.value.trim())) {
+                isValid = false;
+                emailField.nextElementSibling.textContent = 'Enter a valid email address.';
+            }
+
+            // Validate Designation
+            if (designationField.value.trim() === '') {
+                isValid = false;
+                designationField.nextElementSibling.textContent = 'Designation is required.';
+            }
+
+            // Validate Mobile
+            const mobileRegex = /^[0-9]{10}$/; // Assuming mobile number should be 10 digits
+            if (!mobileRegex.test(mobileField.value.trim())) {
+                isValid = false;
+                mobileField.nextElementSibling.textContent = 'Enter a valid mobile number (10 digits).';
+            }
+
+            // If the form is valid, submit the form
+            if (isValid) {
+                this.submit(); // Submit the form normally
+            } else {
+                // Optionally, you could display a general message for errors
+                alert('Please fix the errors before submitting the form.');
+            }
+        });
+    </script>
 @endsection
+{{-- @section('customJs')
+<script type="text/javascript">
+    $("#userForm").submit(function(e){
+        e.preventDefault();
+
+        $.ajax({
+            url: '{{ route("account.updateProfile") }}',
+            type: 'put',
+            dataType: 'json',
+            data: $("#userForm").serializeArray(),
+            success: function(response) {
+                if(response.status == true) {
+                    
+                } else {
+                    var errors = response.errors;
+
+
+                    if (errors.name) {
+                    $("#name").addClass('is-invalid') 
+                        .siblings('p')               
+                        .addClass('invalid-feedback') 
+                        .html(errors.name);          
+                } else {
+                    $("#name").removeClass('is-invalid')
+                        .siblings('p')
+                        .removeClass('invalid-feedback')
+                        .html(''); 
+                }
+
+               
+                if (errors.email) {
+                    $("#email").addClass('is-invalid')
+                        .siblings('p')
+                        .addClass('invalid-feedback')
+                        .html(errors.email);
+                } else {
+                    $("#email").removeClass('is-invalid')
+                        .siblings('p')
+                        .removeClass('invalid-feedback')
+                        .html('');
+                }
+
+                }
+            }
+        });
+    });
+</script>
+@endsection --}}
