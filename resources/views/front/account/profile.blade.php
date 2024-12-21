@@ -18,6 +18,7 @@
                     @include('front.account.sidebar')
                 </div>
                 <div class="col-lg-9">
+                    @include('front.message')
                     <div class="card border-0 shadow mb-4">
                         {{-- <div id="alertContainer"></div> --}}
 
@@ -65,6 +66,7 @@
                     </div>
 
                     <div class="card border-0 shadow mb-4">
+                        <form action="">
                         <div class="card-body p-4">
                             <h3 class="fs-4 mb-1">Change Password</h3>
                             <div class="mb-4">
@@ -83,6 +85,7 @@
                         <div class="card-footer  p-4">
                             <button type="button" class="btn btn-primary">Update</button>
                         </div>
+                    </form>
                     </div>
                 </div>
             </div>
@@ -141,51 +144,4 @@
         });
     </script>
 @endsection
-{{-- @section('customJs')
-<script type="text/javascript">
-    $("#userForm").submit(function(e){
-        e.preventDefault();
 
-        $.ajax({
-            url: '{{ route("account.updateProfile") }}',
-            type: 'put',
-            dataType: 'json',
-            data: $("#userForm").serializeArray(),
-            success: function(response) {
-                if(response.status == true) {
-                    
-                } else {
-                    var errors = response.errors;
-
-
-                    if (errors.name) {
-                    $("#name").addClass('is-invalid') 
-                        .siblings('p')               
-                        .addClass('invalid-feedback') 
-                        .html(errors.name);          
-                } else {
-                    $("#name").removeClass('is-invalid')
-                        .siblings('p')
-                        .removeClass('invalid-feedback')
-                        .html(''); 
-                }
-
-               
-                if (errors.email) {
-                    $("#email").addClass('is-invalid')
-                        .siblings('p')
-                        .addClass('invalid-feedback')
-                        .html(errors.email);
-                } else {
-                    $("#email").removeClass('is-invalid')
-                        .siblings('p')
-                        .removeClass('invalid-feedback')
-                        .html('');
-                }
-
-                }
-            }
-        });
-    });
-</script>
-@endsection --}}

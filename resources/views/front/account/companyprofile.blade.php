@@ -19,6 +19,7 @@
                 @include('front.account.sidebar')
             </div>
             <div class="col-lg-9">
+                @include('front.message')
                 <div class="card border-0 shadow mb-4">
                     {{-- <div id="alertContainer"></div> --}}
 
@@ -27,8 +28,8 @@
                         @method('put')
                             <div class="card-body  p-4">
                             <h3 class="fs-4 mb-1">My Profile</h3>
-                            <div class="mb-4">
-                                <label for="" class="mb-2">Company Name*</label>
+                            {{-- <div class="mb-4">
+                                <label for="" class="mb-2">Employee Name*</label>
                                 <input type="text" name="name" id="name" placeholder="Enter Company Name" class="form-control" value="{{ $user->name }}">
                                 <p></p>
                             </div>
@@ -36,7 +37,27 @@
                                 <label for="" class="mb-2">Email*</label>
                                 <input type="text" name="email" id="email" placeholder="Enter Email" class="form-control" value="{{ $user->email }}">
                                 <p></p>
+                            </div> --}}
+
+
+
+
+                            <div class="mb-4">
+                                <label for="name" class="mb-2">Employee Name*</label>
+                                <input type="text" name="name" id="name" placeholder="Enter Company Name" class="form-control" value="{{ $user->name }}">
+                                <p class="text-danger error-message"></p> <!-- Error message will go here -->
                             </div>
+                            <div class="mb-4">
+                                <label for="email" class="mb-2">Email*</label>
+                                <input type="text" name="email" id="email" placeholder="Enter Email" class="form-control" value="{{ $user->email }}">
+                                <p class="text-danger error-message"></p> <!-- Error message will go here -->
+                            </div>
+                            
+
+
+
+
+
                             <div class="mb-4">
                                 <label for="" class="mb-2">Designation*</label>
                                 <input type="text" name="designation" id="designation" placeholder="Designation" class="form-control" value="{{ $user->designation }}">
@@ -62,82 +83,88 @@
                 </div>
 
                 <div class="card border-0 shadow mb-4">
-                    <div class="card-body p-4">
-                        <h3 class="fs-4 mb-1">Change Password</h3>
-                        <div class="mb-4">
-                            <label for="" class="mb-2">Old Password*</label>
-                            <input type="password" placeholder="Old Password" class="form-control">
+                    <form action="" method="post" id="changePasswordForm" name="changePasswordForm">
+                        <div class="card-body p-4">
+                            <h3 class="fs-4 mb-1">Change Password</h3>
+                            <div class="mb-4">
+                                <label for="" class="mb-2">Old Password*</label>
+                                <input type="password" name="old_password" id="old_password" placeholder="Old Password" class="form-control">
+                            </div>
+                            <div class="mb-4">
+                                <label for="" class="mb-2">New Password*</label>
+                                <input type="password" name="new_password" id="new_password" placeholder="New Password" class="form-control">
+                            </div>
+                            <div class="mb-4">
+                                <label for="" class="mb-2">Confirm Password*</label>
+                                <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" class="form-control">
+                            </div>
                         </div>
-                        <div class="mb-4">
-                            <label for="" class="mb-2">New Password*</label>
-                            <input type="password" placeholder="New Password" class="form-control">
+                        <div class="card-footer  p-4">
+                            <button type="button" class="btn btn-primary">Update</button>
                         </div>
-                        <div class="mb-4">
-                            <label for="" class="mb-2">Confirm Password*</label>
-                            <input type="password" placeholder="Confirm Password" class="form-control">
-                        </div>                        
-                    </div>
-                    <div class="card-footer  p-4">
-                        <button type="button" class="btn btn-primary">Update</button>
-                    </div>
+                    </form>
                 </div>                
             </div>
         </div>
     </div>
 </section>
 
-
 <script>
     document.getElementById('userForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent default form submission
-    
-    // Clear previous error messages
-    document.querySelectorAll('.error-message').forEach(msg => msg.textContent = '');
+        event.preventDefault(); // Prevent default form submission
+        
+        // Clear previous error messages
+        document.querySelectorAll('.error-message').forEach(msg => msg.textContent = '');
 
-    let isValid = true;
+        let isValid = true;
 
-    // Get form fields
-    const nameField = document.getElementById('name');
-    const emailField = document.getElementById('email');
-    const designationField = document.getElementById('designation');
-    const mobileField = document.getElementById('mobile');
+        // Get form fields
+        const nameField = document.getElementById('name');
+        const emailField = document.getElementById('email');
+        const designationField = document.getElementById('designation');
+        const mobileField = document.getElementById('mobile');
 
-    // Validate Company Name
-    if (nameField.value.trim() === '') {
-        isValid = false;
-        nameField.nextElementSibling.textContent = 'Company Name is required.';
-    }
+        // Validate Employee Name
+        if (nameField.value.trim() === '') {
+            isValid = false;
+            nameField.nextElementSibling.textContent = 'Employee Name is required.';
+        }
 
-    // Validate Email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(emailField.value.trim())) {
-        isValid = false;
-        emailField.nextElementSibling.textContent = 'Enter a valid email address.';
-    }
+        // Validate Email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailField.value.trim())) {
+            isValid = false;
+            emailField.nextElementSibling.textContent = 'Enter a valid email address.';
+        }
 
-    // Validate Designation
-    if (designationField.value.trim() === '') {
-        isValid = false;
-        designationField.nextElementSibling.textContent = 'Designation is required.';
-    }
+        // Validate Designation
+        if (designationField.value.trim() === '') {
+            isValid = false;
+            designationField.nextElementSibling.textContent = 'Designation is required.';
+        }
 
-    // Validate Mobile
-    const mobileRegex = /^[0-9]{10}$/; // Assuming mobile number should be 10 digits
-    if (!mobileRegex.test(mobileField.value.trim())) {
-        isValid = false;
-        mobileField.nextElementSibling.textContent = 'Enter a valid mobile number (10 digits).';
-    }
+        // Validate Mobile
+        const mobileRegex = /^[0-9]{10}$/; // Assuming mobile number should be 10 digits
+        if (!mobileRegex.test(mobileField.value.trim())) {
+            isValid = false;
+            mobileField.nextElementSibling.textContent = 'Enter a valid mobile number (10 digits).';
+        }
 
-    // If the form is valid, submit the form
-    if (isValid) {
-        this.submit(); // Submit the form normally
-    } else {
-        // Optionally, you could display a general message for errors
-        alert('Please fix the errors before submitting the form.');
-    }
-});
+        // If the form is valid, submit the form
+        if (isValid) {
+            this.submit(); // Submit the form normally
+        } else {
+            // Optionally, you could display a general message for errors
+            alert('Please fix the errors before submitting the form.');
+        }
+    });
+
+
+
+
 
 </script>
+
 
 
 

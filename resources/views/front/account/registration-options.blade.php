@@ -8,7 +8,7 @@
                 <h1 class="h3 mb-4">Register</h1>
                 <p class="mb-4">Choose an option below to register:</p>
                 <div class="d-flex justify-content-around">
-                    <a href="{{ route('account.companyregistration') }}" class="btn btn-primary">Register as company</a>
+                    <a href="{{ route('account.companyregistration') }}" class="btn btn-primary">Register as employee</a>
                     <a href="{{ route('account.jobseekerregistration') }}" class="btn btn-secondary">Register as Job Seeker</a>
                 </div>
             </div>

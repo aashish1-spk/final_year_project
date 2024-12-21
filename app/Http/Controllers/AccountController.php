@@ -129,6 +129,50 @@ class AccountController extends Controller
         return redirect()->route('account.login');
     }
 
+    //for image
+
+    public function updateProfilePic(Request $request) {
+        // dd($request->all());
+
+        $id = Auth::user()->id;
+        $validator = Validator::make($request->all(),[
+            'image' => 'required|image'
+        ]);
+    
+
+     
+        if ($validator->passes()) {
+
+
+            $image = $request->image;
+            $ext = $image->getClientOriginalExtension();
+            $imageName = $id.'-'.time().'.'.$ext;
+            $image->move(public_path('/profile_pic'), $imageName);
+
+
+            User::where('id',$id)->update(['image' => $imageName]);
+
+
+
+            session()->flash('success','profile picture updated successfully');
+
+            return response()->json([
+                'status' => true,
+                'errors' => []
+            ]);
+        
+
+    
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
+    
+
+
     // for company
 
     public function processCompanyRegistration(Request $request)
@@ -172,4 +216,27 @@ class AccountController extends Controller
     {
         return view('front.account.companyprofile');
     }
+
+
+
+
+//update password
+// public function updatePassword(Request $request){
+//     $validator = Validator::make($request->all(),[
+//         'old_password' => 'required',
+//         'new_password' => 'required|min:5',
+//         'confirm_password' => 'required|same:new_password',
+//     ]);
+
+//     if ($validator->fails()) {
+//         return response()->json([
+//             'status' => false,
+//             'errors' => $validator->errors(),
+//         ]);
+//     }
+// }
+
+
+
+
 }
