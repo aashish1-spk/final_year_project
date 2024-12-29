@@ -6,7 +6,7 @@
     <div class="container py-5">
         <div class="row">
             <div class="col">
-                <nav aria-label="breadcrumb" class=" rounded-3 p-3 mb-4">
+                <nav aria-label="breadcrumb" class="rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item active">Account Settings</li>
@@ -26,7 +26,7 @@
                     <form action="{{ route('account.updateProfile') }}" method="post" id="userForm" name="userForm">
                         @csrf
                         @method('put')
-                            <div class="card-body  p-4">
+                        <div class="card-body  p-4">
                             <h3 class="fs-4 mb-1">My Profile</h3>
                             {{-- <div class="mb-4">
                                 <label for="" class="mb-2">Employee Name*</label>
@@ -39,11 +39,8 @@
                                 <p></p>
                             </div> --}}
 
-
-
-
                             <div class="mb-4">
-                                <label for="name" class="mb-2">Employee Name*</label>
+                                <label for="name" class="mb-2">Company Name*</label>
                                 <input type="text" name="name" id="name" placeholder="Enter Company Name" class="form-control" value="{{ $user->name }}">
                                 <p class="text-danger error-message"></p> <!-- Error message will go here -->
                             </div>
@@ -52,11 +49,6 @@
                                 <input type="text" name="email" id="email" placeholder="Enter Email" class="form-control" value="{{ $user->email }}">
                                 <p class="text-danger error-message"></p> <!-- Error message will go here -->
                             </div>
-                            
-
-
-
-
 
                             <div class="mb-4">
                                 <label for="" class="mb-2">Designation*</label>
@@ -73,34 +65,31 @@
                             <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </form>
-
-
-
-
-
-
-
                 </div>
 
                 <div class="card border-0 shadow mb-4">
-                    <form action="" method="post" id="changePasswordForm" name="changePasswordForm">
+                    <form action="{{ route('account.updatePassword') }}" method="post" id="changePasswordForm" name="changePasswordForm">
+                        @csrf <!-- Laravel CSRF token -->
                         <div class="card-body p-4">
                             <h3 class="fs-4 mb-1">Change Password</h3>
                             <div class="mb-4">
                                 <label for="" class="mb-2">Old Password*</label>
                                 <input type="password" name="old_password" id="old_password" placeholder="Old Password" class="form-control">
+                                <p id="old_password_error" class="text-danger small d-none">Old password is required.</p>
                             </div>
                             <div class="mb-4">
                                 <label for="" class="mb-2">New Password*</label>
                                 <input type="password" name="new_password" id="new_password" placeholder="New Password" class="form-control">
+                                <p id="new_password_error" class="text-danger small d-none">New password is required.</p>
                             </div>
                             <div class="mb-4">
                                 <label for="" class="mb-2">Confirm Password*</label>
                                 <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" class="form-control">
+                                <p id="confirm_password_error" class="text-danger small d-none">Passwords do not match.</p>
                             </div>
                         </div>
-                        <div class="card-footer  p-4">
-                            <button type="button" class="btn btn-primary">Update</button>
+                        <div class="card-footer p-4">
+                            <button type="submit" id="updatePasswordBtn" class="btn btn-primary">Update</button>
                         </div>
                     </form>
                 </div>                
@@ -124,10 +113,16 @@
         const designationField = document.getElementById('designation');
         const mobileField = document.getElementById('mobile');
 
+        // Regex for validating name and designation (letters and spaces only)
+        const stringRegex = /^[a-zA-Z\s]+$/;
+
         // Validate Employee Name
         if (nameField.value.trim() === '') {
             isValid = false;
             nameField.nextElementSibling.textContent = 'Employee Name is required.';
+        } else if (!stringRegex.test(nameField.value.trim())) {
+            isValid = false;
+            nameField.nextElementSibling.textContent = 'Employee Name must contain only letters and spaces.';
         }
 
         // Validate Email
@@ -141,6 +136,9 @@
         if (designationField.value.trim() === '') {
             isValid = false;
             designationField.nextElementSibling.textContent = 'Designation is required.';
+        } else if (!stringRegex.test(designationField.value.trim())) {
+            isValid = false;
+            designationField.nextElementSibling.textContent = 'Designation must contain only letters and spaces.';
         }
 
         // Validate Mobile
@@ -160,65 +158,54 @@
     });
 
 
+    //change password
+    document.getElementById("changePasswordForm").addEventListener("submit", function (e) {
+        // Get form inputs
+        const oldPassword = document.getElementById("old_password").value.trim();
+        const newPassword = document.getElementById("new_password").value.trim();
+        const confirmPassword = document.getElementById("confirm_password").value.trim();
 
+        // Error elements
+        const oldPasswordError = document.getElementById("old_password_error");
+        const newPasswordError = document.getElementById("new_password_error");
+        const confirmPasswordError = document.getElementById("confirm_password_error");
 
+        // Clear previous errors
+        oldPasswordError.classList.add("d-none");
+        newPasswordError.classList.add("d-none");
+        confirmPasswordError.classList.add("d-none");
 
+        // Validation
+        let isValid = true;
+
+        if (!oldPassword) {
+            oldPasswordError.classList.remove("d-none");
+            isValid = false;
+        }
+        if (!newPassword) {
+            newPasswordError.classList.remove("d-none");
+            isValid = false;
+        }
+        if (newPassword !== confirmPassword) {
+            confirmPasswordError.classList.remove("d-none");
+            isValid = false;
+        }
+
+        // Prevent form submission if validation fails
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+
+    @if ($errors->has('old_password'))
+        // Toast error for incorrect old password
+        Toastify({
+            text: "{{ $errors->first('old_password') }}",
+            backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
+            className: "error",
+            duration: 3000
+        }).showToast();
+    @endif
 </script>
-
-
-
-
-
-
-
-
 
 @endsection
-{{-- @section('customJs')
-<script type="text/javascript">
-    $("#userForm").submit(function(e){
-        e.preventDefault();
-
-        $.ajax({
-            url: '{{ route("account.updateProfile") }}',
-            type: 'put',
-            dataType: 'json',
-            data: $("#userForm").serializeArray(),
-            success: function(response) {
-                if(response.status == true) {
-                    
-                } else {
-                    var errors = response.errors;
-
-
-                    if (errors.name) {
-                    $("#name").addClass('is-invalid') 
-                        .siblings('p')               
-                        .addClass('invalid-feedback') 
-                        .html(errors.name);          
-                } else {
-                    $("#name").removeClass('is-invalid')
-                        .siblings('p')
-                        .removeClass('invalid-feedback')
-                        .html(''); 
-                }
-
-               
-                if (errors.email) {
-                    $("#email").addClass('is-invalid')
-                        .siblings('p')
-                        .addClass('invalid-feedback')
-                        .html(errors.email);
-                } else {
-                    $("#email").removeClass('is-invalid')
-                        .siblings('p')
-                        .removeClass('invalid-feedback')
-                        .html('');
-                }
-
-                }
-            }
-        });
-    });
-</script>
-@endsection --}}

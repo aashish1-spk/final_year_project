@@ -22,21 +22,37 @@
             <li class="list-group-item d-flex justify-content-between p-3">
                 <a href="account.html">Account Settings</a>
             </li>
+            @if (Auth::check() && Auth::user()->role == 'company' )
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <a href="post-job.html">Post a Job</a>
+                <a href="{{ route('account.createJob') }}">Post a Job</a>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <a href="my-jobs.html">My Jobs</a>
+                <a href="{{ route('account.myJobs') }}">My Jobs</a>
             </li>
+        
+            @elseif(Auth::check() && Auth::user()->role == 'user')
+
+       
+           
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <a href="job-applied.html">Jobs Applied</a>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <a href="saved-jobs.html">Saved Jobs</a>
             </li>   
+            @endif
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <a href="{{ route('account.logout') }}">Logout</a>
             </li>                                                        
         </ul>
     </div>
 </div>
+
+
+{{-- <li class="list-group-item d-flex justify-content-between p-3">
+    @if (Auth::check() && Auth::user()->role == 'company')
+        <a href="{{ route('account.companyProfile') }}">Account Settings</a>
+    @elseif (Auth::check() && Auth::user()->role == 'user')
+        <a href="{{ route('account.profile') }}">Account Settings</a>
+    @endif
+</li> --}}

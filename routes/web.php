@@ -33,7 +33,16 @@ Route::group(['prefix' => 'account'], function () {
         Route::put('/update-profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
         Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');
         Route::post('/update-profile-pic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
-        // Route::post('/update-password', [AccountController::class, 'updatePassword'])->name('account.updatePassword');
+        
+//job
+    Route::get('/create-job', [AccountController::class, 'createJob'])->name('account.createJob');
+    Route::post('/save-job', [AccountController::class, 'saveJob'])->name('account.saveJob');
+    Route::get('/my-jobs', [AccountController::class, 'myJobs'])->name('account.myJobs');
+    Route::get('/my-jobs/edit/{jobId}', [AccountController::class, 'editJob'])->name('account.editJob');
+    Route::post('/update-job/{jobId}', [AccountController::class, 'updateJob'])->name('account.updateJob');
+    Route::post('/delete-job', [AccountController::class, 'deleteJob'])->name('account.deleteJob');
+
+
 
     });
 
@@ -61,7 +70,8 @@ Route::get('/register/jobseeker', function () {
 Route::get('/company-profile', [AccountController::class, 'companyProfile'])->name('account.companyProfile');
 
 
-//
+//update password
+        Route::post('/update-password', [AccountController::class, 'updatePassword'])->name('account.updatePassword');
 
 
 

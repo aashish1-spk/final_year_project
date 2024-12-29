@@ -25,7 +25,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="company_email" class="mb-2">Company Email*</label>
+                            <label for="company_email" class="mb-2"> Email*</label>
                             <input type="email" name="company_email" id="company_email" class="form-control" placeholder="Enter Company Email" required>
                             <p></p> 
                         </div>

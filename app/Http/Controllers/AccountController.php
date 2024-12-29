@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Contracts\Service\Attribute\Required;
+use App\Models\Category;
+use App\Models\JobType;
+
+
 
 class AccountController extends Controller
 {
@@ -110,11 +115,9 @@ class AccountController extends Controller
             $user->designation = $request->designation;
             $user->save();
 
-            session()->flash('success','profile updated successfully');
+            session()->flash('success', 'profile updated successfully');
 
-           return redirect()->back();
-
-
+            return redirect()->back();
         } else {
             return response()->json([
                 'status' => false,
@@ -131,38 +134,36 @@ class AccountController extends Controller
 
     //for image
 
-    public function updateProfilePic(Request $request) {
+    public function updateProfilePic(Request $request)
+    {
         // dd($request->all());
 
         $id = Auth::user()->id;
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'image' => 'required|image'
         ]);
-    
 
-     
+
+
         if ($validator->passes()) {
 
 
             $image = $request->image;
             $ext = $image->getClientOriginalExtension();
-            $imageName = $id.'-'.time().'.'.$ext;
+            $imageName = $id . '-' . time() . '.' . $ext;
             $image->move(public_path('/profile_pic'), $imageName);
 
 
-            User::where('id',$id)->update(['image' => $imageName]);
+            User::where('id', $id)->update(['image' => $imageName]);
 
 
 
-            session()->flash('success','profile picture updated successfully');
+            session()->flash('success', 'profile picture updated successfully');
 
             return response()->json([
                 'status' => true,
                 'errors' => []
             ]);
-        
-
-    
         } else {
             return response()->json([
                 'status' => false,
@@ -170,7 +171,7 @@ class AccountController extends Controller
             ]);
         }
     }
-    
+
 
 
     // for company
@@ -220,23 +221,239 @@ class AccountController extends Controller
 
 
 
-//update password
-// public function updatePassword(Request $request){
-//     $validator = Validator::make($request->all(),[
-//         'old_password' => 'required',
-//         'new_password' => 'required|min:5',
-//         'confirm_password' => 'required|same:new_password',
-//     ]);
+    // update password
+    public function updatePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'new_password' => 'required|min:8',
+            'confirm_password' => 'required|same:new_password',
+        ]);
 
-//     if ($validator->fails()) {
-//         return response()->json([
-//             'status' => false,
-//             'errors' => $validator->errors(),
-//         ]);
-//     }
-// }
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ]);
+        }
+
+        if (!Hash::check($request->old_password, auth()->user()->password)) {
+            return response()->json([
+                'status' => false,
+                'error' => 'Your old password is incorrect.',
+            ]);
+        }
+
+        $user = auth()->user();
+        $user->password = Hash::make($request->new_password);
+
+        // $user->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Password updated successfully.',
+        ]);
+    }
 
 
+
+//job create
+
+public function createJob() {
+    $categories = Category::orderBy('name', 'ASC')
+    ->where('status', 1)
+    ->get();
+
+    $jobTypes = JobType::orderBy('name', 'ASC')
+    ->where('status', 1)
+    ->get();
+
+    return view('front.account.job.create',[
+        'categories' => $categories,
+        'jobTypes' => $jobTypes,
+
+    ]);
+    
+} 
+
+public function saveJob(Request $request)
+{
+    // Validation rules
+    $rules = [
+        'title' => 'required|min:5|max:200',
+        'category' => 'required',
+        'jobType' => 'required',
+        'vacancy' => 'required|integer',
+        'location' => 'required|max:50',
+        'description' => 'required',
+        'company_name' => 'required|min:3|max:75',
+        'website' => 'nullable|url|max:255', // Add nullable URL validation for company_website
+        'responsibility' => 'nullable|min:5|max:1000', // Validation for responsibility (optional with length constraints)
+        'qualifications' => 'nullable|min:5|max:1000', // Validation for qualifications (optional with length constraints)
+        'benefits' => 'nullable|min:5|max:1000', // Validation for benefits (optional with length constraints)
+    ];
+
+    // Validate the request data
+    $validator = Validator::make($request->all(), $rules);
+
+    // Check if validation passes
+    if ($validator->passes()) {
+        // Create a new Job entry
+        $job = new Job();
+        $job->title = $request->title;
+        $job->category_id = $request->category;
+        $job->job_type_id = $request->jobType;
+        $job->user_id = Auth::user()->id;
+        $job->vacancy = $request->vacancy;
+        $job->salary = $request->salary?: 'N/A';
+        $job->location = $request->location;
+        $job->description = $request->description;
+        $job->benefits = $request->benefits ?: 'N/A';
+        $job->responsibility = $request->responsibility ?: 'N/A';
+        $job->qualifications = $request->qualifications ?: 'N/A';
+        $job->keywords = $request->keywords;
+        $job->experience = $request->experience;
+        $job->company_name = $request->company_name;
+        $job->company_location = $request->company_location ?: 'N/A';
+        $job->company_website = $request->website?: 'N/A'; 
+        $job->save();
+
+        // Return success response
+        session()->flash('success', 'Job added successfully.');
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Job added successfully.'
+        ]);
+    } else {
+        // Return validation errors
+        return response()->json([
+            'status' => false,
+            'errors' => $validator->errors()
+        ]);
+    }
+}
+
+
+
+public function myJobs() {
+
+    $jobs = job::where('user_id',Auth::user()->id)->with('jobType')->paginate(10);
+   
+    return view('front.account.job.my-jobs',[
+        'jobs' => $jobs
+    ]);
+
+}
+
+public function editJob(Request $request, $id) {
+
+   
+    $categories = Category::orderBy('name', 'ASC')
+    ->where('status', 1)
+    ->get();
+
+    $jobTypes = JobType::orderBy('name', 'ASC')
+    ->where('status', 1)
+    ->get();
+
+    $job = Job::where([
+        'user_id' => Auth::user()->id,  
+        'id' => $id                    
+    ])->first();
+    
+    if ($job == null) {
+        abort(404);                    
+    }    
+
+
+
+
+    return view('front.account.job.edit',[
+        'categories' => $categories,
+        'jobTypes' => $jobTypes,
+        'job' => $job,
+
+    ]);
+}
+
+public function updateJob(Request $request, $id)
+{
+    // Validation rules
+    $rules = [
+        'title' => 'required|min:5|max:200',
+        'category' => 'required',
+        'jobType' => 'required',
+        'vacancy' => 'required|integer',
+        'location' => 'required|max:50',
+        'description' => 'required',
+        'company_name' => 'required|min:3|max:75',
+        'website' => 'nullable|url|max:255', // Add nullable URL validation for company_website
+        'responsibility' => 'nullable|min:5|max:1000', // Validation for responsibility (optional with length constraints)
+        'qualifications' => 'nullable|min:5|max:1000', // Validation for qualifications (optional with length constraints)
+        'benefits' => 'nullable|min:5|max:1000', // Validation for benefits (optional with length constraints)
+    ];
+
+    // Validate the request data
+    $validator = Validator::make($request->all(), $rules);
+
+    // Check if validation passes
+    if ($validator->passes()) {
+      
+        $job = Job::find($id);
+        $job->title = $request->title;
+        $job->category_id = $request->category;
+        $job->job_type_id = $request->jobType;
+        $job->user_id = Auth::user()->id;
+        $job->vacancy = $request->vacancy;
+        $job->salary = $request->salary?: 'N/A';
+        $job->location = $request->location;
+        $job->description = $request->description;
+        $job->benefits = $request->benefits ?: 'N/A';
+        $job->responsibility = $request->responsibility ?: 'N/A';
+        $job->qualifications = $request->qualifications ?: 'N/A';
+        $job->keywords = $request->keywords;
+        $job->experience = $request->experience;
+        $job->company_name = $request->company_name;
+        $job->company_location = $request->company_location ?: 'N/A';
+        $job->company_website = $request->website?: 'N/A'; 
+        $job->save();
+
+        // Return success response
+        session()->flash('success', 'Job updated successfully.');
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Job updated successfully.'
+        ]);
+    } else {
+        // Return validation errors
+        return response()->json([
+            'status' => false,
+            'errors' => $validator->errors()
+        ]);
+    }
+}
+
+public function deleteJob(Request $request) {
+    $job = Job::where([
+        'user_id' => Auth::user()->id,
+        'id' => $request->jobId
+    ])->first();
+
+    if ($job == null) {
+        session()->flash('error', 'Either job deleted or not found.');
+        return response()->json([
+            'status' => true
+        ]);
+    }
+
+    Job::where('id', $request->jobId)->delete();
+    session()->flash('success', 'Job deleted successfully.');
+    return response()->json([
+        'status' => true
+    ]);
+}
 
 
 }
