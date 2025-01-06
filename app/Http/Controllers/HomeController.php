@@ -1,16 +1,41 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Job;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     
     // this method will show our home page
-    public function index(){
-        return view("front.home");
+    public function index() {
+        $Categories = Category::where('status', 1)->orderBy('name', 'ASC')->take(8)->get();
 
+        $featuredJobs = Job::where('status', 1)
+        ->orderBy('created_at', 'DESC')
+        ->with('jobType')
+        ->where('isFeatured', 1)
+        ->take(6)
+        ->get();
+    
+
+        $latestJobs = Job::where('status',1)
+        ->with('jobType')
+        ->orderBy('created_at', 'DESC')
+        
+        ->take(6)->get();
+
+
+        return view('front.home', [
+            'Categories' => $Categories,
+            'featuredJobs' => $featuredJobs,
+            'latestJobs' => $latestJobs
+        ]);
     }
+    
+      
+
+    
     
 }

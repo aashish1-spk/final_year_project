@@ -129,7 +129,7 @@
                             <div class="row">
                                 <div class="mb-4 col-md-6">
                                     <label for="" class="mb-2">Name<span class="req">*</span></label>
-                                    <input type="text" placeholder="Company Name" id="company_name" name="company_name" class="form-control">
+                                    <input type="text" placeholder="Company Name" id="company_name" name="company_name" class="form-control"  >
                                     <p id="company_name-error" class="text-danger"></p>
                                 </div>
 
