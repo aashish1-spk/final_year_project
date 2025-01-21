@@ -22,7 +22,7 @@ class AccountController extends Controller
         return view("front.account.registration");
     }
 
-    //this method will save a user
+    
     public function processRegistration(Request $request)
     {
         // Validate the input
@@ -278,7 +278,7 @@ public function createJob() {
 
 public function saveJob(Request $request)
 {
-    // Validation rules
+   
     $rules = [
         'title' => 'required|min:5|max:200',
         'category' => 'required',
@@ -293,7 +293,7 @@ public function saveJob(Request $request)
         'benefits' => 'nullable|min:5|max:1000', // Validation for benefits (optional with length constraints)
     ];
 
-    // Validate the request data
+    
     $validator = Validator::make($request->all(), $rules);
 
     // Check if validation passes
