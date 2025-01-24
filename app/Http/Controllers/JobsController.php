@@ -5,7 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\JobType;
+use App\Models\JobApplication;
 use App\Models\Job;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\JobNotificationEmail;
+
 
 
 class JobsController extends Controller
@@ -80,6 +86,94 @@ class JobsController extends Controller
         'jobTypeArray' => $jobTypeArray
     ]);
     
+   
 
    }
+    // This method will show job detail page
+    public function detail($id) {
+        $job = Job::where([
+            'id' => $id,
+            'status' => 1
+        ])->with(['jobType','category'])->first();
+    
+        if ($job == null) {
+            abort(404);
+        }
+    
+        return view('front.jobDetail', ['job' => $job]);
+    }
+
+    public function applyJob(Request $request) {
+        $id = $request->id;
+    
+        $job = Job::where('id', $id)->first();
+    
+        // If job not found in db
+        if ($job == null) {
+            session()->flash('error', 'Job does not exist');
+            return response()->json([
+                'status' => false,
+                'message' => 'Job does not exist'
+            ]);
+        }
+    
+        // You cannot apply on your own job
+        $employer_id = $job->user_id;
+        if ($employer_id == Auth::user()->id) {
+            session()->flash('error', 'You cannot apply on your own job');
+            return response()->json([
+                'status' => false,
+                'message' => 'You cannot apply on your own job'
+            ]);
+        }
+    
+        // Check if the user has already applied for this job
+        $jobApplicationCount = JobApplication::where('job_id', $id)
+                                              ->where('user_id', Auth::user()->id)
+                                              ->count();
+    
+        if ($jobApplicationCount > 0) {
+            $message = 'You already applied for this job.';
+            session()->flash('error', $message);
+            return response()->json([
+                'status' => false,
+                'message' => $message
+            ]);
+        }
+    
+        // Proceed with job application
+        $application = new JobApplication();
+        $application->job_id = $id;
+        $application->user_id = Auth::user()->id;
+        $application->employer_id = $employer_id;
+        $application->applied_date = now();
+        $application->save();
+    
+         // Send Notification Email to Employer
+        $employer = User::where('id', $employer_id)->first();
+        $mailData = [
+            'employer' => $employer,
+            'user' => Auth::user(),
+            'job' => $job,
+    ];
+
+    Mail::to($employer->email)->send(new JobNotificationEmail($mailData));
+
+
+        $message = 'You have successfully applied.';
+        session()->flash('success', $message);
+    
+        return response()->json([
+            'status' => true,
+            'message' => $message
+        ]);
+    }
+    
+    
+    
+    
+       
 }
+    
+
+
