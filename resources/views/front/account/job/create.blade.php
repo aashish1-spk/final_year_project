@@ -66,7 +66,7 @@
 
                             <div class="row">
                                 <div class="mb-4 col-md-6">
-                                    <label for="" class="mb-2">Salary</label>
+                                    <label for="" class="mb-2">Salary in NPR</label>
                                     <input type="number" placeholder="Salary" id="salary" name="salary" class="form-control">
                                 </div>
 
@@ -129,11 +129,9 @@
                             <div class="row">
                                 <div class="mb-4 col-md-6">
                                     <label for="" class="mb-2">Name<span class="req">*</span></label>
-                                    <input type="text" placeholder="Company Name" id="company_name" name="company_name" class="form-control"  >
+                                    <input type="text" placeholder="Company Name" id="company_name" name="company_name" class="form-control">
                                     <p id="company_name-error" class="text-danger"></p>
                                 </div>
-
-                                
 
                                 <div class="mb-4 col-md-6">
                                     <label for="" class="mb-2">Location</label>
@@ -159,12 +157,16 @@
     </div>
 </section>
 @endsection
+
 @section('costumjs')
 <script>
 $("#createJobForm").submit(function(e) {
     e.preventDefault();
-    $("button[type='submit']").prop('disabled',true);
 
+    // console.log($("#createJobForm").serializeArray());
+    // return false;
+
+    $("button[type='submit']").prop('disabled', true);
 
     // Clear previous error messages and input field styles
     $(".form-control, .form-select").removeClass('is-invalid');
@@ -176,25 +178,129 @@ $("#createJobForm").submit(function(e) {
         data: $("#createJobForm").serializeArray(),
         dataType: 'json',
         success: function(response) {
-            $("button[type='submit']").prop('disabled',false);
+            $("button[type='submit']").prop('disabled', false);
+
             if (response.status == true) {
-                // After successful submission, display a success message and redirect
                 alert('Job added successfully');
-                window.location.href="{{ route('account.myJobs') }}";
+                window.location.href = "{{ route('account.myJobs') }}";
             } else {
                 var errors = response.errors;
 
-                // Handle errors for each field
-                for (const [key, error] of Object.entries(errors)) {
-                    let field = $("#" + key);
-                    let errorContainer = $("#" + key + "-error");
+                // Handle 'title' field errors
+                if (errors.title) {
+                    $("#title").addClass('is-invalid')
+                        .siblings('p')
+                        .addClass('invalid-feedback')
+                        .html(errors.title);
+                } else {
+                    $("#title").removeClass('is-invalid')
+                        .siblings('p')
+                        .removeClass('invalid-feedback')
+                        .html('');
+                }
 
-                    // Check if the field is optional and empty before marking it as invalid
-                    if (key !== 'salary' && key !== 'benefits' && key !== 'responsibility' && key !== 'qualifications' && key !== 'company_location' && key !== 'website') {
-                        field.addClass('is-invalid');
-                    }
+                // Handle 'category' field errors
+                if (errors.category) {
+                    $("#category").addClass('is-invalid')
+                        .siblings('p')
+                        .addClass('invalid-feedback')
+                        .html(errors.category);
+                } else {
+                    $("#category").removeClass('is-invalid')
+                        .siblings('p')
+                        .removeClass('invalid-feedback')
+                        .html('');
+                }
 
-                    errorContainer.html(error);
+                // Handle 'jobType' field errors
+                if (errors.jobType) {
+                    $("#jobType").addClass('is-invalid')
+                        .siblings('p')
+                        .addClass('invalid-feedback')
+                        .html(errors.jobType);
+                } else {
+                    $("#jobType").removeClass('is-invalid')
+                        .siblings('p')
+                        .removeClass('invalid-feedback')
+                        .html('');
+                }
+
+                // Handle 'vacancy' field errors
+                if (errors.vacancy) {
+                    $("#vacancy").addClass('is-invalid')
+                        .siblings('p')
+                        .addClass('invalid-feedback')
+                        .html(errors.vacancy);
+                } else {
+                    $("#vacancy").removeClass('is-invalid')
+                        .siblings('p')
+                        .removeClass('invalid-feedback')
+                        .html('');
+                }
+
+                // Handle 'location' field errors
+                if (errors.location) {
+                    $("#location").addClass('is-invalid')
+                        .siblings('p')
+                        .addClass('invalid-feedback')
+                        .html(errors.location);
+                } else {
+                    $("#location").removeClass('is-invalid')
+                        .siblings('p')
+                        .removeClass('invalid-feedback')
+                        .html('');
+                }
+
+                // Handle 'description' field errors
+                if (errors.description) {
+                    $("#description").addClass('is-invalid')
+                        .siblings('p')
+                        .addClass('invalid-feedback')
+                        .html(errors.description);
+                } else {
+                    $("#description").removeClass('is-invalid')
+                        .siblings('p')
+                        .removeClass('invalid-feedback')
+                        .html('');
+                }
+
+                // Handle 'company_name' field errors
+                if (errors.company_name) {
+                    $("#company_name").addClass('is-invalid')
+                        .siblings('p')
+                        .addClass('invalid-feedback')
+                        .html(errors.company_name);
+                } else {
+                    $("#company_name").removeClass('is-invalid')
+                        .siblings('p')
+                        .removeClass('invalid-feedback')
+                        .html('');
+                }
+
+                // Handle 'company_location' field errors
+                if (errors.company_location) {
+                    $("#company_location").addClass('is-invalid')
+                        .siblings('p')
+                        .addClass('invalid-feedback')
+                        .html(errors.company_location);
+                } else {
+                    $("#company_location").removeClass('is-invalid')
+                        .siblings('p')
+                        .removeClass('invalid-feedback')
+                        .html('');
+                }
+
+                // Handle 'website' field errors
+                if (errors.website) {
+                    $("#website").addClass('is-invalid')
+                        .siblings('p')
+                        .addClass('invalid-feedback')
+                        .html(errors.website);
+                } else {
+                    $("#website").removeClass('is-invalid')
+                        .siblings('p')
+                        .removeClass('invalid-feedback')
+                        .html('');
                 }
             }
         }

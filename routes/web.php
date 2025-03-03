@@ -15,6 +15,8 @@ Route::post('/apply-job', [JobsController::class, 'applyJob'])->name('applyJob')
 Route::group(['prefix' => 'account'], function () {
     // Guest routes
     Route::group(['middleware' => 'guest'], function () {
+
+
         Route::get('/register', [AccountController::class, 'registration'])->name('account.registration');
         Route::post('/process-register', [AccountController::class, 'processRegistration'])->name('account.processRegistration');
         Route::get('/login', [AccountController::class, 'login'])->name('account.login');
@@ -43,9 +45,9 @@ Route::group(['prefix' => 'account'], function () {
 
         // Routes for 'user' role
         Route::group(['middleware' => 'role:user'], function () {
-            // Define user-specific routes here
-            // For example:
-            // Route::get('/applied-jobs', [AccountController::class, 'appliedJobs'])->name('account.appliedJobs');
+            Route::get('/my-job-applications', [AccountController::class, 'myJobApplications'])->name('account.myJobApplications');
+            Route::post('/remove-job-application', [AccountController::class, 'removeJobs'])->name('account.removeJobs');
+
         });
     });
 

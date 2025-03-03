@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Job;
+use App\Models\JobApplication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,7 @@ use App\Models\JobType;
 
 class AccountController extends Controller
 {
-    //this method shows user registration page
+   
     public function registration()
     {
         return view("front.account.registration");
@@ -136,7 +137,7 @@ class AccountController extends Controller
 
     public function updateProfilePic(Request $request)
     {
-        // dd($request->all());
+    
 
         $id = Auth::user()->id;
         $validator = Validator::make($request->all(), [
@@ -177,41 +178,38 @@ class AccountController extends Controller
     // for company
 
     public function processCompanyRegistration(Request $request)
-    {
-        // Validate the form data
-        $validator = Validator::make($request->all(), [
-            'company_name' => 'required|string|max:255',
-            'company_email' => 'required|email|unique:users,email',
-            'company_password' => 'required|string|min:8|same:company_password_confirmation',
-            'company_password_confirmation' => 'required',
+{
+    // Validate the input
+    $validator = Validator::make($request->all(), [
+        'company_name' => 'required',
+        'email' => 'required|email|unique:users,email', 
+        'password' => 'required|min:5|same:confirm_password',
+        'confirm_password' => 'required',
+    ]);
+
+    if ($validator->passes()) {
+
+        // Creating a new user with the 'company' role
+        $user = new User();
+        $user->name = $request->company_name; // Saving company name as the user name
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->role = 'company'; // Assigning the company role
+        $user->save();
+
+        session()->flash('success', 'You have registered your company successfully.');
+
+        return response()->json([
+            'status' => true,
+            'errors' => []
         ]);
-
-        // If validation fails, return JSON with errors
-        if ($validator->fails()) {
-            return redirect()->back()->with('error', $validator->errors()->all());
-        }
-
-        // to create the company user in the users table
-        try {
-            $user = User::create([
-                'name' => $request->company_name,
-                'email' => $request->company_email,
-                'password' => Hash::make($request->company_password),
-                'role' => 'company',
-            ]);
-
-            // Redirect to login page with success message in the session
-            return redirect()->route('account.login')
-                ->with('success', 'Company registered successfully! Please log in.');
-        } catch (\Exception $e) {
-            // Return JSON with an error message if an exception occurs
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong. Please try again later.',
-                'error' => $e->getMessage(),
-            ]);
-        }
+    } else {
+        return response()->json([
+            'status' => false,
+            'errors' => $validator->errors()
+        ]);
     }
+}
 
     public function companyprofile()
     {
@@ -287,10 +285,10 @@ public function saveJob(Request $request)
         'location' => 'required|max:50',
         'description' => 'required',
         'company_name' => 'required|min:3|max:75',
-        'website' => 'nullable|url|max:255', // Add nullable URL validation for company_website
-        'responsibility' => 'nullable|min:5|max:1000', // Validation for responsibility (optional with length constraints)
-        'qualifications' => 'nullable|min:5|max:1000', // Validation for qualifications (optional with length constraints)
-        'benefits' => 'nullable|min:5|max:1000', // Validation for benefits (optional with length constraints)
+        'website' => 'nullable|url|max:255', 
+        'responsibility' => 'nullable|min:5|max:1000', 
+        'qualifications' => 'nullable|min:5|max:1000', 
+        'benefits' => 'nullable|min:5|max:1000', 
     ];
 
     
@@ -366,9 +364,6 @@ public function editJob(Request $request, $id) {
         abort(404);                    
     }    
 
-
-
-
     return view('front.account.job.edit',[
         'categories' => $categories,
         'jobTypes' => $jobTypes,
@@ -388,10 +383,10 @@ public function updateJob(Request $request, $id)
         'location' => 'required|max:50',
         'description' => 'required',
         'company_name' => 'required|min:3|max:75',
-        'website' => 'nullable|url|max:255', // Add nullable URL validation for company_website
-        'responsibility' => 'nullable|min:5|max:1000', // Validation for responsibility (optional with length constraints)
-        'qualifications' => 'nullable|min:5|max:1000', // Validation for qualifications (optional with length constraints)
-        'benefits' => 'nullable|min:5|max:1000', // Validation for benefits (optional with length constraints)
+        'website' => 'nullable|url|max:255', 
+        'responsibility' => 'nullable|min:5|max:1000', 
+        'qualifications' => 'nullable|min:5|max:1000', 
+        'benefits' => 'nullable|min:5|max:1000', 
     ];
 
     // Validate the request data
@@ -453,6 +448,39 @@ public function deleteJob(Request $request) {
     return response()->json([
         'status' => true
     ]);
+}
+
+public function myJobApplications() {
+    $jobApplications = JobApplication::where('user_id', Auth::user()->id)
+        ->with(['job', 'job.jobType','job.applications'])
+        ->paginate(10); // Added pagination
+
+    return view('front.account.job.my-job-applications', [
+        'jobApplications' => $jobApplications
+    ]);
+}
+
+
+public function removeJobs(Request $request){
+    $jobApplication = JobApplication::where([
+                                'id' => $request->id, 
+                                'user_id' => Auth::user()->id]
+                            )->first();
+    
+    if ($jobApplication == null) {
+        session()->flash('error','Job application not found');
+        return response()->json([
+            'status' => false,                
+        ]);
+    }
+
+    JobApplication::find($request->id)->delete();
+    session()->flash('success','Job application removed successfully.');
+
+    return response()->json([
+        'status' => true,                
+    ]);
+
 }
 
 

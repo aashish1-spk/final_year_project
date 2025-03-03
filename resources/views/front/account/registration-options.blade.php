@@ -38,7 +38,7 @@
                 <p class="mb-4">Choose an option below to register:</p>
                 <div class="d-flex">
                     <a href="{{ route('account.companyregistration') }}" class="custom-btn">Register as Company</a>
-                    <a href="{{ route('account.jobseekerregistration') }}" class="custom-btn">Register as Job Seeker</a>
+                    <a href="{{ route('account.registration') }}" class="custom-btn">Register as Job Seeker</a>
                 </div>
             </div>
         </div>

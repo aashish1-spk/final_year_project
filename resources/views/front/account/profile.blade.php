@@ -126,7 +126,7 @@
     document.getElementById('userForm').addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent default form submission
         
-        // Clear previous error messages
+        
         document.querySelectorAll('.error-message').forEach(msg => msg.textContent = '');
 
         let isValid = true;
@@ -137,8 +137,9 @@
         const designationField = document.getElementById('designation');
         const mobileField = document.getElementById('mobile');
 
-        // Regex for validating name and designation (letters and spaces only)
-        const stringRegex = /^[a-zA-Z\s]+$/;
+        // Regex for validating name and designation 
+        const stringRegex = /[a-zA-Z\s]/;
+
 
         // Validate Employee Name
         if (nameField.value.trim() === '') {
@@ -150,7 +151,8 @@
         }
 
         // Validate Email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /@/;
+
         if (!emailRegex.test(emailField.value.trim())) {
             isValid = false;
             emailField.nextElementSibling.textContent = 'Enter a valid email address.';
@@ -176,7 +178,7 @@
         if (isValid) {
             this.submit(); // Submit the form normally
         } else {
-            // Optionally, you could display a general message for errors
+            
             alert('Please fix the errors before submitting the form.');
         }
     });
@@ -185,44 +187,44 @@
 
 
 
-//change password
-document.getElementById("changePasswordForm").addEventListener("submit", function (e) {
-    // Get form inputs
-    const oldPassword = document.getElementById("old_password").value.trim();
-    const newPassword = document.getElementById("new_password").value.trim();
-    const confirmPassword = document.getElementById("confirm_password").value.trim();
+// //change password
+// document.getElementById("changePasswordForm").addEventListener("submit", function (e) {
+//     // Get form inputs
+//     const oldPassword = document.getElementById("old_password").value.trim();
+//     const newPassword = document.getElementById("new_password").value.trim();
+//     const confirmPassword = document.getElementById("confirm_password").value.trim();
 
-    // Error elements
-    const oldPasswordError = document.getElementById("old_password_error");
-    const newPasswordError = document.getElementById("new_password_error");
-    const confirmPasswordError = document.getElementById("confirm_password_error");
+//     // Error elements
+//     const oldPasswordError = document.getElementById("old_password_error");
+//     const newPasswordError = document.getElementById("new_password_error");
+//     const confirmPasswordError = document.getElementById("confirm_password_error");
 
-    // Clear previous errors
-    oldPasswordError.classList.add("d-none");
-    newPasswordError.classList.add("d-none");
-    confirmPasswordError.classList.add("d-none");
+//     // Clear previous errors
+//     oldPasswordError.classList.add("d-none");
+//     newPasswordError.classList.add("d-none");
+//     confirmPasswordError.classList.add("d-none");
 
-    // Validation
-    let isValid = true;
+//     // Validation
+//     let isValid = true;
 
-    if (!oldPassword) {
-        oldPasswordError.classList.remove("d-none");
-        isValid = false;
-    }
-    if (!newPassword) {
-        newPasswordError.classList.remove("d-none");
-        isValid = false;
-    }
-    if (newPassword !== confirmPassword) {
-        confirmPasswordError.classList.remove("d-none");
-        isValid = false;
-    }
+//     if (!oldPassword) {
+//         oldPasswordError.classList.remove("d-none");
+//         isValid = false;
+//     }
+//     if (!newPassword) {
+//         newPasswordError.classList.remove("d-none");
+//         isValid = false;
+//     }
+//     if (newPassword !== confirmPassword) {
+//         confirmPasswordError.classList.remove("d-none");
+//         isValid = false;
+//     }
 
-    // Prevent form submission if validation fails
-    if (!isValid) {
-        e.preventDefault();
-    }
-});
+//     // Prevent form submission if validation fails
+//     if (!isValid) {
+//         e.preventDefault();
+//     }
+// });
 
 
 

@@ -94,6 +94,7 @@
             }
         });
 
+
         $("#profilePicForm").submit(function(e) {
             e.preventDefault();
 

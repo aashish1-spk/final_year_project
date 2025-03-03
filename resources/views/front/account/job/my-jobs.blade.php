@@ -50,7 +50,7 @@
                                                 <div class="job-name fw-500">{{ $job->title }}</div>
                                                 <div class="info1">{{ $job->jobType->name }} .{{ $job->location }}</div>
                                             </td>
-                                            <td>{{ \Carbon\Carbon::parse($job->reated_at)->format('d M, Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($job->created_at)->format('d M, Y') }}</td>
                                             <td>0 Applications</td>
                                             <td>
 
@@ -87,7 +87,7 @@
                         </div>
 
                         <div>
-                            {{ $jobs->links() }}
+                            {{ $jobs->links() }}  
                         </div>
 
 

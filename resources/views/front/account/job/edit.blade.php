@@ -36,8 +36,7 @@
                                         <option value="">Select a Category</option>
                                         @if ($categories->isNotEmpty())
                                             @foreach ($categories as $category)
-                                                <option {{ ($job->category_id == $category->id) ? 'selected'
-                                                 : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
+                                                <option {{ ($job->category_id == $category->id) ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -52,8 +51,7 @@
                                         <option value="">Select Job Nature</option>
                                         @if ($jobTypes->isNotEmpty())
                                             @foreach ($jobTypes as $jobType)
-                                                <option {{ ($job->job_type_id == $jobType->id) ? 'selected'
-                                                    : '' }} value="{{ $jobType->id }}">{{ $jobType->name }}</option>
+                                                <option {{ ($job->job_type_id == $jobType->id) ? 'selected' : '' }} value="{{ $jobType->id }}">{{ $jobType->name }}</option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -81,11 +79,11 @@
 
                             <div class="mb-4">
                                 <label for="" class="mb-2">Description<span class="req">*</span></label>
-                                <textarea class="form-control" name="description" id="description" cols="5" rows="5" placeholder="Description">value="{{ $job->description}}" </textarea>
+                                <textarea class="form-control" name="description" id="description" cols="5" rows="5" placeholder="Description">{{ $job->description }}</textarea>
                                 <p id="description-error" class="text-danger"></p>
                             </div>
 
-                        <!-- Benefits -->
+                            <!-- Benefits -->
                             <div class="mb-4">
                                 <label for="" class="mb-2">Benefits</label>
                                 <textarea class="form-control" name="benefits" id="benefits" cols="5" rows="5" placeholder="Benefits">{{ $job->benefits }}</textarea>
@@ -106,32 +104,20 @@
                                 <p id="qualifications-error" class="text-danger"></p>
                             </div>
 
-
                             <div class="mb-4">
                                 <label for="" class="mb-2">Experience<span class="req">*</span></label>
                                 <select name="experience" id="experience" class="form-control">
-                                    <option value="1" {{ ($job->experience == 1) ? 'selected'
-                                        : '' }} >1 year</option>
-                                    <option value="2" {{ ($job->experience == 2) ? 'selected'
-                                        : '' }} >2 years</option>
-                                    <option value="3" {{ ($job->experience == 3) ? 'selected'
-                                        : '' }} >3 years</option>
-                                    <option value="4" {{ ($job->experience == 4) ? 'selected'
-                                        : '' }} >4 years</option>
-                                    <option value="5" {{ ($job->experience == 5) ? 'selected'
-                                        : '' }} >5 years</option>
-                                    <option value="6" {{ ($job->experience == 6) ? 'selected'
-                                        : '' }} >6 years</option>
-                                    <option value="7" {{ ($job->experience == 7) ? 'selected'
-                                        : '' }} >7 years</option>
-                                    <option value="8" {{ ($job->experience == 8) ? 'selected'
-                                        : '' }} >8 years</option>
-                                    <option value="9" {{ ($job->experience == 9) ? 'selected'
-                                        : '' }} >9 years</option>
-                                    <option value="10" {{ ($job->experience == 10) ? 'selected'
-                                        : '' }} >10 years</option>
-                                    <option value="10_plus" {{ ($job->experience == '10_plus') ? 'selected'
-                                        : '' }} >10+ years</option>
+                                    <option value="1" {{ ($job->experience == 1) ? 'selected' : '' }}>1 year</option>
+                                    <option value="2" {{ ($job->experience == 2) ? 'selected' : '' }}>2 years</option>
+                                    <option value="3" {{ ($job->experience == 3) ? 'selected' : '' }}>3 years</option>
+                                    <option value="4" {{ ($job->experience == 4) ? 'selected' : '' }}>4 years</option>
+                                    <option value="5" {{ ($job->experience == 5) ? 'selected' : '' }}>5 years</option>
+                                    <option value="6" {{ ($job->experience == 6) ? 'selected' : '' }}>6 years</option>
+                                    <option value="7" {{ ($job->experience == 7) ? 'selected' : '' }}>7 years</option>
+                                    <option value="8" {{ ($job->experience == 8) ? 'selected' : '' }}>8 years</option>
+                                    <option value="9" {{ ($job->experience == 9) ? 'selected' : '' }}>9 years</option>
+                                    <option value="10" {{ ($job->experience == 10) ? 'selected' : '' }}>10 years</option>
+                                    <option value="10_plus" {{ ($job->experience == '10_plus') ? 'selected' : '' }}>10+ years</option>
                                 </select>
                                 <p id="experience-error" class="text-danger"></p>
                             </div>
@@ -174,46 +160,83 @@
     </div>
 </section>
 @endsection
+
 @section('costumjs')
 <script>
 $("#editJobForm").submit(function(e) {
     e.preventDefault();
-    $("button[type='submit']").prop('disabled',true);
+    $("button[type='submit']").prop('disabled', true);
 
     // Clear previous error messages and input field styles
     $(".form-control, .form-select").removeClass('is-invalid');
     $(".text-danger").html('');
 
     $.ajax({
-        url: '{{ route("account.updateJob",$job->id) }}',
+        url: '{{ route("account.updateJob", $job->id) }}',
         type: 'POST',
         data: $("#editJobForm").serializeArray(),
         dataType: 'json',
         success: function(response) {
-            $("button[type='submit']").prop('disabled',false);
+            $("button[type='submit']").prop('disabled', false);
 
             if (response.status == true) {
                 // After successful submission, display a success message and redirect
-                alert('Job added successfully');
-                window.location.href="{{ route('account.myJobs') }}";
+                alert('Job updated successfully');
+                window.location.href = "{{ route('account.myJobs') }}";
             } else {
-                var errors = response.errors;
-
-                // Handle errors for each field
-                for (const [key, error] of Object.entries(errors)) {
-                    let field = $("#" + key);
-                    let errorContainer = $("#" + key + "-error");
-
-                    // Check if the field is optional and empty before marking it as invalid
-                    if (key !== 'salary' && key !== 'benefits' && key !== 'responsibility' && key !== 'qualifications' && key !== 'company_location' && key !== 'website') {
-                        field.addClass('is-invalid');
-                    }
-
-                    errorContainer.html(error);
+                
+                if (response.errors.title) {
+                    $("#title").addClass('is-invalid');
+                    $("#title-error").html(response.errors.title);
+                }
+                if (response.errors.category) {
+                    $("#category").addClass('is-invalid');
+                    $("#category-error").html(response.errors.category);
+                }
+                if (response.errors.jobType) {
+                    $("#jobType").addClass('is-invalid');
+                    $("#jobType-error").html(response.errors.jobType);
+                }
+                if (response.errors.vacancy) {
+                    $("#vacancy").addClass('is-invalid');
+                    $("#vacancy-error").html(response.errors.vacancy);
+                }
+                if (response.errors.location) {
+                    $("#location").addClass('is-invalid');
+                    $("#location-error").html(response.errors.location);
+                }
+                if (response.errors.description) {
+                    $("#description").addClass('is-invalid');
+                    $("#description-error").html(response.errors.description);
+                }
+                if (response.errors.benefits) {
+                    $("#benefits").addClass('is-invalid');
+                    $("#benefits-error").html(response.errors.benefits);
+                }
+                if (response.errors.responsibility) {
+                    $("#responsibility").addClass('is-invalid');
+                    $("#responsibility-error").html(response.errors.responsibility);
+                }
+                if (response.errors.qualifications) {
+                    $("#qualifications").addClass('is-invalid');
+                    $("#qualifications-error").html(response.errors.qualifications);
+                }
+                if (response.errors.experience) {
+                    $("#experience").addClass('is-invalid');
+                    $("#experience-error").html(response.errors.experience);
+                }
+                if (response.errors.company_name) {
+                    $("#company_name").addClass('is-invalid');
+                    $("#company_name-error").html(response.errors.company_name);
+                }
+                if (response.errors.website) {
+                    $("#website").addClass('is-invalid');
+                    $("#website-error").html(response.errors.website);
                 }
             }
         }
     });
 });
+
 </script>
 @endsection
