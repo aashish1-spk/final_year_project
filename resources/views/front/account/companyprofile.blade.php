@@ -51,8 +51,8 @@
                             </div>
 
                             <div class="mb-4">
-                                <label for="" class="mb-2">Designation*</label>
-                                <input type="text" name="designation" id="designation" placeholder="Designation" class="form-control" value="{{ $user->designation }}">
+                                <label for="" class="mb-2"> Company Employee Role*</label>
+                                <input type="text" name="designation" id="designation" placeholder="Role" class="form-control" value="{{ $user->designation }}">
                                 <p></p>
                             </div>
                             <div class="mb-4">
@@ -135,10 +135,10 @@
         // Validate Designation
         if (designationField.value.trim() === '') {
             isValid = false;
-            designationField.nextElementSibling.textContent = 'Designation is required.';
+            designationField.nextElementSibling.textContent = 'Role is required.';
         } else if (!stringRegex.test(designationField.value.trim())) {
             isValid = false;
-            designationField.nextElementSibling.textContent = 'Designation must contain only letters and spaces.';
+            designationField.nextElementSibling.textContent = 'Role must contain only letters and spaces.';
         }
 
         // Validate Mobile

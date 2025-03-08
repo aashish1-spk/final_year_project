@@ -10020,3 +10020,15 @@ footer .nav-link {
   content: '';
 }
 /* '' */
+
+.saved-job .heart_mark { 
+  background: #00D363 !important;
+  color: #fff !important;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Add hover effect */
+.saved-job .heart_mark:hover {
+  background: #008F47 !important; /* Darker green */
+  color: #fff !important;
+}
