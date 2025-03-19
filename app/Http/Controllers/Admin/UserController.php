@@ -56,22 +56,46 @@ class UserController extends Controller
     }
     
 
-    public function destroy(Request $request){
-        $id = $request->id;
+    public function deactivate(Request $request)
+{
+    $id = $request->id;
+    $user = User::find($id);
 
-        $user = User::find($id);
-
-        if ($user == null) {
-            session()->flash('error','User not found');
-            return response()->json([
-                'status' => false,
-            ]);
-        }
-
-        $user->delete();
-        session()->flash('success','User deleted successfully');
+    if (!$user) {
+        session()->flash('error', 'User not found');
         return response()->json([
-            'status' => true,
+            'status' => false,
         ]);
     }
+
+    $user->is_active = false; // Set is_active to false
+    $user->save();
+
+    session()->flash('success', 'User deactivated successfully');
+    return response()->json([
+        'status' => true,
+    ]);
+}
+
+public function activate(Request $request)
+{
+    $id = $request->id;
+    $user = User::find($id);
+
+    if (!$user) {
+        session()->flash('error', 'User not found');
+        return response()->json([
+            'status' => false,
+        ]);
+    }
+
+    $user->is_active = true; // Set is_active to true
+    $user->save();
+
+    session()->flash('success', 'User activated successfully');
+    return response()->json([
+        'status' => true,
+    ]);
+}
+
 }

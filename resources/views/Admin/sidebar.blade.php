@@ -11,7 +11,7 @@
                 <a href="#">Job Applications</a>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="#">Logout</a>
+                <a href="{{ route('account.logout') }}"">Logout</a>
             </li>
         </ul>
     </div>

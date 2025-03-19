@@ -64,25 +64,43 @@ class AccountController extends Controller
     }
 
     public function authenticate(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+{
+    // Validate the incoming request data
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email',
+        'password' => 'required'
+    ]);
 
-        if ($validator->passes()) {
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+    // If validation passes, proceed with the login attempt
+    if ($validator->passes()) {
+        // Attempt to authenticate the user with email and password
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $user = Auth::user(); // Get the authenticated user
+
+            // Check if the user is active
+            if ($user->is_active) {
+                // If the user is active, allow access
                 return redirect()->route('account.profile');
             } else {
-                return redirect()->route('account.login')->with('error', 'Either email or password is incorrect');
+                // Log the user out if inactive
+                Auth::logout();
+                
+                // Redirect back to login with error message
+                return redirect()->route('account.login')->with('error', 'Your account has been deactivated.');
             }
         } else {
-            return redirect()
-                ->route('account.login')
-                ->withErrors($validator)
-                ->withInput($request->only('email'));
+            // If authentication fails, return with error
+            return redirect()->route('account.login')->with('error', 'Either email or password is incorrect');
         }
+    } else {
+        // If validation fails, return with errors
+        return redirect()
+            ->route('account.login')
+            ->withErrors($validator)
+            ->withInput($request->only('email'));
     }
+}
+
 
     public function profile()
     {

@@ -21,7 +21,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkRole'], function () {
     Route::get('/users/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
     Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
 
-    Route::delete('/users', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    // Route::delete('/users', [UserController::class, 'destroy'])->name('admin.users.destroy');
+
+    Route::post('/users/deactivate', [UserController::class, 'deactivate'])->name('admin.users.deactivate');
+    Route::post('/users/activate', [UserController::class, 'activate'])->name('admin.users.activate');
+
 
     Route::get('/jobs', [JobController::class, 'index'])->name('admin.jobs');
 
@@ -42,6 +46,8 @@ Route::group(['prefix' => 'account'], function () {
         Route::post('/process-register', [AccountController::class, 'processRegistration'])->name('account.processRegistration');
         Route::get('/login', [AccountController::class, 'login'])->name('account.login');
         Route::post('/authenticate', [AccountController::class, 'authenticate'])->name('account.authenticate');
+
+        
     });
 
     // Authenticated routes

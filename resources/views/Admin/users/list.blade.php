@@ -69,8 +69,18 @@
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li><a class="dropdown-item" href="{{ route("admin.users.edit",$user->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
-                                                    <li><a class="dropdown-item" href="#" onclick="deleteUser({{ $user->id }})" ><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></li>
-                                                </ul>
+                                                    <li>
+                                                        @if($user->is_active)
+                                                            <a class="dropdown-item" href="#" onclick="deactivateUser({{ $user->id }})">
+                                                                <i class="fa fa-ban" aria-hidden="true"></i> Deactivate
+                                                            </a>
+                                                        @else
+                                                            <a class="dropdown-item" href="#" onclick="activateUser({{ $user->id }})">
+                                                                <i class="fa fa-check" aria-hidden="true"></i> Activate
+                                                            </a>
+                                                        @endif
+                                                    </li>
+                                                                                       </ul>
                                             </div>
                                         </td>
                                     </tr>         
@@ -97,19 +107,55 @@
 
 @section('customJs')
 @section('costumjs')
-<script type="text/javascript">
-    function deleteUser(id) {
-        if(confirm("Are you sure you want to delete?")) {
+<script>
+    function deactivateUser(id) {
+        if (confirm("Are you sure you want to deactivate this user?")) {
             $.ajax({
-                url: '{{ route("admin.users.destroy") }}',
-                type: 'delete',
-                data: { id: id},
-                dataType: 'json',
+                url: "{{ route('admin.users.deactivate') }}",
+                type: "POST",
+                data: {
+                    id: id,
+                    _token: "{{ csrf_token() }}"
+                },
+                dataType: "json",
                 success: function(response) {
-                    window.location.href = "{{ route('admin.users') }}";
+                    if (response.status) {
+                        alert("User deactivated successfully");
+                        location.reload();
+                    } else {
+                        alert("Failed to deactivate user.");
+                    }
+                },
+                error: function(xhr) {
+                    alert("An error occurred. Please check the server logs.");
                 }
             });
         }
     }
-</script>
+    
+    function activateUser(id) {
+        if (confirm("Are you sure you want to activate this user?")) {
+            $.ajax({
+                url: "{{ route('admin.users.activate') }}",
+                type: "POST",
+                data: {
+                    id: id,
+                    _token: "{{ csrf_token() }}"
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.status) {
+                        alert("User activated successfully");
+                        location.reload();
+                    } else {
+                        alert("Failed to activate user.");
+                    }
+                },
+                error: function(xhr) {
+                    alert("An error occurred. Please check the server logs.");
+                }
+            });
+        }
+    }
+    </script>
 @endsection

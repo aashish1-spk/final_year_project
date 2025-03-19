@@ -21,10 +21,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'status',  // Add 'status' to the fillable array
     ];
-
-
-  
 
     /**
      * The attributes that should be hidden for serialization.
