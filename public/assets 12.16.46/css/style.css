@@ -10032,3 +10032,8 @@ footer .nav-link {
   background: #008F47 !important; /* Darker green */
   color: #fff !important;
 }
+.dashboard{
+  height: 400px;
+  justify-content: center;
+  display: flex;
+}

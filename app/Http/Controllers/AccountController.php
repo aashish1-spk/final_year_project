@@ -88,17 +88,28 @@ class AccountController extends Controller
     {
         $id = Auth::user()->id;
         $user = User::where('id', $id)->first();
-
+    
+        // Check for 'user' role
         if (Auth::user()->role == 'user') {
             return view('front.account.profile', [
                 'user' => $user
             ]);
-        } elseif (Auth::user()->role == 'company') {
-            return view('front.account.companyprofile', [
+        }
+        // Check for 'company' role
+        elseif (Auth::user()->role == 'company') {
+            return view('front.account.profile', [  // Show same profile view for company
+                'user' => $user
+            ]);
+        }
+        // Check for 'admin' role and show same profile view as user and company
+        elseif (Auth::user()->role == 'admin') {
+            return view('front.account.profile', [  // Show same profile view for admin
                 'user' => $user
             ]);
         }
     }
+    
+    
 
     public function updateProfile(Request $request)
     {
