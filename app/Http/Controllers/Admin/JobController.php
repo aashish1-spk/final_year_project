@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Job;
@@ -33,45 +34,128 @@ class JobController extends Controller
         ]);
     }
 
+
+
+    // public function update(Request $request, $id)
+    // {
+    //     // Validate input data
+    //     $request->validate([
+    //         'title' => 'required|string|max:255',
+    //         'category' => 'required|exists:categories,id',
+    //         'jobType' => 'required|exists:job_types,id',
+    //         'vacancy' => 'required|integer|min:1',
+    //         'salary' => 'nullable|numeric|min:0',
+    //         'location' => 'required|string|max:255',
+    //         'description' => 'required|string',
+    //         'benefits' => 'nullable|string',
+    //         'responsibility' => 'nullable|string',
+    //         'qualifications' => 'nullable|string',
+    //         'experience' => 'required|string',
+    //         'keywords' => 'nullable|string',
+    //         'company_name' => 'required|string|max:255',
+    //         'company_location' => 'nullable|string|max:255',
+    //         'website' => 'nullable|url',
+    //     ]);
+
+    //     // Find job
+    //     $job = Job::findOrFail($id);
+
+    //     // Update job details
+    //     $job->update([
+    //         'title' => $request->title,
+    //         'category_id' => $request->category,
+    //         'job_type_id' => $request->jobType,
+    //         'vacancy' => $request->vacancy,
+    //         'salary' => $request->salary,
+    //         'location' => $request->location,
+    //         'description' => $request->description,
+    //         'benefits' => $request->benefits,
+    //         'responsibility' => $request->responsibility,
+    //         'qualifications' => $request->qualifications,
+    //         'experience' => $request->experience,
+    //         'keywords' => $request->keywords,
+    //         'company_name' => $request->company_name,
+    //         'company_location' => $request->company_location,
+    //         'company_website' => $request->website,
+    //         'is_featured' => $request->has('idFeatured') ? 1 : 0,
+    //         'status' => $request->status,
+    //     ]);
+
+
+    //     // Redirect back with success message
+    //     return redirect()->route('admin.jobs')->with('success', 'Job updated successfully.');
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function update(Request $request, $id)
     {
-        // Validate the form data
-        $validated = $request->validate([
-            'title' => 'required|max:255',
-            'category' => 'required|exists:categories,id',
-            'jobType' => 'required|exists:job_types,id',
-            'vacancy' => 'required|integer|min:1',
-            'location' => 'required|string|max:255',
-            'description' => 'required|string',
-            'company_name' => 'required|string|max:255',
-            'experience' => 'required|integer',
-            'keywords' => 'nullable|string',
-        ]);
-
-        // Find the job by ID
-        $job = Job::findOrFail($id);
-
-        // Update the job with validated data
-        $job->update([
-            'title' => $validated['title'],
-            'category_id' => $validated['category'],
-            'job_type_id' => $validated['jobType'],
-            'vacancy' => $validated['vacancy'],
-            'salary' => $request->salary, // Optional
-            'location' => $validated['location'],
-            'description' => $validated['description'],
-            'benefits' => $request->benefits, // Optional
-            'responsibility' => $request->responsibility, // Optional
-            'qualifications' => $request->qualifications, // Optional
-            'experience' => $validated['experience'],
-            'keywords' => $request->keywords, // Optional
-            'isFeatured' => $request->has('isFeatured') ? 1 : 0,
-            'status' => $request->status,
-            'company_name' => $validated['company_name'],
-            'company_location' => $request->company_location,
-            'company_website' => $request->website,
-        ]);
-
-        return response()->json(['status' => true]);
+        // Validation rules
+        $rules = [
+            'title' => 'required|min:5|max:200',
+            'category' => 'required',
+            'jobType' => 'required',
+            'vacancy' => 'required|integer',
+            'location' => 'required|max:50',
+            'description' => 'required',
+            'company_name' => 'required|min:3|max:75',
+        ];
+    
+        // Validate the request data
+        $validator = Validator::make($request->all(), $rules);
+    
+        // Check if the validation passes
+        if ($validator->passes()) {
+    
+            // Find the job
+            $job = Job::find($id);
+            
+            // Update job attributes
+            $job->title = $request->title;
+            $job->category_id = $request->category;
+            $job->job_type_id = $request->jobType;
+            $job->vacancy = $request->vacancy;
+            $job->salary = $request->salary;
+            $job->location = $request->location;
+            $job->description = $request->description;
+            $job->benefits = $request->benefits;
+            $job->responsibility = $request->responsibility;
+            $job->qualifications = $request->qualifications;
+            $job->keywords = $request->keywords;
+            $job->experience = $request->experience;
+            $job->company_name = $request->company_name;
+            $job->company_location = $request->company_location;
+            $job->company_website = $request->website;
+    
+            // Update status and featured job
+            $job->status = $request->status;  // 1 for active, 0 for blocked
+            $job->isFeatured = ($request->has('isFeatured')) ? 1 : 0;  // Featured checkbox
+            
+            // Save the job
+            $job->save();
+    
+            // Flash success message
+            session()->flash('success', 'Job updated successfully.');
+    
+            // Redirect back to the same page to show the success message
+            return back();
+        } else {
+            // Flash validation error message
+            session()->flash('error', 'There were some errors with your submission.');
+    
+            // Redirect back to the same page to show the error message
+            return back()->withErrors($validator->errors());
+        }
     }
+    
 }
