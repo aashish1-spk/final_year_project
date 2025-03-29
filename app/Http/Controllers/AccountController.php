@@ -13,18 +13,24 @@ use Illuminate\Support\Facades\Validator;
 use Symfony\Contracts\Service\Attribute\Required;
 use App\Models\Category;
 use App\Models\JobType;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ResetPasswordEmail;
+
+
 
 
 
 class AccountController extends Controller
 {
-   
+
     public function registration()
     {
         return view("front.account.registration");
     }
 
-    
+
     public function processRegistration(Request $request)
     {
         // Validate the input
@@ -64,49 +70,49 @@ class AccountController extends Controller
     }
 
     public function authenticate(Request $request)
-{
-    // Validate the incoming request data
-    $validator = Validator::make($request->all(), [
-        'email' => 'required|email',
-        'password' => 'required'
-    ]);
+    {
+        // Validate the incoming request data
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-    // If validation passes, proceed with the login attempt
-    if ($validator->passes()) {
-        // Attempt to authenticate the user with email and password
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user = Auth::user(); // Get the authenticated user
+        // If validation passes, proceed with the login attempt
+        if ($validator->passes()) {
+            // Attempt to authenticate the user with email and password
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+                $user = Auth::user(); // Get the authenticated user
 
-            // Check if the user is active
-            if ($user->is_active) {
-                // If the user is active, allow access
-                return redirect()->route('account.profile');
+                // Check if the user is active
+                if ($user->is_active) {
+                    // If the user is active, allow access
+                    return redirect()->route('account.profile');
+                } else {
+                    // Log the user out if inactive
+                    Auth::logout();
+
+                    // Redirect back to login with error message
+                    return redirect()->route('account.login')->with('error', 'Your account has been deactivated.');
+                }
             } else {
-                // Log the user out if inactive
-                Auth::logout();
-                
-                // Redirect back to login with error message
-                return redirect()->route('account.login')->with('error', 'Your account has been deactivated.');
+                // If authentication fails, return with error
+                return redirect()->route('account.login')->with('error', 'Either email or password is incorrect');
             }
         } else {
-            // If authentication fails, return with error
-            return redirect()->route('account.login')->with('error', 'Either email or password is incorrect');
+            // If validation fails, return with errors
+            return redirect()
+                ->route('account.login')
+                ->withErrors($validator)
+                ->withInput($request->only('email'));
         }
-    } else {
-        // If validation fails, return with errors
-        return redirect()
-            ->route('account.login')
-            ->withErrors($validator)
-            ->withInput($request->only('email'));
     }
-}
 
 
     public function profile()
     {
         $id = Auth::user()->id;
         $user = User::where('id', $id)->first();
-    
+
         // Check for 'user' role
         if (Auth::user()->role == 'user') {
             return view('front.account.profile', [
@@ -126,8 +132,8 @@ class AccountController extends Controller
             ]);
         }
     }
-    
-    
+
+
 
     public function updateProfile(Request $request)
     {
@@ -167,7 +173,7 @@ class AccountController extends Controller
 
     public function updateProfilePic(Request $request)
     {
-    
+
 
         $id = Auth::user()->id;
         $validator = Validator::make($request->all(), [
@@ -208,38 +214,38 @@ class AccountController extends Controller
     // for company
 
     public function processCompanyRegistration(Request $request)
-{
-    // Validate the input
-    $validator = Validator::make($request->all(), [
-        'company_name' => 'required',
-        'email' => 'required|email|unique:users,email', 
-        'password' => 'required|min:5|same:confirm_password',
-        'confirm_password' => 'required',
-    ]);
-
-    if ($validator->passes()) {
-
-        // Creating a new user with the 'company' role
-        $user = new User();
-        $user->name = $request->company_name; // Saving company name as the user name
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->role = 'company'; // Assigning the company role
-        $user->save();
-
-        session()->flash('success', 'You have registered your company successfully.');
-
-        return response()->json([
-            'status' => true,
-            'errors' => []
+    {
+        // Validate the input
+        $validator = Validator::make($request->all(), [
+            'company_name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:5|same:confirm_password',
+            'confirm_password' => 'required',
         ]);
-    } else {
-        return response()->json([
-            'status' => false,
-            'errors' => $validator->errors()
-        ]);
+
+        if ($validator->passes()) {
+
+            // Creating a new user with the 'company' role
+            $user = new User();
+            $user->name = $request->company_name; // Saving company name as the user name
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->role = 'company'; // Assigning the company role
+            $user->save();
+
+            session()->flash('success', 'You have registered your company successfully.');
+
+            return response()->json([
+                'status' => true,
+                'errors' => []
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
     }
-}
 
     public function companyprofile()
     {
@@ -285,274 +291,358 @@ class AccountController extends Controller
 
 
 
-//job create
+    //job create
 
-public function createJob() {
-    $categories = Category::orderBy('name', 'ASC')
-    ->where('status', 1)
-    ->get();
+    public function createJob()
+    {
+        $categories = Category::orderBy('name', 'ASC')
+            ->where('status', 1)
+            ->get();
 
-    $jobTypes = JobType::orderBy('name', 'ASC')
-    ->where('status', 1)
-    ->get();
+        $jobTypes = JobType::orderBy('name', 'ASC')
+            ->where('status', 1)
+            ->get();
 
-    return view('front.account.job.create',[
-        'categories' => $categories,
-        'jobTypes' => $jobTypes,
+        return view('front.account.job.create', [
+            'categories' => $categories,
+            'jobTypes' => $jobTypes,
 
-    ]);
-    
-} 
-
-public function saveJob(Request $request)
-{
-   
-    $rules = [
-        'title' => 'required|min:5|max:200',
-        'category' => 'required',
-        'jobType' => 'required',
-        'vacancy' => 'required|integer',
-        'location' => 'required|max:50',
-        'description' => 'required',
-        'company_name' => 'required|min:3|max:75',
-        'website' => 'nullable|url|max:255', 
-        'responsibility' => 'nullable|min:5|max:1000', 
-        'qualifications' => 'nullable|min:5|max:1000', 
-        'benefits' => 'nullable|min:5|max:1000', 
-    ];
-
-    
-    $validator = Validator::make($request->all(), $rules);
-
-    // Check if validation passes
-    if ($validator->passes()) {
-        // Create a new Job entry
-        $job = new Job();
-        $job->title = $request->title;
-        $job->category_id = $request->category;
-        $job->job_type_id = $request->jobType;
-        $job->user_id = Auth::user()->id;
-        $job->vacancy = $request->vacancy;
-        $job->salary = $request->salary?: 'N/A';
-        $job->location = $request->location;
-        $job->description = $request->description;
-        $job->benefits = $request->benefits ?: 'N/A';
-        $job->responsibility = $request->responsibility ?: 'N/A';
-        $job->qualifications = $request->qualifications ?: 'N/A';
-        $job->keywords = $request->keywords;
-        $job->experience = $request->experience;
-        $job->company_name = $request->company_name;
-        $job->company_location = $request->company_location ?: 'N/A';
-        $job->company_website = $request->website?: 'N/A'; 
-        $job->save();
-
-        // Return success response
-        session()->flash('success', 'Job added successfully.');
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Job added successfully.'
-        ]);
-    } else {
-        // Return validation errors
-        return response()->json([
-            'status' => false,
-            'errors' => $validator->errors()
         ]);
     }
-}
+
+    public function saveJob(Request $request)
+    {
+
+        $rules = [
+            'title' => 'required|min:5|max:200',
+            'category' => 'required',
+            'jobType' => 'required',
+            'vacancy' => 'required|integer',
+            'location' => 'required|max:50',
+            'description' => 'required',
+            'company_name' => 'required|min:3|max:75',
+            'website' => 'nullable|url|max:255',
+            'responsibility' => 'nullable|min:5|max:1000',
+            'qualifications' => 'nullable|min:5|max:1000',
+            'benefits' => 'nullable|min:5|max:1000',
+        ];
+
+
+        $validator = Validator::make($request->all(), $rules);
+
+        // Check if validation passes
+        if ($validator->passes()) {
+            // Create a new Job entry
+            $job = new Job();
+            $job->title = $request->title;
+            $job->category_id = $request->category;
+            $job->job_type_id = $request->jobType;
+            $job->user_id = Auth::user()->id;
+            $job->vacancy = $request->vacancy;
+            $job->salary = $request->salary ?: 'N/A';
+            $job->location = $request->location;
+            $job->description = $request->description;
+            $job->benefits = $request->benefits ?: 'N/A';
+            $job->responsibility = $request->responsibility ?: 'N/A';
+            $job->qualifications = $request->qualifications ?: 'N/A';
+            $job->keywords = $request->keywords;
+            $job->experience = $request->experience;
+            $job->company_name = $request->company_name;
+            $job->company_location = $request->company_location ?: 'N/A';
+            $job->company_website = $request->website ?: 'N/A';
+            $job->save();
+
+            // Return success response
+            session()->flash('success', 'Job added successfully.');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Job added successfully.'
+            ]);
+        } else {
+            // Return validation errors
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
 
 
 
-public function myJobs() {
+    public function myJobs()
+    {
 
-    $jobs = job::where('user_id',Auth::user()->id)->with('jobType')->orderBy('created_at','DESC')->paginate(10);
-   
-    return view('front.account.job.my-jobs',[
-        'jobs' => $jobs
-    ]);
+        $jobs = job::where('user_id', Auth::user()->id)->with('jobType')->orderBy('created_at', 'DESC')->paginate(10);
 
-}
-
-public function editJob(Request $request, $id) {
-
-   
-    $categories = Category::orderBy('name', 'ASC')
-    ->where('status', 1)
-    ->get();
-
-    $jobTypes = JobType::orderBy('name', 'ASC')
-    ->where('status', 1)
-    ->get();
-
-    $job = Job::where([
-        'user_id' => Auth::user()->id,  
-        'id' => $id                    
-    ])->first();
-    
-    if ($job == null) {
-        abort(404);                    
-    }    
-
-    return view('front.account.job.edit',[
-        'categories' => $categories,
-        'jobTypes' => $jobTypes,
-        'job' => $job,
-
-    ]);
-}
-
-public function updateJob(Request $request, $id)
-{
-    // Validation rules
-    $rules = [
-        'title' => 'required|min:5|max:200',
-        'category' => 'required',
-        'jobType' => 'required',
-        'vacancy' => 'required|integer',
-        'location' => 'required|max:50',
-        'description' => 'required',
-        'company_name' => 'required|min:3|max:75',
-        'website' => 'nullable|url|max:255', 
-        'responsibility' => 'nullable|min:5|max:1000', 
-        'qualifications' => 'nullable|min:5|max:1000', 
-        'benefits' => 'nullable|min:5|max:1000', 
-    ];
-
-    // Validate the request data
-    $validator = Validator::make($request->all(), $rules);
-
-    // Check if validation passes
-    if ($validator->passes()) {
-      
-        $job = Job::find($id);
-        $job->title = $request->title;
-        $job->category_id = $request->category;
-        $job->job_type_id = $request->jobType;
-        $job->user_id = Auth::user()->id;
-        $job->vacancy = $request->vacancy;
-        $job->salary = $request->salary?: 'N/A';
-        $job->location = $request->location;
-        $job->description = $request->description;
-        $job->benefits = $request->benefits ?: 'N/A';
-        $job->responsibility = $request->responsibility ?: 'N/A';
-        $job->qualifications = $request->qualifications ?: 'N/A';
-        $job->keywords = $request->keywords;
-        $job->experience = $request->experience;
-        $job->company_name = $request->company_name;
-        $job->company_location = $request->company_location ?: 'N/A';
-        $job->company_website = $request->website?: 'N/A'; 
-        $job->save();
-
-        // Return success response
-        session()->flash('success', 'Job updated successfully.');
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Job updated successfully.'
-        ]);
-    } else {
-        // Return validation errors
-        return response()->json([
-            'status' => false,
-            'errors' => $validator->errors()
+        return view('front.account.job.my-jobs', [
+            'jobs' => $jobs
         ]);
     }
-}
 
-public function deleteJob(Request $request) {
-    $job = Job::where([
-        'user_id' => Auth::user()->id,
-        'id' => $request->jobId
-    ])->first();
+    public function editJob(Request $request, $id)
+    {
 
-    if ($job == null) {
-        session()->flash('error', 'Either job deleted or not found.');
+
+        $categories = Category::orderBy('name', 'ASC')
+            ->where('status', 1)
+            ->get();
+
+        $jobTypes = JobType::orderBy('name', 'ASC')
+            ->where('status', 1)
+            ->get();
+
+        $job = Job::where([
+            'user_id' => Auth::user()->id,
+            'id' => $id
+        ])->first();
+
+        if ($job == null) {
+            abort(404);
+        }
+
+        return view('front.account.job.edit', [
+            'categories' => $categories,
+            'jobTypes' => $jobTypes,
+            'job' => $job,
+
+        ]);
+    }
+
+    public function updateJob(Request $request, $id)
+    {
+        // Validation rules
+        $rules = [
+            'title' => 'required|min:5|max:200',
+            'category' => 'required',
+            'jobType' => 'required',
+            'vacancy' => 'required|integer',
+            'location' => 'required|max:50',
+            'description' => 'required',
+            'company_name' => 'required|min:3|max:75',
+            'website' => 'nullable|url|max:255',
+            'responsibility' => 'nullable|min:5|max:1000',
+            'qualifications' => 'nullable|min:5|max:1000',
+            'benefits' => 'nullable|min:5|max:1000',
+        ];
+
+        // Validate the request data
+        $validator = Validator::make($request->all(), $rules);
+
+        // Check if validation passes
+        if ($validator->passes()) {
+
+            $job = Job::find($id);
+            $job->title = $request->title;
+            $job->category_id = $request->category;
+            $job->job_type_id = $request->jobType;
+            $job->user_id = Auth::user()->id;
+            $job->vacancy = $request->vacancy;
+            $job->salary = $request->salary ?: 'N/A';
+            $job->location = $request->location;
+            $job->description = $request->description;
+            $job->benefits = $request->benefits ?: 'N/A';
+            $job->responsibility = $request->responsibility ?: 'N/A';
+            $job->qualifications = $request->qualifications ?: 'N/A';
+            $job->keywords = $request->keywords;
+            $job->experience = $request->experience;
+            $job->company_name = $request->company_name;
+            $job->company_location = $request->company_location ?: 'N/A';
+            $job->company_website = $request->website ?: 'N/A';
+            $job->save();
+
+            // Return success response
+            session()->flash('success', 'Job updated successfully.');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Job updated successfully.'
+            ]);
+        } else {
+            // Return validation errors
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
+
+    public function deleteJob(Request $request)
+    {
+        $job = Job::where([
+            'user_id' => Auth::user()->id,
+            'id' => $request->jobId
+        ])->first();
+
+        if ($job == null) {
+            session()->flash('error', 'Either job deleted or not found.');
+            return response()->json([
+                'status' => true
+            ]);
+        }
+
+        Job::where('id', $request->jobId)->delete();
+        session()->flash('success', 'Job deleted successfully.');
         return response()->json([
             'status' => true
         ]);
     }
 
-    Job::where('id', $request->jobId)->delete();
-    session()->flash('success', 'Job deleted successfully.');
-    return response()->json([
-        'status' => true
-    ]);
-}
+    public function myJobApplications()
+    {
+        $jobApplications = JobApplication::where('user_id', Auth::user()->id)
+            ->with(['job', 'job.jobType', 'job.applications'])
+            ->orderBy('created_at', 'DESC')
 
-public function myJobApplications() {
-    $jobApplications = JobApplication::where('user_id', Auth::user()->id)
-        ->with(['job', 'job.jobType','job.applications'])
-        ->orderBy('created_at','DESC')
+            ->paginate(10); // Added pagination
 
-        ->paginate(10); // Added pagination
-
-    return view('front.account.job.my-job-applications', [
-        'jobApplications' => $jobApplications
-    ]);
-}
-
-
-public function removeJobs(Request $request){
-    $jobApplication = JobApplication::where([
-                                'id' => $request->id, 
-                                'user_id' => Auth::user()->id]
-                            )->first();
-    
-    if ($jobApplication == null) {
-        session()->flash('error','Job application not found');
-        return response()->json([
-            'status' => false,                
+        return view('front.account.job.my-job-applications', [
+            'jobApplications' => $jobApplications
         ]);
     }
 
-    JobApplication::find($request->id)->delete();
-    session()->flash('success','Job application removed successfully.');
 
-    return response()->json([
-        'status' => true,                
-    ]);
+    public function removeJobs(Request $request)
+    {
+        $jobApplication = JobApplication::where(
+            [
+                'id' => $request->id,
+                'user_id' => Auth::user()->id
+            ]
+        )->first();
 
-}
+        if ($jobApplication == null) {
+            session()->flash('error', 'Job application not found');
+            return response()->json([
+                'status' => false,
+            ]);
+        }
 
-public function savedJobs(){
-    // $jobApplications = JobApplication::where('user_id',Auth::user()->id)
-    //         ->with(['job','job.jobType','job.applications'])
-    //         ->paginate(10);
+        JobApplication::find($request->id)->delete();
+        session()->flash('success', 'Job application removed successfully.');
 
-    $savedJobs = SavedJob::where([
-        'user_id' => Auth::user()->id
-    ])->with(['job','job.jobType','job.applications'])
-    ->orderBy('created_at','DESC')
-    ->paginate(10);
-
-    return view('front.account.job.saved-jobs',[
-        'savedJobs' => $savedJobs
-    ]);
-}
-
-public function removeSavedJob(Request $request){
-    $savedJob = SavedJob::where([
-                                'id' => $request->id, 
-                                'user_id' => Auth::user()->id]
-                            )->first();
-    
-    if ($savedJob == null) {
-        session()->flash('error','Job not found');
         return response()->json([
-            'status' => false,                
+            'status' => true,
         ]);
     }
 
-    SavedJob::find($request->id)->delete();
-    session()->flash('success','Job removed successfully.');
+    public function savedJobs()
+    {
+        // $jobApplications = JobApplication::where('user_id',Auth::user()->id)
+        //         ->with(['job','job.jobType','job.applications'])
+        //         ->paginate(10);
 
-    return response()->json([
-        'status' => true,                
-    ]);
+        $savedJobs = SavedJob::where([
+            'user_id' => Auth::user()->id
+        ])->with(['job', 'job.jobType', 'job.applications'])
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
 
-}
+        return view('front.account.job.saved-jobs', [
+            'savedJobs' => $savedJobs
+        ]);
+    }
+
+    public function removeSavedJob(Request $request)
+    {
+        $savedJob = SavedJob::where(
+            [
+                'id' => $request->id,
+                'user_id' => Auth::user()->id
+            ]
+        )->first();
+
+        if ($savedJob == null) {
+            session()->flash('error', 'Job not found');
+            return response()->json([
+                'status' => false,
+            ]);
+        }
+
+        SavedJob::find($request->id)->delete();
+        session()->flash('success', 'Job removed successfully.');
+
+        return response()->json([
+            'status' => true,
+        ]);
+    }
 
 
 
+    public function forgotPassword()
+    {
+        return view('front.account.forgot-password');
+    }
+
+    public function processForgotPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('account.forgetPassword')->withInput()->withErrors($validator);
+        }
+
+
+        $token = Str::random(60);
+
+        \DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+
+        \DB::table('password_reset_tokens')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => now()
+        ]);
+
+        // Send Email 
+        $user = User::where('email', $request->email)->first();
+        $mailData =  [
+            'token' => $token,
+            'user' => $user,
+            'subject' => 'You have requested to change your password.'
+        ];
+
+        Mail::to($request->email)->send(new ResetPasswordEmail($mailData));
+
+        return redirect()->route('account.forgetPassword')->with('success', 'Reset password email has been sent to your inbox.');
+    }
+
+    public function resetPassword($tokenString)
+    {
+        $token = \DB::table('password_reset_tokens')->where('token', $tokenString)->first();
+
+        if ($token == null) {
+            return redirect()->route('account.forgetPassword')->with('error', 'Invalid token.');
+        }
+
+        return view('front.account.reset-password', [
+            'tokenString' => $tokenString
+        ]);
+    }
+
+    public function processResetPassword(Request $request)
+    {
+
+        $token = \DB::table('password_reset_tokens')->where('token', $request->token)->first();
+
+        if ($token == null) {
+            return redirect()->route('account.forgotPassword')->with('error', 'Invalid token.');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'new_password' => 'required|min:5',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('account.resetPassword', $request->token)->withErrors($validator);
+        }
+
+        User::where('email', $token->email)->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return redirect()->route('account.login')->with('success', 'You have successfully changed your password.');
+    }
 }

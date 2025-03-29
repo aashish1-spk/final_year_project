@@ -66,6 +66,32 @@
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li><a class="dropdown-item" href="{{ route('admin.jobs.edit',$job->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
                                                         {{-- <li><a class="dropdown-item" onclick="deleteJob({{ $job->id }})" href="javascript:void(0);"  ><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></li> --}}
+
+
+
+                                                         <!-- Delete Button -->
+                                                         <form action="{{ route('admin.jobs.destroy', $job->id) }}" method="POST" class="d-inline"
+                                                            onsubmit="return confirm('Are you sure you want to delete this job?');">
+                                                          @csrf
+                                                          @method('DELETE')
+                                                          <button type="submit" class="btn btn-light text-danger border delete-btn">
+                                                              <i class="fa fa-trash" aria-hidden="true"></i> Delete Job
+                                                          </button>
+                                                      </form>
+                                                      
+                                                      <style>
+                                                          .delete-btn:hover {
+                                                              background-color: #8bc34a !important; /* Light green hover */
+                                                              color: white !important; /* White text on hover */
+                                                              border-color: #8bc34a !important; /* Match border with background */
+                                                          }
+                                                      </style>
+                                                      
+                                                      
+                                                      
+
+
+                                                    
                                                     </ul>
                                                 </div>
                                             </td>
@@ -86,20 +112,3 @@
 </section>
 @endsection
 
-{{-- @section('customJs')
-<script type="text/javascript">
-    function deleteJob(id) {
-        if (confirm("Are you sure you want to delete?")) {
-            $.ajax({
-                url: '{{ route("admin.jobs.destroy") }}',
-                type: 'delete',
-                data: { id: id},
-                dataType: 'json',
-                success: function(response) {
-                    window.location.href = "{{ route('admin.jobs') }}";
-                }
-            });
-        }
-    }
-</script>
-@endsection --}}

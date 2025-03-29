@@ -1,10 +1,12 @@
 <?php
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\admin\JobApplicationController;
 use App\Http\Controllers\admin\JobController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobsController;
+use App\Models\JobApplication;
 use Illuminate\Support\Facades\Route;
 
 // Route to the home page
@@ -13,6 +15,16 @@ Route::get('/jobs', [JobsController::class, 'index'])->name('jobs');
 Route::get('/jobs/detail/{id}', [JobsController::class, 'detail'])->name('jobDetail');
 Route::post('/apply-job', [JobsController::class, 'applyJob'])->name('applyJob');
 Route::post('/save-job', [JobsController::class, 'saveJob'])->name('saveJob');
+
+
+Route::get('/forget-password', [AccountController::class, 'forgotPassword'])->name('account.forgetPassword');
+
+Route::post('/process-forget-password', [AccountController::class, 'processForgotPassword'])->name('account.processForgotPassword');
+
+
+Route::get('/reset-password/{token}', [AccountController::class, 'resetPassword'])->name('account.resetPassword');
+
+Route::post('/process-reset-password', [AccountController::class, 'processResetPassword'])->name('account.processResetPassword');
 
 
 Route::group(['prefix' => 'admin', 'middleware' => 'checkRole'], function () {
@@ -34,6 +46,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkRole'], function () {
     Route::get('/jobs/edit/{id}', [JobController::class, 'edit'])->name('admin.jobs.edit');
 
     Route::put('/jobs/update/{id}', [JobController::class, 'update'])->name('admin.jobs.update');
+
+    // Route::delete('/jobs', [JobController::class, 'destroy'])->name('admin.jobs.destroy');
+
+    Route::delete('/jobs/{id}', [JobController::class, 'destroy'])->name('admin.jobs.destroy');
+
+    Route::get('/job-applications', [JobApplicationController::class, 'index'])->name('admin.jobApplications');
+
+    Route::delete('/job-applications', [JobApplicationController::class, 'destroy'])->name('admin.jobApplications.destroy');
+
+
 
 
 

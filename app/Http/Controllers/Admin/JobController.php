@@ -157,5 +157,41 @@ class JobController extends Controller
             return back()->withErrors($validator->errors());
         }
     }
+
+
+    // public function destroy(Request $request)
+    // {
+    //     // Find the job by ID
+    //     $job = Job::find($request->id);
+    
+    //     // Check if the job exists
+    //     if ($job == null) {
+    //         session()->flash('error', 'Job not found or already deleted.');
+    //         return response()->json([
+    //             'status' => false
+    //         ]);
+    //     }
+    
+    //     // Delete the job
+    //     $job->delete();
+    
+    //     // Flash success message
+    //     session()->flash('success', 'Job deleted successfully.');
+    
+    //     return response()->json([
+    //         'status' => true
+    //     ]);
+    // }
+
+
+    public function destroy($id)
+{
+    $job = Job::findOrFail($id);
+    $job->delete();
+
+    return redirect()->route('admin.jobs')->with('success', 'Job deleted successfully!');
+}
+
+    
     
 }
