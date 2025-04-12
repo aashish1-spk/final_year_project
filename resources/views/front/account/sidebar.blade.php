@@ -39,7 +39,14 @@
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <a href="{{ route('account.savedJobs') }}">Saved Jobs</a>
-            </li>   
+            </li>  
+            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <a href="{{ route('account.createCV') }}">Make your cv</a>
+            </li> 
+            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <a href="{{ route('account.listCVs') }}">My cv</a>
+            </li>      
+           
             @endif
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <a href="{{ route('account.logout') }}">Logout</a>
@@ -47,6 +54,7 @@
         </ul>
     </div>
 </div>
+
 
 
 {{-- <li class="list-group-item d-flex justify-content-between p-3">

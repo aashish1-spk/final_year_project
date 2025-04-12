@@ -11,6 +11,13 @@
                 <a href="{{ route('admin.jobApplications') }}">Job Applications</a>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{{ route('categories.index') }}">Job Categories</a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{{ route('job_types.index') }}">Job Types</a>
+            </li>
+          
+            <li class="list-group-item d-flex justify-content-between align-items-center">
                 <a href="{{ route('account.logout') }}"">Logout</a>
             </li>
         </ul>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\Job;
 use App\Models\JobApplication;
@@ -31,37 +32,43 @@ class AccountController extends Controller
     }
 
 
-    public function processRegistration(Request $request)
-    {
-        // Validate the input
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:5|same:confirm_password',
-            'confirm_password' => 'required',
+   
+public function processRegistration(Request $request)
+{
+    // Validate the input
+    $validator = Validator::make($request->all(), [
+        'name' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:5|same:confirm_password',
+        'confirm_password' => 'required',
+    ]);
+
+    if ($validator->passes()) {
+
+        // Create user
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Log the user in
+        Auth::login($user);
+
+        // Send verification email
+        $user->sendEmailVerificationNotification();
+
+        return response()->json([
+            'status' => true,
+            'redirect' => route('verification.notice'), // redirect to email verification notice
         ]);
-
-        if ($validator->passes()) {
-
-            $user = new User();
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->password = Hash::make($request->password);
-            $user->save();
-
-            session()->flash('success', 'you have registered successfully.');
-
-            return response()->json([
-                'status' => true,
-                'errors' => []
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
-        }
+    } else {
+        return response()->json([
+            'status' => false,
+            'errors' => $validator->errors()
+        ]);
     }
+}
 
     //this method shows user login page
     public function login()
@@ -213,44 +220,89 @@ class AccountController extends Controller
 
     // for company
 
+    // public function processCompanyRegistration(Request $request)
+    // {
+    //     // Validate the input
+    //     $validator = Validator::make($request->all(), [
+    //         'company_name' => 'required',
+    //         'email' => 'required|email|unique:users,email',
+    //         'password' => 'required|min:5|same:confirm_password',
+    //         'confirm_password' => 'required',
+    //     ]);
+
+    //     if ($validator->passes()) {
+
+    //         // Creating a new user with the 'company' role
+    //         $user = new User();
+    //         $user->name = $request->company_name; // Saving company name as the user name
+    //         $user->email = $request->email;
+    //         $user->password = Hash::make($request->password);
+    //         $user->role = 'company'; // Assigning the company role
+    //         $user->save();
+
+    //         session()->flash('success', 'You have registered your company successfully.');
+
+    //         return response()->json([
+    //             'status' => true,
+    //             'errors' => []
+    //         ]);
+    //     } else {
+    //         return response()->json([
+    //             'status' => false,
+    //             'errors' => $validator->errors()
+    //         ]);
+    //     }
+    // }
+
+
     public function processCompanyRegistration(Request $request)
     {
         // Validate the input
         $validator = Validator::make($request->all(), [
-            'company_name' => 'required',
+            'company_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:5|same:confirm_password',
+            'password' => 'required|min:6|same:confirm_password',
             'confirm_password' => 'required',
         ]);
-
+    
         if ($validator->passes()) {
-
+    
             // Creating a new user with the 'company' role
             $user = new User();
-            $user->name = $request->company_name; // Saving company name as the user name
+            $user->name = $request->company_name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
-            $user->role = 'company'; // Assigning the company role
+            $user->role = 'company';
+            $user->email_verified_at = null;
             $user->save();
-
-            session()->flash('success', 'You have registered your company successfully.');
-
+    
+            // Automatically login the user
+            Auth::login($user);
+    
+            // Send email verification
+            $user->sendEmailVerificationNotification();
+    
+            // Redirect to verification notice page
             return response()->json([
                 'status' => true,
-                'errors' => []
+                'redirect_url' => route('verification.notice'),
             ]);
+    
         } else {
             return response()->json([
                 'status' => false,
-                'errors' => $validator->errors()
+                'errors' => $validator->errors(),
             ]);
         }
     }
+    
 
-    public function companyprofile()
-    {
-        return view('front.account.companyprofile');
-    }
+public function companyprofile()
+{
+    $user = auth()->user(); // Get the authenticated user
+    return view('front.account.companyprofile', compact('user'));
+}
+
 
 
 
@@ -644,5 +696,81 @@ class AccountController extends Controller
         ]);
 
         return redirect()->route('account.login')->with('success', 'You have successfully changed your password.');
+    }
+
+
+
+
+    // public function notify(Request $request)
+    // {
+    //     // Validate the incoming request
+    //     $request->validate([
+    //         'applicant_id' => 'required|exists:users,id', // Check if jobseeker exists
+    //         'message' => 'required|string', // Notification message
+    //     ]);
+
+    //     // Create a new notification for the jobseeker
+    //     Notification::create([
+    //         'user_id' => $request->applicant_id, // Jobseeker's user ID
+    //         'message' => $request->message, // Notification message
+    //     ]);
+
+    //     return back()->with('success', 'Notification sent successfully!');
+    // }
+
+
+    public function notify(Request $request)
+    {
+        // Validate the incoming request
+        $request->validate([
+            'applicant_id' => 'required|exists:users,id', // Check if jobseeker exists
+            'message' => 'required|string', // Notification message
+        ]);
+
+
+
+        // Find the applicant by ID
+        $applicant = User::findOrFail($request->applicant_id);
+
+        // Find the job related to the applicant (Assuming applicant has applied to one job)
+        $job = Job::whereHas('applications', function ($query) use ($applicant) {
+            $query->where('user_id', $applicant->id);
+        })->first(); // Get the first job applied by this applicant
+
+        // If no job is found, fallback to default job title and company name
+        $jobTitle = $job ? $job->title : '[Job Title]';
+        $companyName = $job ? $job->company_name : '[Company Name]';
+
+        // Check if the provided message is 'shortlisted' or 'rejected'
+        if ($request->message === 'shortlisted') {
+            // Professional message for shortlisted applicants
+            $messageContent = "Dear {$applicant->name},\n\nWe are pleased to inform you that your application for the position of {$jobTitle} at {$companyName} has been shortlisted. Your profile has caught our attention, and we would like to move forward with your application to the next stage of the selection process. Our HR team will reach out to you soon for further steps.\n\nBest regards, {$companyName}";
+        } elseif ($request->message === 'rejected') {
+            // Professional message for rejected applicants
+            $messageContent = "Dear {$applicant->name},\n\nThank you for your interest in the position of {$jobTitle} at {$companyName}. After careful review of your application, we regret to inform you that we have chosen to proceed with another candidate for this role. We sincerely appreciate your effort and encourage you to apply for future openings that match your qualifications.\n\nBest regards, {$companyName}";
+        } else {
+            // Handle invalid message type
+            return back()->with('error', 'Invalid message type.');
+        }
+
+        // Create a new notification for the jobseeker
+        Notification::create([
+            'user_id' => $request->applicant_id, // Jobseeker's user ID
+            'message' => $messageContent, // Dynamic message content
+        ]);
+
+        return back()->with('success', 'Notification sent successfully!');
+    }
+
+    public function destroy($id)
+    {
+        // Find the notification by ID and delete it
+        $notification = Notification::findOrFail($id);
+
+        // Delete the notification
+        $notification->delete();
+
+        // Redirect back with a success message
+        return back()->with('success', 'Notification deleted successfully!');
     }
 }

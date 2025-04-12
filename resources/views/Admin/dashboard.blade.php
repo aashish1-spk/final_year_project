@@ -22,7 +22,9 @@
                 <div class="card border-0 shadow mb-4">
                    <div class="card-body dashboard text-center">
                         <p class="h2">Welcome Administrator!!</p>
-                   </div>
+                        <a href="{{ route('categories.create') }}" class="btn btn-primary">➕ Add New Category</a>
+                        <a href="{{ route('job_types.create') }}" class="btn btn-primary">➕ Add New Job Type</a>
+                    </div>
                 </div>                          
             </div>
         </div>

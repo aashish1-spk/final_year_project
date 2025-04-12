@@ -110,7 +110,25 @@
 
 
                     
-   
+                    <div class="container">
+                        <h3>Your Notifications</h3>
+                    
+                        @foreach(auth()->user()->notifications as $notification)
+                            <div class="alert alert-info">
+                                {{ $notification->message }} <br>
+                                <small>{{ $notification->created_at->diffForHumans() }}</small>
+                                
+                                <!-- Delete button for each notification -->
+                                <form action="{{ route('notifications.delete', $notification->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE') <!-- HTTP method spoofing for DELETE -->
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
+                        @endforeach
+                    </div>
+                    
+                  
 
 
 

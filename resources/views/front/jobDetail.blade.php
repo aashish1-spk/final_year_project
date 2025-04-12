@@ -126,37 +126,29 @@
 
 
 
-
                     @if (Auth::user())
                         @if (Auth::user()->id == $job->user_id)
-
-
-
-
                             <div class="card shadow border-0 mt-4">
                                 <div class="job_details_header">
                                     <div class="single_jobs white-bg d-flex justify-content-between">
                                         <div class="jobs_left d-flex align-items-center">
                                             <div class="jobs_conetent">
-
                                                 <h4>Applicants</h4>
-
-
                                             </div>
                                         </div>
                                         <div class="jobs_right">
-
                                         </div>
                                     </div>
                                 </div>
-                                <div class="descript_wrap white-bg">
 
+                                <div class="descript_wrap white-bg">
                                     <table class="table table-striped">
                                         <tr>
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Mobile</th>
                                             <th>Applied Date</th>
+                                            <th>CV File</th>
                                         </tr>
                                         @if ($applications->isNotEmpty())
                                             @foreach ($applications as $application)
@@ -167,22 +159,33 @@
                                                     <td>
                                                         {{ \Carbon\Carbon::parse($application->applied_date)->format('d M, Y') }}
                                                     </td>
+                                                    <td>{{ $application->cv_file_path }}</td>
+                                                    <td>
+                                                        @if ($application->cv_file_path)
+                                                            <!-- Correct the download link to use the route -->
+                                                            <a href="{{ route('cv.downloadCVCompany', ['id' => $application->cv_file_path]) }}"
+                                                                class="btn btn-sm btn-success" target="_blank">Download
+                                                                PDF</a>
+                                                        @else
+                                                            <span>No CV uploaded</span>
+                                                        @endif
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="3"> Applicants not Found
-
-                                                </td>
+                                                <td colspan="5">Applicants not found</td>
                                             </tr>
                                         @endif
                                     </table>
-
-
                                 </div>
                             </div>
                         @endif
                     @endif
+
+
+
+
 
 
 
@@ -232,6 +235,36 @@
             </div>
         </div>
     </section>
+
+    @auth
+    @if(auth()->user()->role === 'company')
+        <form action="{{ route('company.notify') }}" method="POST">
+            @csrf
+        
+            <div class="mb-3">
+                <label for="applicant_id" class="form-label">Select Applicant</label>
+                <select name="applicant_id" class="form-select">
+                    @foreach ($applications as $application)
+                        <option value="{{ $application->user->id }}">
+                            {{ $application->user->name }} (ID: {{ $application->user->id }})
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        
+            <div class="mb-3">
+                <label for="message" class="form-label">Message Type</label>
+                <select name="message" class="form-select">
+                    <option value="shortlisted">Shortlisted</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
+        
+            <button type="submit" class="btn btn-success">Send Notification</button>
+        </form>
+    @endif
+@endauth
+
 
 @endsection
 
