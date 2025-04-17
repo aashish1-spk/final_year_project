@@ -54,48 +54,81 @@ class UserController extends Controller
 
         return back()->with('success', 'User information updated successfully.');
     }
-    
+
 
     public function deactivate(Request $request)
-{
-    $id = $request->id;
-    $user = User::find($id);
+    {
+        $id = $request->id;
+        $user = User::find($id);
 
-    if (!$user) {
-        session()->flash('error', 'User not found');
+        if (!$user) {
+            session()->flash('error', 'User not found');
+            return response()->json([
+                'status' => false,
+            ]);
+        }
+
+        $user->is_active = false; // Set is_active to false
+        $user->save();
+
+        session()->flash('success', 'User deactivated successfully');
         return response()->json([
-            'status' => false,
+            'status' => true,
         ]);
     }
 
-    $user->is_active = false; // Set is_active to false
-    $user->save();
+    public function activate(Request $request)
+    {
+        $id = $request->id;
+        $user = User::find($id);
 
-    session()->flash('success', 'User deactivated successfully');
-    return response()->json([
-        'status' => true,
-    ]);
-}
+        if (!$user) {
+            session()->flash('error', 'User not found');
+            return response()->json([
+                'status' => false,
+            ]);
+        }
 
-public function activate(Request $request)
-{
-    $id = $request->id;
-    $user = User::find($id);
+        $user->is_active = true; // Set is_active to true
+        $user->save();
 
-    if (!$user) {
-        session()->flash('error', 'User not found');
+        session()->flash('success', 'User activated successfully');
         return response()->json([
-            'status' => false,
+            'status' => true,
         ]);
     }
 
-    $user->is_active = true; // Set is_active to true
-    $user->save();
 
-    session()->flash('success', 'User activated successfully');
-    return response()->json([
-        'status' => true,
-    ]);
-}
 
+    public function pending()
+    {
+        // Fetch users with role 'company' and is_approved = false (pending)
+        $companies = User::where('role', 'company')
+            ->where('is_approved', false)
+            ->get();
+
+        return view('admin.companies.pending', compact('companies'));
+    }
+
+    public function approve($id)
+    {
+        // Find the company by id
+        $company = User::findOrFail($id);
+
+        // Check if the user has the 'company' role and is not yet approved
+        if ($company->role == 'company' && !$company->is_approved) {
+            // Update the 'is_approved' field to true
+            $company->is_approved = true;
+            $company->save();
+
+            // Optionally, you can send an email notification or any other action here.
+            // For example: Mail::to($company->email)->send(new CompanyApprovedMail());
+
+            // Redirect with a success message
+            return redirect()->route('admin.companies.pending')->with('success', 'Company approved successfully.');
+        }
+
+        // If the company is not valid, you can redirect with an error message
+        return redirect()->route('admin.companies.pending')->with('error', 'Invalid company or already approved.');
+    }
 }

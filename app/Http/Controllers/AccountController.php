@@ -32,43 +32,43 @@ class AccountController extends Controller
     }
 
 
-   
-public function processRegistration(Request $request)
-{
-    // Validate the input
-    $validator = Validator::make($request->all(), [
-        'name' => 'required',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|min:5|same:confirm_password',
-        'confirm_password' => 'required',
-    ]);
 
-    if ($validator->passes()) {
-
-        // Create user
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->save();
-
-        // Log the user in
-        Auth::login($user);
-
-        // Send verification email
-        $user->sendEmailVerificationNotification();
-
-        return response()->json([
-            'status' => true,
-            'redirect' => route('verification.notice'), // redirect to email verification notice
+    public function processRegistration(Request $request)
+    {
+        // Validate the input
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:5|same:confirm_password',
+            'confirm_password' => 'required',
         ]);
-    } else {
-        return response()->json([
-            'status' => false,
-            'errors' => $validator->errors()
-        ]);
+
+        if ($validator->passes()) {
+
+            // Create user
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->save();
+
+            // Log the user in
+            Auth::login($user);
+
+            // Send verification email
+            $user->sendEmailVerificationNotification();
+
+            return response()->json([
+                'status' => true,
+                'redirect' => route('verification.notice'), // redirect to email verification notice
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
     }
-}
 
     //this method shows user login page
     public function login()
@@ -90,14 +90,20 @@ public function processRegistration(Request $request)
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
                 $user = Auth::user(); // Get the authenticated user
 
+                // Check if the user is a 'company' and not approved
+                if ($user->role === 'company' && !$user->is_approved) {
+                    // Log the user out if they are a company and not approved
+                    Auth::logout();
+                    return redirect()->route('account.login')->with('error', 'Your account is pending approval by the admin.');
+                }
+
                 // Check if the user is active
                 if ($user->is_active) {
-                    // If the user is active, allow access
+                    // If the user is active and either not a company or approved, allow access
                     return redirect()->route('account.profile');
                 } else {
                     // Log the user out if inactive
                     Auth::logout();
-
                     // Redirect back to login with error message
                     return redirect()->route('account.login')->with('error', 'Your account has been deactivated.');
                 }
@@ -115,30 +121,24 @@ public function processRegistration(Request $request)
     }
 
 
+
     public function profile()
     {
-        $id = Auth::user()->id;
-        $user = User::where('id', $id)->first();
+        $user = Auth::user();
 
-        // Check for 'user' role
-        if (Auth::user()->role == 'user') {
+        if ($user->role === 'company' && !$user->is_approved) {
+            abort(403, 'Your account is pending approval by the admin.');
+        }
+
+        if (in_array($user->role, ['user', 'company', 'admin'])) {
             return view('front.account.profile', [
                 'user' => $user
             ]);
         }
-        // Check for 'company' role
-        elseif (Auth::user()->role == 'company') {
-            return view('front.account.profile', [  // Show same profile view for company
-                'user' => $user
-            ]);
-        }
-        // Check for 'admin' role and show same profile view as user and company
-        elseif (Auth::user()->role == 'admin') {
-            return view('front.account.profile', [  // Show same profile view for admin
-                'user' => $user
-            ]);
-        }
+
+        abort(403, 'Unauthorized access.');
     }
+
 
 
 
@@ -217,39 +217,45 @@ public function processRegistration(Request $request)
     }
 
 
-
-    // for company
-
     // public function processCompanyRegistration(Request $request)
     // {
     //     // Validate the input
     //     $validator = Validator::make($request->all(), [
-    //         'company_name' => 'required',
+    //         'company_name' => 'required|string|max:255',
     //         'email' => 'required|email|unique:users,email',
-    //         'password' => 'required|min:5|same:confirm_password',
+    //         'password' => 'required|min:6|same:confirm_password',
     //         'confirm_password' => 'required',
+    //         'pan_number' => 'required|unique:users,pan_number',  // Add PAN number validation
     //     ]);
 
     //     if ($validator->passes()) {
 
     //         // Creating a new user with the 'company' role
     //         $user = new User();
-    //         $user->name = $request->company_name; // Saving company name as the user name
+    //         $user->name = $request->company_name;
     //         $user->email = $request->email;
     //         $user->password = Hash::make($request->password);
-    //         $user->role = 'company'; // Assigning the company role
+    //         $user->role = 'company';
+    //         $user->email_verified_at = null;
+    //         $user->pan_number = $request->pan_number;  // Save the PAN number in the 'users' table
     //         $user->save();
 
-    //         session()->flash('success', 'You have registered your company successfully.');
+    //         // Automatically login the user
+    //         Auth::login($user);
 
+    //         // Send email verification
+    //         $user->sendEmailVerificationNotification();
+
+    //         // Redirect to verification notice page
     //         return response()->json([
     //             'status' => true,
-    //             'errors' => []
+    //             'redirect_url' => route('verification.notice'),
     //         ]);
+
     //     } else {
     //         return response()->json([
     //             'status' => false,
-    //             'errors' => $validator->errors()
+    //             'errors' => $validator->errors(),
     //         ]);
     //     }
     // }
@@ -263,10 +269,10 @@ public function processRegistration(Request $request)
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|same:confirm_password',
             'confirm_password' => 'required',
+            'pan_number' => 'required|unique:users,pan_number',  // Add PAN number validation
         ]);
-    
+
         if ($validator->passes()) {
-    
             // Creating a new user with the 'company' role
             $user = new User();
             $user->name = $request->company_name;
@@ -274,20 +280,21 @@ public function processRegistration(Request $request)
             $user->password = Hash::make($request->password);
             $user->role = 'company';
             $user->email_verified_at = null;
+            $user->pan_number = $request->pan_number;  // Save the PAN number in the 'users' table
+            $user->is_approved = false; // Initially not approved
             $user->save();
-    
-            // Automatically login the user
-            Auth::login($user);
-    
+
             // Send email verification
             $user->sendEmailVerificationNotification();
-    
-            // Redirect to verification notice page
+
+            // Flash success message to the session
+            session()->flash('success', 'Registration successful. Please verify your email and wait for admin approval.');
+
+            // Redirect to the verification notice page
             return response()->json([
                 'status' => true,
-                'redirect_url' => route('verification.notice'),
+                'redirect_url' => route('account.login'),
             ]);
-    
         } else {
             return response()->json([
                 'status' => false,
@@ -295,13 +302,17 @@ public function processRegistration(Request $request)
             ]);
         }
     }
-    
 
-public function companyprofile()
-{
-    $user = auth()->user(); // Get the authenticated user
-    return view('front.account.companyprofile', compact('user'));
-}
+
+
+
+
+
+    public function companyprofile()
+    {
+        $user = auth()->user(); // Get the authenticated user
+        return view('front.account.companyprofile', compact('user'));
+    }
 
 
 

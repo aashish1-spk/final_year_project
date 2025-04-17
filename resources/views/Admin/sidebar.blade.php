@@ -16,9 +16,19 @@
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <a href="{{ route('job_types.index') }}">Job Types</a>
             </li>
-          
+
+            <!-- Company Registration Approval link -->
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="{{ route('account.logout') }}"">Logout</a>
+                <a href="{{ route('admin.companies.pending') }}">Company Reg Approval</a>
+            </li>
+
+            <!-- NEW: Featured Job Requests -->
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{{ route('admin.featured.requests') }}">Featured Job Requests</a>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{{ route('account.logout') }}">Logout</a>
             </li>
         </ul>
     </div>

@@ -11,17 +11,8 @@ class Job extends Model
 
     // Define the fillable attributes for mass assignment protection
     protected $fillable = [
-        'title',
-        'category_id',
-        'job_type_id',
-        'vacancy',
-        'location',
-        'description',
-        'company_name',
-        'experience',
-        'keywords',
-        'isFeatured',
-        'status'
+        'title', 'category_id', 'job_type_id', 'vacancy', 'salary', 'location', 'description', 
+        'company_name', 'company_location', 'company_website', 'status', 'isFeatured', 'featured_request'
     ];
 
     public function jobType() {

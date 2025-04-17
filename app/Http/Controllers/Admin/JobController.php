@@ -110,16 +110,16 @@ class JobController extends Controller
             'description' => 'required',
             'company_name' => 'required|min:3|max:75',
         ];
-    
+
         // Validate the request data
         $validator = Validator::make($request->all(), $rules);
-    
+
         // Check if the validation passes
         if ($validator->passes()) {
-    
+
             // Find the job
             $job = Job::find($id);
-            
+
             // Update job attributes
             $job->title = $request->title;
             $job->category_id = $request->category;
@@ -136,23 +136,23 @@ class JobController extends Controller
             $job->company_name = $request->company_name;
             $job->company_location = $request->company_location;
             $job->company_website = $request->website;
-    
+
             // Update status and featured job
             $job->status = $request->status;  // 1 for active, 0 for blocked
             $job->isFeatured = ($request->has('isFeatured')) ? 1 : 0;  // Featured checkbox
-            
+
             // Save the job
             $job->save();
-    
+
             // Flash success message
             session()->flash('success', 'Job updated successfully.');
-    
+
             // Redirect back to the same page to show the success message
             return back();
         } else {
             // Flash validation error message
             session()->flash('error', 'There were some errors with your submission.');
-    
+
             // Redirect back to the same page to show the error message
             return back()->withErrors($validator->errors());
         }
@@ -163,7 +163,7 @@ class JobController extends Controller
     // {
     //     // Find the job by ID
     //     $job = Job::find($request->id);
-    
+
     //     // Check if the job exists
     //     if ($job == null) {
     //         session()->flash('error', 'Job not found or already deleted.');
@@ -171,13 +171,13 @@ class JobController extends Controller
     //             'status' => false
     //         ]);
     //     }
-    
+
     //     // Delete the job
     //     $job->delete();
-    
+
     //     // Flash success message
     //     session()->flash('success', 'Job deleted successfully.');
-    
+
     //     return response()->json([
     //         'status' => true
     //     ]);
@@ -185,13 +185,73 @@ class JobController extends Controller
 
 
     public function destroy($id)
-{
-    $job = Job::findOrFail($id);
-    $job->delete();
+    {
+        $job = Job::findOrFail($id);
+        $job->delete();
 
-    return redirect()->route('admin.jobs')->with('success', 'Job deleted successfully!');
-}
+        return redirect()->route('admin.jobs')->with('success', 'Job deleted successfully!');
+    }
 
+
+    //req feature job
+    public function requestFeatured($id)
+    {
+        $job = Job::findOrFail($id);
     
+        // Check if user owns this job
+        if ($job->user_id !== auth()->id()) {
+            return redirect()->back()->with('error', 'Unauthorized action.');
+        }
     
+        // Check if the job has already been requested for featuring
+        if ($job->featured_request) {
+            return redirect()->back()->with('error', 'You have already requested this job to be featured.');
+        }
+    
+        // Logic to mark job as 'pending featured'
+        $job->featured_request = true; // Assuming you have this column
+        $job->save();
+    
+        // Optionally, notify the admin (you can use events/notifications here)
+        // Notification::route('mail', 'admin@example.com')->notify(new FeaturedJobRequest($job));
+    
+        return redirect()->back()->with('success', 'Request to feature job has been sent to admin.');
+    }
+    
+
+    public function featuredRequests()
+    {
+        // Fetch jobs where users have requested to be featured
+        $featuredRequests = Job::where('featured_request', true)
+            ->where('isFeatured', false)
+            ->latest()
+            ->get();
+
+        return view(
+            'admin.jobs.featured_requests',
+            compact('featuredRequests')
+        );
+    }
+
+
+    public function approveFeatured($id)
+    {
+        $job = Job::findOrFail($id);
+
+        // Ensure you're using the correct column names
+        $job->isFeatured = true; // This should match the column name in your database
+        $job->featured_request = false;
+        $job->save();
+
+        return redirect()->back()->with('success', 'Job marked as featured.');
+    }
+
+    public function rejectFeatured($id)
+    {
+        $job = Job::findOrFail($id);
+        $job->featured_request = false;
+        $job->save();
+
+        return redirect()->back()->with('info', 'Job featured request rejected.');
+    }
 }

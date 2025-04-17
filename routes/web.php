@@ -72,6 +72,17 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkRole'], function () {
 
     Route::resource('categories', CategoryController::class);
     Route::resource('job_types', JobTypeController::class);
+
+
+    Route::get('/companies/pending', [UserController::class, 'pending'])->name('admin.companies.pending');
+    Route::post('/companies/approve/{id}', [UserController::class, 'approve'])->name('admin.companies.approve');
+
+
+    Route::get('/admin/featured-requests', [App\Http\Controllers\Admin\JobController::class, 'featuredRequests'])->name('admin.featured.requests');
+
+    //approve reject
+    Route::put('admin/jobs/{job}/featured/approve', [JobController::class, 'approveFeatured'])->name('admin.jobs.featured.approve');
+    Route::put('admin/jobs/{job}/featured/reject', [JobController::class, 'rejectFeatured'])->name('admin.jobs.featured.reject');
 });
 
 // Account Routes
@@ -117,6 +128,9 @@ Route::group(['prefix' => 'account'], function () {
             Route::post('/update-job/{jobId}', [AccountController::class, 'updateJob'])->name('account.updateJob');
             Route::post('/delete-job', [AccountController::class, 'deleteJob'])->name('account.deleteJob');
             Route::get('/company-profile', [AccountController::class, 'companyProfile'])->name('account.companyProfile');
+
+            //req featured job
+            Route::post('/jobs/{id}/request-featured', [JobController::class, 'requestFeatured'])->name('request.featured.job');
         });
 
         // User-only routes
@@ -142,4 +156,11 @@ Route::group(['prefix' => 'account'], function () {
     })->name('account.jobseekerregistration');
 
     Route::post('/process-company-register', [AccountController::class, 'processCompanyRegistration'])->name('account.processCompanyRegistration');
+
+
+    // Payment routes
+    Route::get('/initiate-khalti-payment/{name}/{email}/{phone}/{amount}/{jobId}', [PaymentController::class, 'initiateKhaltiPayment'])->name('khalti.initiate');
+
+    // Success route for Khalti
+    Route::get('/success/khalti', [PaymentController::class, 'khaltiSuccess'])->name('khalti.success');
 });

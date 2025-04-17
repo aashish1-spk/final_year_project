@@ -73,27 +73,30 @@
                                                             <ul class="dropdown-menu dropdown-menu-end">
                                                                 <li><a class="dropdown-item"
                                                                         href="{{ route('jobDetail', $job->id) }}">
-                                                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                                                        View</a></li>
+                                                                        <i class="fa fa-eye" aria-hidden="true"></i> View
+                                                                    </a></li>
                                                                 <li><a class="dropdown-item"
                                                                         href="{{ route('account.editJob', $job->id) }}">
-                                                                        <i class="fa fa-edit" aria-hidden="true"></i>
-                                                                        Edit</a></li>
-                                                                <li>
-                                                                    <a class="dropdown-item" href="#"
+                                                                        <i class="fa fa-edit" aria-hidden="true"></i> Edit
+                                                                    </a></li>
+                                                                <li><a class="dropdown-item" href="#"
                                                                         onclick="deleteJob({{ $job->id }})">
                                                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                                                         Delete
-                                                                    </a>
-                                                                </li>
-                                                                {{-- <li>
-                                                                    <form action="{{ route('request.featured.job', $job->id) }}" method="POST">
-                                                                        @csrf
-                                                                        <button type="submit" class="dropdown-item">
+                                                                    </a></li>
+                                                                <li>
+                                                                    @if ($job->featured_request)
+                                                                        <button class="dropdown-item" disabled>
+                                                                            <i class="fa fa-star"></i> You already requested
+                                                                            this job to be featured
+                                                                        </button>
+                                                                    @else
+                                                                        <button class="dropdown-item request-featured-btn"
+                                                                            data-job-id="{{ $job->id }}">
                                                                             <i class="fa fa-star"></i> Request Featured
                                                                         </button>
-                                                                    </form>
-                                                                </li> --}}
+                                                                    @endif
+                                                                </li>
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -118,36 +121,80 @@
         </div>
     </section>
 
+    <!-- Modal for requesting featured job -->
+    <div class="modal fade" id="featuredJobModal" tabindex="-1" aria-labelledby="featuredJobModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="featuredJobModalLabel">Request Featured Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="featuredModalBody">
+                    <!-- Dynamic content will be injected here -->
+                </div>
+                <div class="modal-footer" id="featuredModalFooter">
+                    <!-- Dynamic footer buttons will be injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('costumjs')
     <script type="text/javascript">
-        function deleteJob(jobId) {
-            if (confirm("Are you sure you want to delete?")) {
-                $.ajax({
-                    url: '{{ route('account.deleteJob') }}',
-                    type: 'post',
-                    data: {
-                        jobId: jobId,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        window.location.href = '{{ route('account.myJobs') }}';
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.request-featured-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const jobId = this.dataset.jobId;
+                    const name =
+                        @json(auth()->user()->name); // Ensure this value is being passed correctly
+                    const email =
+                        @json(auth()->user()->email); // Ensure this value is being passed correctly
+                    const mobile = @json(auth()->user()->mobile); // Correct field for mobile number
+
+                    const modalBody = document.getElementById("featuredModalBody");
+                    const modalFooter = document.getElementById("featuredModalFooter");
+
+                    // Debugging: Log the mobile number to the console
+                    console.log("Mobile Number: ", mobile);
+
+                    // Check if mobile number is valid and not empty
+                    if (!mobile || mobile.trim() === "") {
+                        // If mobile number is empty or not updated
+                        modalBody.innerHTML =
+                            "<p>Please update your mobile number to request a featured job.</p>";
+                        modalFooter.innerHTML = `
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="{{ route('account.profile') }}" class="btn btn-primary">Update Profile</a>
+                        `;
+                    } else {
+                        // If mobile number is valid
+                        modalBody.innerHTML =
+                            "<p>You must pay Rs. 500 to request this job as featured. Please click Pay to proceed.</p>";
+                        modalFooter.innerHTML = `
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <form action="{{ route('khalti.initiate', ['name' => '__name__', 'email' => '__email__', 'phone' => '__mobile__', 'amount' => 500, 'jobId' => '__jobId__']) }}" method="GET" id="payForm">
+                                @csrf
+                                <button type="submit" class="btn btn-success" id="payNowBtn">Pay</button>
+                            </form>
+                        `;
+
+                        // Dynamically replace the placeholders with actual data
+                        setTimeout(() => {
+                            const payForm = document.getElementById('payForm');
+                            payForm.action = payForm.action.replace('__name__',
+                                    encodeURIComponent(name))
+                                .replace('__email__', encodeURIComponent(email))
+                                .replace('__mobile__', encodeURIComponent(mobile))
+                                .replace('__jobId__', encodeURIComponent(jobId));
+                        }, 100);
                     }
+
+                    new bootstrap.Modal(document.getElementById('featuredJobModal')).show();
                 });
-            }
-        }
-
-
-
-        function requestFeaturedJob(jobId) {
-    if (confirm("Are you sure you want to request this job to be featured?")) {
-        // Send an AJAX request or redirect to a specific route for admin approval
-        // Example: Redirecting to a route where you can handle this request in the backend
-        window.location.href = "/request-featured-job/" + jobId;
-    }
-}
-
+            });
+        });
     </script>
 @endsection
