@@ -21,8 +21,6 @@
             <div class="col-lg-9">
                 @include('front.message')
 
-             
-
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h3 class="fs-4">All Categories</h3>
                     <a href="{{ route('categories.create') }}" class="btn btn-primary">➕ Add New Category</a>
@@ -51,12 +49,30 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-warning btn-sm">✏️ Edit</a>
-                                            <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" onclick="return confirm('Delete this category?')" class="btn btn-danger btn-sm">🗑️ Delete</button>
-                                            </form>
+                                            <div class="dropdown text-end">
+                                                <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <!-- Edit Option -->
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('categories.edit', $category->id) }}">
+                                                            <i class="fa fa-pencil-alt me-2"></i> Edit
+                                                        </a>
+                                                    </li>
+
+                                                    <!-- Delete Option -->
+                                                    <li>
+                                                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="dropdown-item">
+                                                                <i class="fa fa-trash me-2"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

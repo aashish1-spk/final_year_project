@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Review;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\JobType;
@@ -120,23 +121,24 @@ class JobsController extends Controller
     //                                      'applications' => $applications
     //                                  ]);
     // }
-
     public function detail($id) {
-        // Fetch the job details
+        // Fetch the job details with jobType, category, and reviews, including the associated user
         $job = Job::where([
             'id' => $id,
             'status' => 1
-        ])->with(['jobType', 'category'])->first();
+        ])->with(['jobType', 'category', 'reviews.user']) // Eager load reviews with user
+          ->first();
     
-        if ($job == null) {
+        // If the job does not exist, return 404
+        if (!$job) {
             abort(404);
         }
     
         // Check if the user is authenticated and if they have saved this job
         $count = 0;
-        if (Auth::user()) {
+        if (Auth::check()) {
             $count = SavedJob::where([
-                'user_id' => Auth::user()->id,
+                'user_id' => Auth::id(),
                 'job_id' => $id
             ])->count();
         }
@@ -148,22 +150,33 @@ class JobsController extends Controller
         $cv = null;
         $cvFilePath = null;
         if (Auth::check()) {
-            $cv = Cv::where('user_id', Auth::id())->first(); // Fetch CV based on user_id
+            $cv = Cv::where('user_id', Auth::id())->first();
             if ($cv) {
-                $cvFilePath = $cv->cv_file_path;  // If CV exists, fetch the file path
+                $cvFilePath = $cv->cv_file_path;
             }
         }
     
-        // Return the view with job details, save status, applications, and CV file path
+        // Fetch job reviews (if not already eager loaded above)
+        $reviews = Review::where('job_id', $id)
+        ->whereBetween('rating', [1, 5])
+        ->with(['user', 'job']) 
+        ->latest()
+        ->paginate(3);  
+    
+    
+
+        // dd($reviews);
+    
+        // Return the view with all data
         return view('front.jobDetail', [
             'job' => $job,
             'count' => $count,
             'applications' => $applications,
-            'cv' => $cv,  // Pass the entire CV data to the view
-            'cvFilePath' => $cvFilePath,  // Pass the CV file path if it exists
+            'cv' => $cv,
+            'cvFilePath' => $cvFilePath,
+            'reviews' => $reviews,
         ]);
     }
-    
     
 
     // public function applyJob(Request $request) {

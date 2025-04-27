@@ -8,7 +8,7 @@
                 <nav aria-label="breadcrumb" class="rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Account Settings</li>
+                        <li class="breadcrumb-item active">Post a job</li>
                     </ol>
                 </nav>
             </div>
@@ -66,7 +66,7 @@
 
                             <div class="row">
                                 <div class="mb-4 col-md-6">
-                                    <label for="" class="mb-2">Salary in NPR</label>
+                                    <label for="" class="mb-2">Salary in NPR per month</label>
                                     <input type="number" placeholder="Salary" id="salary" name="salary" class="form-control">
                                 </div>
 
@@ -128,10 +128,11 @@
 
                             <div class="row">
                                 <div class="mb-4 col-md-6">
-                                    <label for="" class="mb-2">Name<span class="req">*</span></label>
-                                    <input type="text" placeholder="Company Name" id="company_name" name="company_name" class="form-control">
+                                    <label for="company_name" class="mb-2">Name<span class="req">*</span></label>
+                                    <input type="text" placeholder="Company Name" id="company_name" name="company_name" class="form-control" value="{{ auth()->user()->name }}" readonly>
                                     <p id="company_name-error" class="text-danger"></p>
                                 </div>
+                                
 
                                 <div class="mb-4 col-md-6">
                                     <label for="" class="mb-2">Location</label>

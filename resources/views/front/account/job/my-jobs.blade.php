@@ -9,7 +9,7 @@
                     <nav aria-label="breadcrumb" class="rounded-3 p-3 mb-4">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Account Settings</li>
+                            <li class="breadcrumb-item active">My Jobs</li>
                         </ol>
                     </nav>
                 </div>
@@ -66,30 +66,31 @@
                                                     </td>
                                                     <td>
                                                         <div class="action-dots float-end">
-                                                            <button href="#" class="btn" data-bs-toggle="dropdown"
+                                                            <button class="btn" data-bs-toggle="dropdown"
                                                                 aria-expanded="false">
                                                                 <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                             </button>
                                                             <ul class="dropdown-menu dropdown-menu-end">
                                                                 <li><a class="dropdown-item"
-                                                                        href="{{ route('jobDetail', $job->id) }}">
-                                                                        <i class="fa fa-eye" aria-hidden="true"></i> View
-                                                                    </a></li>
+                                                                        href="{{ route('jobDetail', $job->id) }}"><i
+                                                                            class="fa fa-eye"></i> View</a></li>
                                                                 <li><a class="dropdown-item"
-                                                                        href="{{ route('account.editJob', $job->id) }}">
-                                                                        <i class="fa fa-edit" aria-hidden="true"></i> Edit
-                                                                    </a></li>
+                                                                        href="{{ route('account.editJob', $job->id) }}"><i
+                                                                            class="fa fa-edit"></i> Edit</a></li>
                                                                 <li><a class="dropdown-item" href="#"
-                                                                        onclick="deleteJob({{ $job->id }})">
-                                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                                        Delete
-                                                                    </a></li>
+                                                                        onclick="deleteJob({{ $job->id }})"><i
+                                                                            class="fa fa-trash"></i> Delete</a></li>
+
+                                                                {{-- Featured Request --}}
                                                                 <li>
-                                                                    @if ($job->featured_request)
-                                                                        <button class="dropdown-item" disabled>
-                                                                            <i class="fa fa-star"></i> You already requested
-                                                                            this job to be featured
-                                                                        </button>
+                                                                    @if ($job->isFeatured)
+                                                                        <button class="dropdown-item" disabled><i
+                                                                                class="fa fa-star"></i> Already
+                                                                            Featured</button>
+                                                                    @elseif ($job->featured_request)
+                                                                        <button class="dropdown-item" disabled><i
+                                                                                class="fa fa-star"></i> Request
+                                                                            Pending</button>
                                                                     @else
                                                                         <button class="dropdown-item request-featured-btn"
                                                                             data-job-id="{{ $job->id }}">
@@ -97,8 +98,29 @@
                                                                         </button>
                                                                     @endif
                                                                 </li>
+
+                                                                {{-- View Payment --}}
+                                                                @php
+                                                                    $payment = \App\Models\Payment::where(
+                                                                        'job_id',
+                                                                        $job->id,
+                                                                    )
+                                                                        ->where('user_id', auth()->id())
+                                                                        ->where('status', 'completed')
+                                                                        ->first();
+                                                                @endphp
+                                                                @if ($payment)
+                                                                    <li>
+                                                                        <a class="dropdown-item"
+                                                                            href="{{ route('company.jobs.payment', $job->id) }}">
+                                                                            <i class="fa fa-credit-card"></i> View Payment
+                                                                        </a>
+                                                                    </li>
+                                                                @endif
                                                             </ul>
                                                         </div>
+
+
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -157,12 +179,8 @@
                     const modalBody = document.getElementById("featuredModalBody");
                     const modalFooter = document.getElementById("featuredModalFooter");
 
-                    // Debugging: Log the mobile number to the console
-                    console.log("Mobile Number: ", mobile);
-
                     // Check if mobile number is valid and not empty
                     if (!mobile || mobile.trim() === "") {
-                        // If mobile number is empty or not updated
                         modalBody.innerHTML =
                             "<p>Please update your mobile number to request a featured job.</p>";
                         modalFooter.innerHTML = `
@@ -170,9 +188,8 @@
                             <a href="{{ route('account.profile') }}" class="btn btn-primary">Update Profile</a>
                         `;
                     } else {
-                        // If mobile number is valid
                         modalBody.innerHTML =
-                            "<p>You must pay Rs. 500 to request this job as featured. Please click Pay to proceed.</p>";
+                            "<p>You must pay <strong>Rs. 500</strong> via <strong>Khalti</strong> to request this job as a featured listing. This payment will make your job featured for <strong>1 month</strong>. Please click <strong>Pay</strong> to proceed.</p>";
                         modalFooter.innerHTML = `
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <form action="{{ route('khalti.initiate', ['name' => '__name__', 'email' => '__email__', 'phone' => '__mobile__', 'amount' => 500, 'jobId' => '__jobId__']) }}" method="GET" id="payForm">
@@ -196,5 +213,37 @@
                 });
             });
         });
+    </script>
+
+
+    <script type="text/javascript">
+        function deleteJob(jobId) {
+            if (confirm('Are you sure you want to delete this job?')) {
+                fetch("{{ route('account.deleteJob') }}", {
+                        method: "POST",
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            jobId: jobId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status) {
+                            alert('Job deleted successfully.');
+                            window.location.reload();
+                        } else {
+                            alert('Failed to delete job.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting job:', error);
+                        alert('Something went wrong.');
+                    });
+            }
+        }
     </script>
 @endsection

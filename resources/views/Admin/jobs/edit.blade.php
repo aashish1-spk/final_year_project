@@ -83,7 +83,7 @@
 
                                 <!-- Salary -->
                                 <div class="mb-4">
-                                    <label class="mb-2">Salary in Npr</label>
+                                    <label class="mb-2">Salary in NPR per month</label>
                                     <input value="{{ old('salary', $job->salary) }}" type="number" name="salary"
                                         class="form-control">
                                 </div>
@@ -98,125 +98,91 @@
                                     @enderror
                                 </div>
 
-
-
-
-
-
-
-                                {{-- <div class="mb-3">
-                                <label class="form-label">Featured Job</label>
-                                <input class="form-check-input" type="checkbox" id="idFeatured" name="idFeatured" value="1" {{ old('idFeatured', $job->is_featured) ? 'checked' : '' }}>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Status</label>
-                                <div>
-                                    <input class="form-check-input" type="radio" id="status-active" name="status" value="1" {{ old('status', $job->status) == 1 ? 'checked' : '' }}>
-                                    <label for="status-active">Active</label>
-                                    <input class="form-check-input" type="radio" id="status-block" name="status" value="0" {{ old('status', $job->status) == 0 ? 'checked' : '' }}>
-                                    <label for="status-block">Block</label>
+                                <!-- Featured Job -->
+                                <div class="mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="isFeatured" name="isFeatured"
+                                            value="1" {{ old('isFeatured', $job->isFeatured) == 1 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="isFeatured">
+                                            Featured Job
+                                        </label>
+                                    </div>
                                 </div>
-                            </div> --}}
 
-
-
-
-
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="isFeatured" name="isFeatured"
-                                        value="1" {{ old('isFeatured', $job->isFeatured) == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="isFeatured">
-                                        Featured
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="mb-4 col-md-6">
                                 <!-- Status Radio Buttons -->
-                                <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" id="status-active" name="status"
-                                        value="1" {{ old('status', $job->status) == 1 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="status-active">
-                                        Active
-                                    </label>
+                                <div class="mb-4 col-md-6">
+                                    <div class="form-check-inline">
+                                        <input class="form-check-input" type="radio" id="status-active" name="status"
+                                            value="1" {{ old('status', $job->status) == 1 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="status-active">
+                                            Active
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check-inline">
+                                        <input class="form-check-input" type="radio" id="status-block" name="status"
+                                            value="0" {{ old('status', $job->status) == 0 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="status-block">
+                                            Block
+                                        </label>
+                                    </div>
                                 </div>
 
-                                <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" id="status-block" name="status"
-                                        value="0" {{ old('status', $job->status) == 0 ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="status-block">
-                                        Block
-                                    </label>
+                                <!-- Experience -->
+                                <div class="mb-4">
+                                    <label class="mb-2">Experience<span class="req">*</span></label>
+                                    <select name="experience" class="form-control @error('experience') is-invalid @enderror">
+                                        <option value="">Select Experience</option>
+                                        @foreach (range(1, 10) as $year)
+                                            <option value="{{ $year }}"
+                                                {{ old('experience', $job->experience) == $year ? 'selected' : '' }}>
+                                                {{ $year }} years</option>
+                                        @endforeach
+                                        <option value="10_plus"
+                                            {{ old('experience', $job->experience) == '10_plus' ? 'selected' : '' }}>10+ years
+                                        </option>
+                                    </select>
+                                    @error('experience')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
                                 </div>
-                            </div>
 
+                                <!-- Description -->
+                                <div class="mb-4">
+                                    <label class="mb-2">Description<span class="req">*</span></label>
+                                    <textarea name="description" class="form-control @error('description') is-invalid @enderror">{{ old('description', $job->description) }}</textarea>
+                                    @error('description')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
 
+                                <!-- Company Name -->
+                                <h3 class="fs-4 mb-1 mt-5 border-top pt-5">Company Details</h3>
+                                <div class="mb-4">
+                                    <label class="mb-2">Company Name<span class="req">*</span></label>
+                                    <input value="{{ old('company_name', $job->company_name) }}" type="text"
+                                        name="company_name" class="form-control @error('company_name') is-invalid @enderror">
+                                    @error('company_name')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
 
+                                <!-- Company Location -->
+                                <div class="mb-4">
+                                    <label class="mb-2">Company Location</label>
+                                    <input value="{{ old('company_location', $job->company_location) }}" type="text"
+                                        name="company_location" class="form-control">
+                                </div>
 
-
-
-
-
-                            <!-- Experience -->
-                            <div class="mb-4">
-                                <label class="mb-2">Experience<span class="req">*</span></label>
-                                <select name="experience" class="form-control @error('experience') is-invalid @enderror">
-                                    <option value="">Select Experience</option>
-                                    @foreach (range(1, 10) as $year)
-                                        <option value="{{ $year }}"
-                                            {{ old('experience', $job->experience) == $year ? 'selected' : '' }}>
-                                            {{ $year }} years</option>
-                                    @endforeach
-                                    <option value="10_plus"
-                                        {{ old('experience', $job->experience) == '10_plus' ? 'selected' : '' }}>10+ years
-                                    </option>
-                                </select>
-                                @error('experience')
-                                    <p class="text-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- Description -->
-                            <div class="mb-4">
-                                <label class="mb-2">Description<span class="req">*</span></label>
-                                <textarea name="description" class="form-control @error('description') is-invalid @enderror">{{ old('description', $job->description) }}</textarea>
-                                @error('description')
-                                    <p class="text-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- Company Name -->
-                            <h3 class="fs-4 mb-1 mt-5 border-top pt-5">Company Details</h3>
-                            <div class="mb-4">
-                                <label class="mb-2">Company Name<span class="req">*</span></label>
-                                <input value="{{ old('company_name', $job->company_name) }}" type="text"
-                                    name="company_name" class="form-control @error('company_name') is-invalid @enderror">
-                                @error('company_name')
-                                    <p class="text-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- Company Location -->
-                            <div class="mb-4">
-                                <label class="mb-2">Company Location</label>
-                                <input value="{{ old('company_location', $job->company_location) }}" type="text"
-                                    name="company_location" class="form-control">
-                            </div>
-
-
-
-                            <!-- Submit Button -->
-                            <div class="card-footer p-4">
-                                <button type="submit" class="btn btn-primary">Update Job</button>
+                                <!-- Submit Button -->
+                                <div class="card-footer p-4">
+                                    <button type="submit" class="btn btn-primary">Update Job</button>
+                                </div>
                             </div>
                         </div>
+                    </form>
                 </div>
-                </form>
-
             </div>
-        </div>
         </div>
     </section>
 @endsection

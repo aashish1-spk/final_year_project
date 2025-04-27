@@ -142,34 +142,7 @@ class AccountController extends Controller
 
 
 
-    public function updateProfile(Request $request)
-    {
-        $id = Auth::user()->id;
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|min:5|max:20',
-            'email' => 'required|email|unique:users,email,' . $id . ',id',
-        ]);
-
-        if ($validator->passes()) {
-            $user = User::find($id);
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->mobile = $request->mobile;
-            $user->designation = $request->designation;
-            $user->save();
-
-            session()->flash('success', 'profile updated successfully');
-
-            return redirect()->back();
-        } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
-        }
-    }
-
+   
     public function logout()
     {
         Auth::logout();
@@ -316,42 +289,64 @@ class AccountController extends Controller
 
 
 
-
-
-    // update password
-    public function updatePassword(Request $request)
+    public function updateProfile(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'old_password' => 'required',
-            'new_password' => 'required|min:8',
-            'confirm_password' => 'required|same:new_password',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . auth()->id(),
+            'designation' => 'required|string|max:255',
+            'mobile' => 'required|numeric|digits:10',
         ]);
-
+    
         if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors(),
-            ]);
+            // Redirect back with errors and old input
+            return back()->withErrors($validator)->withInput();
         }
-
-        if (!Hash::check($request->old_password, auth()->user()->password)) {
-            return response()->json([
-                'status' => false,
-                'error' => 'Your old password is incorrect.',
-            ]);
-        }
-
+    
+        // Update user data
         $user = auth()->user();
-        $user->password = Hash::make($request->new_password);
-
-        // $user->save();
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Password updated successfully.',
-        ]);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->designation = $request->designation;
+        $user->mobile = $request->mobile;
+        $user->save();
+    
+        // Redirect back with success message
+        return back()->with('success', 'Profile updated successfully');
     }
+    
+    public function updatePassword(Request $request)
+    {
+        // Validate the input
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed', // This ensures 'new_password' and 'new_password_confirmation' match
+        ]);
+    
+        // If validation fails, redirect back with errors
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+    
+        $user = auth()->user();
+    
+        // Check if the old password matches the one in the database
+        if (!Hash::check($request->old_password, $user->password)) {
+            return back()->withErrors(['old_password' => 'Your old password is incorrect.']);
+        }
+    
+        // Update the password
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+    
+        // Redirect back with success message
+        return back()->with('success', 'Password updated successfully.');
+    }
+    
 
+
+
+  
 
 
     //job create
@@ -734,44 +729,54 @@ class AccountController extends Controller
     {
         // Validate the incoming request
         $request->validate([
-            'applicant_id' => 'required|exists:users,id', // Check if jobseeker exists
+            'applicant_ids' => 'required|array', // Ensure applicant_ids is an array
+            'applicant_ids.*' => 'exists:users,id', // Ensure each ID exists in the users table
             'message' => 'required|string', // Notification message
         ]);
-
-
-
-        // Find the applicant by ID
-        $applicant = User::findOrFail($request->applicant_id);
-
-        // Find the job related to the applicant (Assuming applicant has applied to one job)
-        $job = Job::whereHas('applications', function ($query) use ($applicant) {
-            $query->where('user_id', $applicant->id);
-        })->first(); // Get the first job applied by this applicant
-
-        // If no job is found, fallback to default job title and company name
-        $jobTitle = $job ? $job->title : '[Job Title]';
-        $companyName = $job ? $job->company_name : '[Company Name]';
-
-        // Check if the provided message is 'shortlisted' or 'rejected'
-        if ($request->message === 'shortlisted') {
-            // Professional message for shortlisted applicants
-            $messageContent = "Dear {$applicant->name},\n\nWe are pleased to inform you that your application for the position of {$jobTitle} at {$companyName} has been shortlisted. Your profile has caught our attention, and we would like to move forward with your application to the next stage of the selection process. Our HR team will reach out to you soon for further steps.\n\nBest regards, {$companyName}";
-        } elseif ($request->message === 'rejected') {
-            // Professional message for rejected applicants
-            $messageContent = "Dear {$applicant->name},\n\nThank you for your interest in the position of {$jobTitle} at {$companyName}. After careful review of your application, we regret to inform you that we have chosen to proceed with another candidate for this role. We sincerely appreciate your effort and encourage you to apply for future openings that match your qualifications.\n\nBest regards, {$companyName}";
-        } else {
-            // Handle invalid message type
-            return back()->with('error', 'Invalid message type.');
+    
+        // Loop through each selected applicant and send notifications
+        foreach ($request->applicant_ids as $applicant_id) {
+            // Find the applicant by ID
+            $applicant = User::findOrFail($applicant_id);
+    
+            // Find the job related to the applicant (Assuming applicant has applied to one job)
+            $job = Job::whereHas('applications', function ($query) use ($applicant) {
+                $query->where('user_id', $applicant->id);
+            })->first(); // Get the first job applied by this applicant
+    
+            // If no job is found, fallback to default job title and company name
+            $jobTitle = $job ? $job->title : '[Job Title]';
+            $companyName = $job ? $job->company_name : '[Company Name]';
+    
+            // Check if the provided message is 'shortlisted' or 'rejected'
+            if ($request->message === 'shortlisted') {
+                // Professional message for shortlisted applicants
+                $messageContent = "Dear {$applicant->name},\n\nWe are pleased to inform you that your application for the position of {$jobTitle} at {$companyName} has been shortlisted. Your profile has caught our attention, and we would like to move forward with your application to the next stage of the selection process. Our HR team will reach out to you soon for further steps.\n\nBest regards, {$companyName}";
+            } elseif ($request->message === 'rejected') {
+                // Professional message for rejected applicants
+                $messageContent = "Dear {$applicant->name},\n\nThank you for your interest in the position of {$jobTitle} at {$companyName}. After careful review of your application, we regret to inform you that we have chosen to proceed with another candidate for this role. We sincerely appreciate your effort and encourage you to apply for future openings that match your qualifications.\n\nBest regards, {$companyName}";
+            } else {
+                // Handle invalid message type
+                return back()->with('error', 'Invalid message type.');
+            }
+    
+            // Create a new notification for the jobseeker
+            Notification::create([
+                'user_id' => $applicant->id, // Jobseeker's user ID
+                'message' => $messageContent, // Dynamic message content
+            ]);
         }
-
-        // Create a new notification for the jobseeker
-        Notification::create([
-            'user_id' => $request->applicant_id, // Jobseeker's user ID
-            'message' => $messageContent, // Dynamic message content
-        ]);
-
-        return back()->with('success', 'Notification sent successfully!');
+    
+        return back()->with('success', 'Notifications sent successfully!');
     }
+
+    public function showNotifications()
+    {
+        $notifications = auth()->user()->notifications;
+        return view('front.account.notifications', compact('notifications'));
+    }
+    
+    
 
     public function destroy($id)
     {

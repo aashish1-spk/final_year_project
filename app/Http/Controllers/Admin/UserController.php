@@ -131,4 +131,22 @@ class UserController extends Controller
         // If the company is not valid, you can redirect with an error message
         return redirect()->route('admin.companies.pending')->with('error', 'Invalid company or already approved.');
     }
+
+
+    public function reject($id)
+    {
+        $company = User::findOrFail($id);
+
+    // Check if the company exists and is in the 'company' role
+    if ($company->role == 'company') {
+        // Delete the company
+        $company->delete();
+
+        // Redirect back with a success message
+        return redirect()->route('admin.companies.pending')->with('success', 'Company rejected and deleted successfully.');
+    }
+
+    // If the company does not exist or is not a valid company, redirect with an error message
+    return redirect()->route('admin.companies.pending')->with('error', 'Invalid company.');
+    }
 }

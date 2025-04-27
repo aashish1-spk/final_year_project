@@ -44,16 +44,46 @@
                                                 <td>{{ $job->company_name }}</td>
                                                 <td>{{ $job->created_at->format('d M, Y') }}</td>
                                                 <td>
-                                                    <form action="{{ route('admin.jobs.featured.approve', $job->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <button type="submit" class="btn btn-success btn-sm">Approve</button>
-                                                    </form>
-                                                    <form action="{{ route('admin.jobs.featured.reject', $job->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
-                                                    </form>
+                                                    <div class="action-dots float-end">
+                                                        <button class="btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            <!-- Approve Action -->
+                                                            <li>
+                                                                <form action="{{ route('admin.jobs.featured.approve', $job->id) }}" method="POST" class="d-inline">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <button class="dropdown-item" type="submit">
+                                                                        <i class="fa fa-check" aria-hidden="true"></i> Approve
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+                                                            <!-- Reject Action -->
+                                                            <li>
+                                                                <form action="{{ route('admin.jobs.featured.reject', $job->id) }}" method="POST" class="d-inline">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <button class="dropdown-item" type="submit">
+                                                                        <i class="fa fa-times" aria-hidden="true"></i> Reject
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+                                                            <!-- View Action -->
+                                                            <li>
+                                                                <a class="dropdown-item" href="{{ route('jobDetail', $job->id) }}">
+                                                                    <i class="fa fa-eye" aria-hidden="true"></i> View
+                                                                </a>
+                                                            </li>
+                                                            <!-- View Payment Details -->
+                                                            <li>
+                                                                <a class="dropdown-item" href="{{ route('admin.jobs.payment.details', $job->id) }}">
+                                                                    <i class="fa fa-credit-card" aria-hidden="true"></i> View Payment
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                        
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach

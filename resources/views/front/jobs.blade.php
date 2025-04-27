@@ -112,10 +112,12 @@
 
                                         @if (!is_null($job->salary))
                                         <p class="mb-0">
-                                            <span class="fw-bolder"><i class="fa fa-usd"></i></span>
-                                            <span class="ps-1">{{ $job->salary }}</span>
+                                            <span class="fw-bolder">Rs.</span>
+                                            <span class="ps-1">{{ $job->salary }} <small>/ month</small></span>
                                         </p>
-                                        @endif
+                                    @endif
+                                    
+                                    
                                        
                                     </div>
 

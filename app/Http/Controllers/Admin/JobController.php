@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\admin;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Job;
+use App\Models\Payment;
 use App\Models\JobType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -197,27 +199,27 @@ class JobController extends Controller
     public function requestFeatured($id)
     {
         $job = Job::findOrFail($id);
-    
+
         // Check if user owns this job
         if ($job->user_id !== auth()->id()) {
             return redirect()->back()->with('error', 'Unauthorized action.');
         }
-    
+
         // Check if the job has already been requested for featuring
         if ($job->featured_request) {
             return redirect()->back()->with('error', 'You have already requested this job to be featured.');
         }
-    
+
         // Logic to mark job as 'pending featured'
         $job->featured_request = true; // Assuming you have this column
         $job->save();
-    
+
         // Optionally, notify the admin (you can use events/notifications here)
         // Notification::route('mail', 'admin@example.com')->notify(new FeaturedJobRequest($job));
-    
+
         return redirect()->back()->with('success', 'Request to feature job has been sent to admin.');
     }
-    
+
 
     public function featuredRequests()
     {
@@ -234,17 +236,32 @@ class JobController extends Controller
     }
 
 
+    // public function approveFeatured($id)
+    // {
+    //     $job = Job::findOrFail($id);
+
+    //     // Ensure you're using the correct column names
+    //     $job->isFeatured = true; // This should match the column name in your database
+    //     $job->featured_request = false;
+    //     $job->save();
+
+    //     return redirect()->back()->with('success', 'Job marked as featured.');
+    // }
+
+
     public function approveFeatured($id)
     {
         $job = Job::findOrFail($id);
 
-        // Ensure you're using the correct column names
-        $job->isFeatured = true; // This should match the column name in your database
+        $job->isFeatured = true;
         $job->featured_request = false;
+        $job->featured_until = now()->addMonth(); // Set expiry to 1 month from now
         $job->save();
 
-        return redirect()->back()->with('success', 'Job marked as featured.');
+        return redirect()->back()->with('success', 'Job marked as featured for one month.');
     }
+
+
 
     public function rejectFeatured($id)
     {
@@ -254,4 +271,113 @@ class JobController extends Controller
 
         return redirect()->back()->with('info', 'Job featured request rejected.');
     }
+
+    // public function viewPaymentDetails($jobId)
+    // {
+    //     // Fetch job details
+    //     $job = Job::findOrFail($jobId);
+
+    //     // Fetch the associated payment details with ID 106
+    //     $payment = Payment::find(106);  // Fetch payment with ID 106
+
+    //     // Dump the payment details to see its contents
+    //     // Log::info('Fetched Payment', ['payment' => $payment]);
+
+    //     // If no payment is found, return back with an error
+    //     if (!$payment) {
+    //         return back()->with('error', 'Payment not found.');
+    //     }
+
+    //     // Return the view with job and payment data
+    //     return view('admin.jobs.payment-details', compact('job', 'payment'));
+    // }
+
+
+    //by admin
+
+    public function viewPaymentDetails($jobId)
+    {
+        // Fetch job details
+        $job = Job::findOrFail($jobId);
+
+        // Fetch the associated payment details
+        $payment = Payment::where('job_id', $jobId)->latest()->first(); // Use latest payment if there are multiple
+
+        // If no payment is found, return back with an error
+        if (!$payment) {
+            return back()->with('error', 'Payment not found for this job.');
+        }
+
+        // Return the view with job and payment data
+        return view('admin.jobs.payment-details', compact('job', 'payment'));
+    }
+
+
+    //by company
+    public function viewPayment(Job $job)
+    {
+        // Check if the authenticated user owns the job
+        if ($job->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized access to payment details.');
+        }
+    
+        // Fetch the payment related to this job by the logged-in user
+        $payment = Payment::where('job_id', $job->id)
+                          ->where('user_id', auth()->id())
+                          ->where('status', 'completed')
+                          ->first();
+    
+        // If no completed payment found, return back with error
+        if (!$payment) {
+            return redirect()->back()->with('error', 'No completed payment found for this job.');
+        }
+    
+        // Show the payment view
+        return view('front.account.job.payment', compact('job', 'payment'));
+
+    }
+
+
+//by admin
+    public function downloadInvoice($jobId)
+    {
+        // Fetch job details
+        $job = Job::findOrFail($jobId);
+
+        // Fetch the latest associated payment details
+        $payment = Payment::where('job_id', $jobId)->latest()->first();
+
+        // If no payment is found, return back with an error
+        if (!$payment) {
+            return back()->with('error', 'Payment not found for this job.');
+        }
+
+        // Load the invoice view with job and payment data and generate PDF
+        $pdf = Pdf::loadView('admin.jobs.invoice', compact('job', 'payment'));
+
+        // Download the generated invoice PDF
+        return $pdf->download('invoice_' . $job->id . '.pdf');
+    }
+
+    //by company
+    public function downloadCompanyInvoice(Job $job)
+{
+    if ($job->user_id !== auth()->id()) {
+        abort(403, 'Unauthorized access to this invoice.');
+    }
+
+    $payment = Payment::where('job_id', $job->id)
+                      ->where('user_id', auth()->id())
+                      ->where('status', 'completed')
+                      ->first();
+
+    if (!$payment) {
+        return redirect()->back()->with('error', 'No completed payment found for this job.');
+    }
+
+    $pdf = Pdf::loadView('front.account.job.invoice', compact('job', 'payment'));
+
+    return $pdf->download('Invoice-Job-' . $job->id . '.pdf');
+}
+
 }

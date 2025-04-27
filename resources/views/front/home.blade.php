@@ -6,7 +6,7 @@
             <div class="col-12 col-xl-8">
                 <h1>Find your dream job</h1>
                 <p>Thounsands of jobs available.</p>
-                <div class="banner-btn mt-5"><a href="#" class="btn btn-primary mb-4 mb-sm-0">Explore Now</a></div>
+                <div class="banner-btn mt-5"><a href="{{ route('jobs') }}" class="btn btn-primary mb-4 mb-sm-0">Explore Now</a></div>
             </div>
         </div>
     </div>
@@ -60,7 +60,7 @@
                     <div class="single_catagory">
                         <a href="{{ route('jobs') . '?category=' . $category->id }}"
                             ><h4 class="pb-2">{{ $category->name }}</h4></a>
-                        <p class="mb-0"><span>0</span> Available position</p>
+                        
                     </div>
                 </div>
             @endforeach
@@ -101,11 +101,12 @@
                                                 <span class="ps-1">{{ $featuredJob->jobType->name }}</span>
                                             </p>
                                             @if (!is_null($featuredJob->salary))
-                                                <p class="mb-0">
-                                                    <span class="fw-bolder"><i class="fa fa-usd"></i></span>
-                                                    <span class="ps-1">{{ $featuredJob->salary }}</span>
-                                                </p>
-                                            @endif
+                                            <p class="mb-0">
+                                                <span class="fw-bolder">Rs.</span>
+                                                <span class="ps-1">{{ number_format($featuredJob->salary) }} /month</span>
+                                            </p>
+                                        @endif
+                                        
                                         
                                     </div>
 
@@ -154,11 +155,12 @@
                                                 <span class="ps-1">{{ $latestJob->jobType->name }}</span>
                                             </p>
                                             @if (!is_null($latestJob->salary))
-                                                <p class="mb-0">
-                                                    <span class="fw-bolder"><i class="fa fa-usd"></i></span>
-                                                    <span class="ps-1">{{ $latestJob->salary }}</span>
-                                                </p>
-                                            @endif
+                                            <p class="mb-0">
+                                                <span class="fw-bolder">Rs.</span>
+                                                <span class="ps-1">{{ number_format($latestJob->salary) }} /month</span>
+                                            </p>
+                                        @endif
+                                        
                                         
                                     </div>
 

@@ -8,7 +8,7 @@
                     <nav aria-label="breadcrumb" class="rounded-3 p-3 mb-4">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">My cv</li>
+                            <li class="breadcrumb-item active">My CV</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
 
                     <div class="card border-0 shadow mb-4">
                         <div class="card-body p-4">
-                            <h3 class="fs-4 mb-3">My cv</h3>
+                            <h3 class="fs-4 mb-3">My CV</h3>
 
                             <table class="table">
                                 <thead>
@@ -44,15 +44,29 @@
                                             <td>{{ $cv->email }}</td>
                                             <td>{{ $cv->phone }}</td>
                                             <td>
-                                                <a href="{{ route('account.downloadCV', $cv->id) }}"
-                                                    class="btn btn-sm btn-success">Download PDF</a>
-                                                    <form action="{{ route('cv.delete', $cv->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this CV?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                                    </form>
-                                                    
-                                                <!-- Implement delete later -->
+                                                <!-- Dropdown menu for actions -->
+                                                <div class="action-dots">
+                                                    <button href="#" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <!-- View/Download Option -->
+                                                        <li><a class="dropdown-item" href="{{ route('account.downloadCV', $cv->id) }}">
+                                                            <i class="fa fa-eye" aria-hidden="true"></i> Download</a>
+                                                        </li>
+                                                        
+                                                        <!-- Delete Option -->
+                                                        <li>
+                                                            <form action="{{ route('cv.delete', $cv->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this CV?');">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="dropdown-item">
+                                                                    <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

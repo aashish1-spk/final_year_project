@@ -14,6 +14,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}" />
     <!-- Fav Icon -->
     <link rel="shortcut icon" type="image/x-icon" href="#" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+
 </head>
 
 <body data-instant-intensity="mousedown">
@@ -83,16 +85,43 @@
         </div>
     </div>
 
-    <footer class="bg-dark py-3 bg-2">
-        <div class="container">
-            <p class="text-center text-white pt-3 fw-bold fs-6"></p>
+    <footer class="bg-dark text-white text-center text-lg-start py-3 mt-5">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center small">
+          <div class="mb-2 mb-md-0">
+            <strong>Pahilo Job</strong><br>
+            <span>Providing job info, career tips, and opportunities.</span><br>
+            <small>&copy; 2025 PahiloJob. All rights reserved.</small>
+          </div>
+      
+          <div>
+            <a href="https://facebook.com" class="text-white me-2" target="_blank" aria-label="Facebook">
+              <i class="fab fa-facebook fa-lg"></i>
+            </a>
+            <a href="https://instagram.com" class="text-white me-2" target="_blank" aria-label="Instagram">
+              <i class="fab fa-instagram fa-lg"></i>
+            </a>
+            <a href="https://twitter.com" class="text-white" target="_blank" aria-label="Twitter">
+              <i class="fab fa-twitter fa-lg"></i>
+            </a>
+          </div>
         </div>
-    </footer>
+      </footer>
+      
+      <!-- Font Awesome CDN (needed for icons) -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      
+      
+      <!-- Font Awesome CDN (needed for icons) -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      
+    
+    
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.5.1.3.min.js') }}"></script>
     <script src="{{ asset('assets/js/instantpages.5.1.0.min.js') }}assets/js/instantpages.5.1.0.min.js"></script>
     <script src="{{ asset('assets/js/lazyload.17.6.0.min.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
+    
 
     <script>
         $.ajaxSetup({

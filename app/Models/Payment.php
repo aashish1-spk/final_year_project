@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Payment extends Model
 {
@@ -16,8 +17,27 @@ class Payment extends Model
         'amount',
         'status',
         'transaction_id',
-        'pidx',  
-        'tidx',  
-        'order_name',  
+        'pidx',
+        'tidx',
+        'order_name',
     ];
+
+    /**
+     * A payment belongs to a user.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * A payment belongs to a job.
+     */
+    public function job(): BelongsTo
+    {
+        return $this->belongsTo(Job::class);
+    }
+
+
+
 }

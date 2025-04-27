@@ -16,12 +16,16 @@ class PaymentController extends Controller
         $orderId = 'Order_' . uniqid();
         $orderName = "Order for " . $name;
 
+        session([
+            'khalti_order_id' => $orderId,
+            'khalti_job_id' => $jobId,
+            'khalti_name' => $name,
+            'khalti_email' => $email,
+            'khalti_phone' => $phone,
+        ]);
+
         $returnUrl = route('khalti.success', [
             'order_id' => $orderId,
-            'job_id' => $jobId,
-            'name' => $name,
-            'email' => $email,
-            'phone' => $phone,
         ]);
 
         $data = [
@@ -35,7 +39,6 @@ class PaymentController extends Controller
                 "email" => $email,
                 "phone" => $phone
             ],
-            "job_id" => $jobId,
         ];
 
         $jsonData = json_encode($data);
@@ -80,52 +83,90 @@ class PaymentController extends Controller
     {
         Log::debug('Khalti Success Data', $request->all());
 
-        $data = $request->only([
-            'order_id', 'pidx', 'transaction_id', 'tidx',
-            'total_amount', 'status', 'name', 'email',
-            'phone', 'job_id',
-        ]);
+        $pidx = $request->query('pidx');
+        $orderId = $request->query('order_id');
 
-        if (!isset($data['status'])) {
-            session()->flash('error', 'Missing payment status.');
+        if (!$pidx || !$orderId) {
+            session()->flash('error', 'Missing transaction reference.');
             return redirect()->route('account.myJobs');
         }
 
-        if (strtolower($data['status']) === 'completed') {
-            $payment = Payment::create([
-                'order_id' => $data['order_id'],
-                'user_id' => auth()->id(),
-                'job_id' => $data['job_id'],
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'phone' => $data['phone'],
-                'amount' => $data['total_amount'] / 100,
-                'status' => 'completed',
-                'pidx' => $data['pidx'],
-                'transaction_id' => $data['transaction_id'],
-                'tidx' => $data['tidx'],
-            ]);
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "https://dev.khalti.com/api/v2/epayment/lookup/",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => json_encode(["pidx" => $pidx]),
+            CURLOPT_HTTPHEADER => [
+                "Authorization: key 0deb39af81de4918bff29de6cfbbca39",
+                "Content-Type: application/json",
+            ],
+            CURLOPT_SSL_VERIFYPEER => false,
+        ]);
 
-            $job = Job::find($payment->job_id);
+        $response = curl_exec($curl);
 
-            if (!$job) {
-                session()->flash('error', 'Job not found.');
-                return redirect()->route('account.myJobs');
-            }
+        if (curl_errno($curl)) {
+            Log::error('Khalti Lookup Error', ['error' => curl_error($curl)]);
+            curl_close($curl);
 
-            if ($job->user_id !== auth()->id()) {
-                session()->flash('error', 'Unauthorized action.');
-                return redirect()->route('account.myJobs');
-            }
-
-            $jobController = app(JobController::class);
-            $jobController->requestFeatured($job->id);
-
-            session()->flash('success', 'Payment completed and job is now requested to admin for featured.');
+            session()->flash('error', 'Failed to verify payment status.');
             return redirect()->route('account.myJobs');
-        } else {
+        }
+
+        $lookupResponse = json_decode($response, true);
+        curl_close($curl);
+
+        Log::info('Khalti Lookup Response', $lookupResponse);
+
+        if (!isset($lookupResponse['status']) || strtolower($lookupResponse['status']) !== 'completed') {
             session()->flash('error', 'Payment was not successful.');
             return redirect()->route('account.myJobs');
         }
+
+        $jobId = session('khalti_job_id');
+        $name = session('khalti_name');
+        $email = session('khalti_email');
+        $phone = session('khalti_phone');
+
+        $payment = Payment::create([
+            'order_id' => $orderId,
+            'user_id' => auth()->id(),
+            'job_id' => $jobId,
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone,
+            'amount' => $lookupResponse['total_amount'] / 100,
+            'status' => 'completed',
+            'pidx' => $pidx,
+            'transaction_id' => $lookupResponse['transaction_id'] ?? null, // Use transaction_id as the identifier
+        ]);
+
+
+
+
+
+        session()->forget([
+            'khalti_order_id', 'khalti_job_id', 'khalti_name',
+            'khalti_email', 'khalti_phone'
+        ]);
+
+        $job = Job::find($payment->job_id);
+
+        if (!$job) {
+            session()->flash('error', 'Job not found.');
+            return redirect()->route('account.myJobs');
+        }
+
+        if ($job->user_id !== auth()->id()) {
+            session()->flash('error', 'Unauthorized action.');
+            return redirect()->route('account.myJobs');
+        }
+
+        $jobController = app(JobController::class);
+        $jobController->requestFeatured($job->id);
+
+        session()->flash('success', 'Payment completed and job is now requested to admin for featured.');
+        return redirect()->route('account.myJobs');
     }
 }

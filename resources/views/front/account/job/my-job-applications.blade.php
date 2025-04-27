@@ -9,7 +9,7 @@
                 <nav aria-label="breadcrumb" class="rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li> 
-                        <li class="breadcrumb-item active">Account Settings</li>
+                        <li class="breadcrumb-item active">Jobs Applied</li>
                     </ol>
                 </nav>
             </div>
@@ -26,11 +26,9 @@
                             <div>
                                 <h3 class="fs-4 mb-1">Jobs applied</h3>
                             </div>
-                            
-                            
                         </div>
                         <div class="table-responsive">
-                            <table class="table ">
+                            <table class="table">
                                 <thead class="bg-light">
                                     <tr>
                                         <th scope="col">Title</th>
@@ -51,15 +49,11 @@
                                             <td>{{ \Carbon\Carbon::parse($jobApplication->created_at)->format('d M, Y') }}</td>
                                             <td> {{ $jobApplication->job->Applications->count() }} Applications</td>
                                             <td>
-
                                                 @if($jobApplication->job->status == 1)
                                                 <div class="job-status text-capitalize">Active</div>
-
                                                 @else
-                                                <div class="job-status text-capitalize">Block</div>
-
+                                                <div class="job-status text-capitalize">Blocked</div>
                                                 @endif
-
                                             </td>
                                             <td>
                                                 <div class="action-dots float-end">
@@ -67,25 +61,22 @@
                                                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
-                                                        <li><a class="dropdown-item" href="{{ route('jobDetail',$jobApplication->job_id) }}"> <i class="fa fa-eye" aria-hidden="true"></i> View</a></li>
-                                                        <li><a class="dropdown-item" href="#" onclick="removeJob({{ $jobApplication->id }})" ><i class="fa fa-trash" aria-hidden="true"></i>Remove job</a></li>
+                                                        <li><a class="dropdown-item" href="{{ route('jobDetail', $jobApplication->job_id) }}"> <i class="fa fa-eye" aria-hidden="true"></i> View</a></li>
+                                                        <li><a class="dropdown-item" href="#" onclick="removeJob({{ $jobApplication->id }})"><i class="fa fa-trash" aria-hidden="true"></i> Remove job</a></li>
+                                                        <li><a class="dropdown-item" href="{{ route('jobReviewPage', $jobApplication->job_id) }}"><i class="fa fa-star" aria-hidden="true"></i> Review and Ask Question</a></li>
                                                     </ul>
                                                 </div>
                                             </td>
                                         </tr>         
                                         @endforeach
-                                        @else
+                                    @else
                                         <tr>
-                                            <td colspan="5" >
-                                                job applications not found
+                                            <td colspan="5">
+                                                No job applications found.
                                             </td>
                                         </tr>
                                     @endif
-
-                                  
-                                   
                                 </tbody>
-                                
                             </table>
                         </div>
 
@@ -93,13 +84,8 @@
                             {{ $jobApplications->links() }}  
                         </div>
 
-
                     </div>
                 </div> 
-
-                <div class="card border-0 shadow mb-4">
-                  
-                </div>                
             </div>
         </div>
     </div>
@@ -122,6 +108,5 @@ function removeJob(id) {
         });
     }
 }
-
 </script>
 @endsection

@@ -20,7 +20,7 @@
     <div class="card-body p-0">
         <ul class="list-group list-group-flush ">
             <li class="list-group-item d-flex justify-content-between p-3">
-                <a href="account.html">Account Settings</a>
+                <a href="{{ route('account.profile') }}">Account Settings</a>
             </li>
             @if (Auth::check() && Auth::user()->role == 'company' )
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
@@ -45,7 +45,10 @@
             </li> 
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <a href="{{ route('account.listCVs') }}">My cv</a>
-            </li>      
+            </li>   
+            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <a href="{{ route('account.notifications') }}">Notifications</a>
+            </li>   
            
             @endif
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">

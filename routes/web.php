@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\JobTypeController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\AccountController;
@@ -77,12 +77,25 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkRole'], function () {
     Route::get('/companies/pending', [UserController::class, 'pending'])->name('admin.companies.pending');
     Route::post('/companies/approve/{id}', [UserController::class, 'approve'])->name('admin.companies.approve');
 
+    Route::post('/companies/reject/{id}', [UserController::class, 'reject'])->name('admin.companies.reject');
+
+
+
 
     Route::get('/admin/featured-requests', [App\Http\Controllers\Admin\JobController::class, 'featuredRequests'])->name('admin.featured.requests');
 
     //approve reject
     Route::put('admin/jobs/{job}/featured/approve', [JobController::class, 'approveFeatured'])->name('admin.jobs.featured.approve');
     Route::put('admin/jobs/{job}/featured/reject', [JobController::class, 'rejectFeatured'])->name('admin.jobs.featured.reject');
+
+
+    //
+
+    Route::get('/admin/jobs/{job}/payment', [JobController::class, 'viewPaymentDetails'])->name('admin.jobs.payment.details');
+    Route::get('/admin/jobs/{job}/payment/invoice', [JobController::class, 'downloadInvoice'])->name('admin.jobs.payment.invoice');
+    
+
+    
 });
 
 // Account Routes
@@ -118,6 +131,8 @@ Route::group(['prefix' => 'account'], function () {
         // Notifications
         Route::post('/company/notify', [AccountController::class, 'notify'])->name('company.notify');
         Route::delete('/notifications/{id}', [AccountController::class, 'destroy'])->name('notifications.delete');
+        Route::get('/account/notifications', [AccountController::class, 'showNotifications'])->name('account.notifications');
+
 
         // Company-only routes
         Route::group(['middleware' => 'role:company'], function () {
@@ -131,6 +146,18 @@ Route::group(['prefix' => 'account'], function () {
 
             //req featured job
             Route::post('/jobs/{id}/request-featured', [JobController::class, 'requestFeatured'])->name('request.featured.job');
+
+            //payment details
+            Route::get('/company/jobs/{job}/payment', [JobController::class, 'viewPayment'])
+            ->name('company.jobs.payment');
+
+            Route::get('/account/job/{job}/payment/invoice', [JobController::class, 'downloadCompanyInvoice'])
+            ->middleware(['auth'])
+            ->name('account.job.payment.invoice');
+            Route::post('/reviews/{review}/reply', [ReviewController::class, 'reply'])->name('reviews.reply');
+
+
+        
         });
 
         // User-only routes
@@ -139,8 +166,26 @@ Route::group(['prefix' => 'account'], function () {
             Route::post('/remove-job-application', [AccountController::class, 'removeJobs'])->name('account.removeJobs');
             Route::get('/saved-jobs', [AccountController::class, 'savedJobs'])->name('account.savedJobs');
             Route::post('/remove-saved-job', [AccountController::class, 'removeSavedJob'])->name('account.removeSavedJob');
+            Route::post('account/companies/{company}/review', [ReviewController::class, 'store'])->name('reviews.store');
+            Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+           
+
+            Route::get('/job/{job_id}/review', [ReviewController::class, 'reviewPage'])->name('jobReviewPage');
+
+           
+
+
+
+
+
+
         });
     });
+
+    Route::post('/reviews/{review}/replies', [ReviewController::class, 'postReply'])->name('reviews.replies.post');
+
+
+    
 
     // Registration options
     Route::get('/register-options', function () {

@@ -21,10 +21,6 @@
                 <div class="col-lg-9">
                     @include('front.message')
 
-                    @if (session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
-
                     <div class="card border-0 shadow mb-4">
                         <div class="card-body p-4">
                             <h3 class="fs-4 mb-3">Pending Company Registrations</h3>
@@ -47,11 +43,42 @@
                                                     <td>{{ $company->email }}</td>
                                                     <td>{{ $company->pan_number }}</td>
                                                     <td>
-                                                        <form action="{{ route('admin.companies.approve', $company->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            <button class="btn btn-success btn-sm">Approve</button>
-                                                        </form>
+                                                        <!-- Action Dropdown -->
+                                                        <div class="action-dots float-end">
+                                                            <button class="btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                                <!-- Approve -->
+                                                                <li>
+                                                                    <form action="{{ route('admin.companies.approve', $company->id) }}" method="POST">
+                                                                        @csrf
+                                                                        <button class="dropdown-item" type="submit">
+                                                                            <i class="fa fa-check" aria-hidden="true"></i> Approve
+                                                                        </button>
+                                                                    </form>
+                                                                </li>
+
+                                                                <!-- Reject -->
+                                                                <li>
+                                                                    <form action="{{ route('admin.companies.reject', $company->id) }}" method="POST">
+                                                                        @csrf
+                                                                        <button class="dropdown-item" type="submit">
+                                                                            <i class="fa fa-times" aria-hidden="true"></i> Reject
+                                                                        </button>
+                                                                    </form>
+                                                                </li>
+
+                                                                <!-- Check PAN -->
+                                                               <!-- Check PAN -->
+                                                                <li>
+                                                                    <a class="dropdown-item" href="https://ird.gov.np/pan-search" target="_blank">
+                                                                        <i class="fa fa-search" aria-hidden="true"></i> Check PAN
+                                                                    </a>
+                                                                </li>
+
+                                                            </ul>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endif
