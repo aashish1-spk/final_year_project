@@ -12,7 +12,7 @@ class Notification extends Model
 
     protected $fillable = ['user_id', 'message'];
 
-    // Define the relationship with User
+    
     public function user()
     {
         return $this->belongsTo(User::class);

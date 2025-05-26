@@ -15,7 +15,7 @@ class ReviewReply extends Model
         'message',
     ];
 
-    // Optional: relationships
+    
     public function user()
     {
         return $this->belongsTo(User::class);

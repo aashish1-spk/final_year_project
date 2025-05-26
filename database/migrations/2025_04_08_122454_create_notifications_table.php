@@ -9,11 +9,11 @@ class CreateNotificationsTable extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id'); // Jobseeker's user ID
-            $table->text('message'); // The notification message
+            $table->unsignedBigInteger('user_id'); 
+            $table->text('message'); 
             $table->timestamps();
 
-            // Add foreign key constraint if 'users' table exists
+            
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

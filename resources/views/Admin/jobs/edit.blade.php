@@ -29,7 +29,7 @@
                             <div class="card-body card-form p-4">
                                 <h3 class="fs-4 mb-1">Edit Job Details</h3>
 
-                                <!-- Job Title -->
+                               
                                 <div class="mb-4">
                                     <label class="mb-2">Title<span class="req">*</span></label>
                                     <input value="{{ old('title', $job->title) }}" type="text" placeholder="Job Title"
@@ -39,7 +39,7 @@
                                     @enderror
                                 </div>
 
-                                <!-- Category -->
+                               
                                 <div class="mb-4">
                                     <label class="mb-2">Category<span class="req">*</span></label>
                                     <select name="category" class="form-control @error('category') is-invalid @enderror">
@@ -55,7 +55,7 @@
                                     @enderror
                                 </div>
 
-                                <!-- Job Type -->
+                               
                                 <div class="mb-4">
                                     <label class="mb-2">Job Type<span class="req">*</span></label>
                                     <select name="jobType" class="form-control @error('jobType') is-invalid @enderror">
@@ -71,7 +71,7 @@
                                     @enderror
                                 </div>
 
-                                <!-- Vacancy -->
+                                
                                 <div class="mb-4">
                                     <label class="mb-2">Vacancy<span class="req">*</span></label>
                                     <input value="{{ old('vacancy', $job->vacancy) }}" type="number" min="1"
@@ -81,14 +81,14 @@
                                     @enderror
                                 </div>
 
-                                <!-- Salary -->
+                            
                                 <div class="mb-4">
                                     <label class="mb-2">Salary in NPR per month</label>
                                     <input value="{{ old('salary', $job->salary) }}" type="number" name="salary"
                                         class="form-control">
                                 </div>
 
-                                <!-- Location -->
+                               
                                 <div class="mb-4">
                                     <label class="mb-2">Location<span class="req">*</span></label>
                                     <input value="{{ old('location', $job->location) }}" type="text" name="location"
@@ -98,7 +98,7 @@
                                     @enderror
                                 </div>
 
-                                <!-- Featured Job -->
+                               
                                 <div class="mb-4">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="isFeatured" name="isFeatured"
@@ -109,7 +109,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Status Radio Buttons -->
+                              
                                 <div class="mb-4 col-md-6">
                                     <div class="form-check-inline">
                                         <input class="form-check-input" type="radio" id="status-active" name="status"
@@ -128,7 +128,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Experience -->
+                               
                                 <div class="mb-4">
                                     <label class="mb-2">Experience<span class="req">*</span></label>
                                     <select name="experience" class="form-control @error('experience') is-invalid @enderror">
@@ -147,7 +147,7 @@
                                     @enderror
                                 </div>
 
-                                <!-- Description -->
+                                
                                 <div class="mb-4">
                                     <label class="mb-2">Description<span class="req">*</span></label>
                                     <textarea name="description" class="form-control @error('description') is-invalid @enderror">{{ old('description', $job->description) }}</textarea>
@@ -156,7 +156,7 @@
                                     @enderror
                                 </div>
 
-                                <!-- Company Name -->
+                               
                                 <h3 class="fs-4 mb-1 mt-5 border-top pt-5">Company Details</h3>
                                 <div class="mb-4">
                                     <label class="mb-2">Company Name<span class="req">*</span></label>
@@ -167,14 +167,14 @@
                                     @enderror
                                 </div>
 
-                                <!-- Company Location -->
+                               
                                 <div class="mb-4">
                                     <label class="mb-2">Company Location</label>
                                     <input value="{{ old('company_location', $job->company_location) }}" type="text"
                                         name="company_location" class="form-control">
                                 </div>
 
-                                <!-- Submit Button -->
+                               
                                 <div class="card-footer p-4">
                                     <button type="submit" class="btn btn-primary">Update Job</button>
                                 </div>

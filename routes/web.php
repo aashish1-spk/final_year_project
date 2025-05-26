@@ -94,6 +94,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkRole'], function () {
     Route::get('/admin/jobs/{job}/payment', [JobController::class, 'viewPaymentDetails'])->name('admin.jobs.payment.details');
     Route::get('/admin/jobs/{job}/payment/invoice', [JobController::class, 'downloadInvoice'])->name('admin.jobs.payment.invoice');
     
+//featured jobs lists
+Route::get('/admin/featured-jobs/list', [JobController::class, 'featuredList'])
+    ->name('admin.jobs.featured.list');
 
     
 });

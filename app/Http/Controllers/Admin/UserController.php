@@ -9,13 +9,28 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::orderBy('created_at', 'DESC')->paginate(10);
-        return view('admin.users.list', [
-            'users' => $users
-        ]);
+        $search = $request->get('search');
+        $role = $request->get('role');
+    
+        $users = User::query();
+    
+        if ($search) {
+            $users->where('name', 'like', "%{$search}%");
+        }
+    
+        if ($role && in_array($role, ['user', 'company', 'admin'])) {
+            $users->where('role', $role);
+        }
+    
+        $users = $users->orderBy('created_at', 'desc')->paginate(10)->appends($request->all());
+    
+        return view('admin.users.list', compact('users'));
     }
+    
+
+
 
     public function edit($id)
     {
@@ -121,14 +136,12 @@ class UserController extends Controller
             $company->is_approved = true;
             $company->save();
 
-            // Optionally, you can send an email notification or any other action here.
-            // For example: Mail::to($company->email)->send(new CompanyApprovedMail());
 
             // Redirect with a success message
             return redirect()->route('admin.companies.pending')->with('success', 'Company approved successfully.');
         }
 
-        // If the company is not valid, you can redirect with an error message
+
         return redirect()->route('admin.companies.pending')->with('error', 'Invalid company or already approved.');
     }
 
@@ -137,16 +150,16 @@ class UserController extends Controller
     {
         $company = User::findOrFail($id);
 
-    // Check if the company exists and is in the 'company' role
-    if ($company->role == 'company') {
-        // Delete the company
-        $company->delete();
+        // Check if the company exists and is in the 'company' role
+        if ($company->role == 'company') {
+            // Delete the company
+            $company->delete();
 
-        // Redirect back with a success message
-        return redirect()->route('admin.companies.pending')->with('success', 'Company rejected and deleted successfully.');
-    }
+            // Redirect back with a success message
+            return redirect()->route('admin.companies.pending')->with('success', 'Company rejected and deleted successfully.');
+        }
 
-    // If the company does not exist or is not a valid company, redirect with an error message
-    return redirect()->route('admin.companies.pending')->with('error', 'Invalid company.');
+        // If the company does not exist or is not a valid company, redirect with an error message
+        return redirect()->route('admin.companies.pending')->with('error', 'Invalid company.');
     }
 }

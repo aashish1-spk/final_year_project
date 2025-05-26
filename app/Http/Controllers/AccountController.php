@@ -84,7 +84,7 @@ class AccountController extends Controller
             'password' => 'required'
         ]);
 
-        // If validation passes, proceed with the login attempt
+       
         if ($validator->passes()) {
             // Attempt to authenticate the user with email and password
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -99,16 +99,16 @@ class AccountController extends Controller
 
                 // Check if the user is active
                 if ($user->is_active) {
-                    // If the user is active and either not a company or approved, allow access
+                  
                     return redirect()->route('account.profile');
                 } else {
                     // Log the user out if inactive
                     Auth::logout();
-                    // Redirect back to login with error message
+                    
                     return redirect()->route('account.login')->with('error', 'Your account has been deactivated.');
                 }
             } else {
-                // If authentication fails, return with error
+           
                 return redirect()->route('account.login')->with('error', 'Either email or password is incorrect');
             }
         } else {
@@ -142,7 +142,7 @@ class AccountController extends Controller
 
 
 
-   
+
     public function logout()
     {
         Auth::logout();
@@ -297,12 +297,12 @@ class AccountController extends Controller
             'designation' => 'required|string|max:255',
             'mobile' => 'required|numeric|digits:10',
         ]);
-    
+
         if ($validator->fails()) {
             // Redirect back with errors and old input
             return back()->withErrors($validator)->withInput();
         }
-    
+
         // Update user data
         $user = auth()->user();
         $user->name = $request->name;
@@ -310,43 +310,43 @@ class AccountController extends Controller
         $user->designation = $request->designation;
         $user->mobile = $request->mobile;
         $user->save();
-    
+
         // Redirect back with success message
         return back()->with('success', 'Profile updated successfully');
     }
-    
+
     public function updatePassword(Request $request)
     {
         // Validate the input
         $validator = Validator::make($request->all(), [
             'old_password' => 'required|string',
-            'new_password' => 'required|string|min:8|confirmed', // This ensures 'new_password' and 'new_password_confirmation' match
+            'new_password' => 'required|string|min:8|confirmed', 
         ]);
-    
+
         // If validation fails, redirect back with errors
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-    
+
         $user = auth()->user();
-    
+
         // Check if the old password matches the one in the database
         if (!Hash::check($request->old_password, $user->password)) {
             return back()->withErrors(['old_password' => 'Your old password is incorrect.']);
         }
-    
+
         // Update the password
         $user->password = Hash::make($request->new_password);
         $user->save();
-    
+
         // Redirect back with success message
         return back()->with('success', 'Password updated successfully.');
     }
-    
 
 
 
-  
+
+
 
 
     //job create
@@ -586,9 +586,7 @@ class AccountController extends Controller
 
     public function savedJobs()
     {
-        // $jobApplications = JobApplication::where('user_id',Auth::user()->id)
-        //         ->with(['job','job.jobType','job.applications'])
-        //         ->paginate(10);
+      
 
         $savedJobs = SavedJob::where([
             'user_id' => Auth::user()->id
@@ -705,78 +703,60 @@ class AccountController extends Controller
     }
 
 
-
-
-    // public function notify(Request $request)
-    // {
-    //     // Validate the incoming request
-    //     $request->validate([
-    //         'applicant_id' => 'required|exists:users,id', // Check if jobseeker exists
-    //         'message' => 'required|string', // Notification message
-    //     ]);
-
-    //     // Create a new notification for the jobseeker
-    //     Notification::create([
-    //         'user_id' => $request->applicant_id, // Jobseeker's user ID
-    //         'message' => $request->message, // Notification message
-    //     ]);
-
-    //     return back()->with('success', 'Notification sent successfully!');
-    // }
-
-
     public function notify(Request $request)
     {
         // Validate the incoming request
         $request->validate([
-            'applicant_ids' => 'required|array', // Ensure applicant_ids is an array
-            'applicant_ids.*' => 'exists:users,id', // Ensure each ID exists in the users table
-            'message' => 'required|string', // Notification message
+            'applicant_ids' => 'required|array',
+            'applicant_ids.*' => 'exists:users,id',
+            'message' => 'required|string',
         ]);
-    
+
         // Loop through each selected applicant and send notifications
         foreach ($request->applicant_ids as $applicant_id) {
             // Find the applicant by ID
             $applicant = User::findOrFail($applicant_id);
-    
-            // Find the job related to the applicant (Assuming applicant has applied to one job)
+
+
             $job = Job::whereHas('applications', function ($query) use ($applicant) {
                 $query->where('user_id', $applicant->id);
-            })->first(); // Get the first job applied by this applicant
-    
+            })->first();
+
             // If no job is found, fallback to default job title and company name
             $jobTitle = $job ? $job->title : '[Job Title]';
             $companyName = $job ? $job->company_name : '[Company Name]';
-    
+
             // Check if the provided message is 'shortlisted' or 'rejected'
             if ($request->message === 'shortlisted') {
-                // Professional message for shortlisted applicants
-                $messageContent = "Dear {$applicant->name},\n\nWe are pleased to inform you that your application for the position of {$jobTitle} at {$companyName} has been shortlisted. Your profile has caught our attention, and we would like to move forward with your application to the next stage of the selection process. Our HR team will reach out to you soon for further steps.\n\nBest regards, {$companyName}";
+
+                $messageContent = "Dear {$applicant->name},\n\nWe are pleased to inform you that your application  at {$companyName} has been shortlisted. Your profile has caught our attention, and we would like to move forward with your application to the next stage of the selection process. Our HR team will reach out to you soon for further steps.\n\nBest regards, {$companyName}";
             } elseif ($request->message === 'rejected') {
-                // Professional message for rejected applicants
-                $messageContent = "Dear {$applicant->name},\n\nThank you for your interest in the position of {$jobTitle} at {$companyName}. After careful review of your application, we regret to inform you that we have chosen to proceed with another candidate for this role. We sincerely appreciate your effort and encourage you to apply for future openings that match your qualifications.\n\nBest regards, {$companyName}";
+
+                $messageContent = "Dear {$applicant->name},\n\nThank you for your interest at {$companyName}. After careful review of your application, we regret to inform you that we have chosen to proceed with another candidate for this role. We sincerely appreciate your effort and encourage you to apply for future openings that match your qualifications.\n\nBest regards, {$companyName}";
             } else {
-                // Handle invalid message type
+
                 return back()->with('error', 'Invalid message type.');
             }
-    
+
             // Create a new notification for the jobseeker
             Notification::create([
-                'user_id' => $applicant->id, // Jobseeker's user ID
-                'message' => $messageContent, // Dynamic message content
+                'user_id' => $applicant->id,
+                'message' => $messageContent,
             ]);
         }
-    
+
         return back()->with('success', 'Notifications sent successfully!');
     }
+
+
 
     public function showNotifications()
     {
         $notifications = auth()->user()->notifications;
         return view('front.account.notifications', compact('notifications'));
     }
-    
-    
+
+
 
     public function destroy($id)
     {

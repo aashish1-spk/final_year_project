@@ -43,13 +43,13 @@
                                                     <td>{{ $company->email }}</td>
                                                     <td>{{ $company->pan_number }}</td>
                                                     <td>
-                                                        <!-- Action Dropdown -->
+                                                       
                                                         <div class="action-dots float-end">
                                                             <button class="btn" data-bs-toggle="dropdown" aria-expanded="false">
                                                                 <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                             </button>
                                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                                <!-- Approve -->
+                                                               
                                                                 <li>
                                                                     <form action="{{ route('admin.companies.approve', $company->id) }}" method="POST">
                                                                         @csrf
@@ -59,7 +59,7 @@
                                                                     </form>
                                                                 </li>
 
-                                                                <!-- Reject -->
+                                                               
                                                                 <li>
                                                                     <form action="{{ route('admin.companies.reject', $company->id) }}" method="POST">
                                                                         @csrf
@@ -69,8 +69,7 @@
                                                                     </form>
                                                                 </li>
 
-                                                                <!-- Check PAN -->
-                                                               <!-- Check PAN -->
+                                                               
                                                                 <li>
                                                                     <a class="dropdown-item" href="https://ird.gov.np/pan-search" target="_blank">
                                                                         <i class="fa fa-search" aria-hidden="true"></i> Check PAN

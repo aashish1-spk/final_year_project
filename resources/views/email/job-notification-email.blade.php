@@ -1,42 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Job Notification Email</title>
-    <!-- Include Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body style="background-color: #f8f9fa; padding: 20px;">
-    <div class="container">
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white text-center">
-                <h1 class="h4">Job Notification</h1>
-            </div>
-            <div class="card-body">
-                <h2 class="h5">Hello, {{ $mailData['employer']->name }}</h2>
-                <p class="fw-bold">Job Title:</p>
-                <p>{{ $mailData['job']->title }}</p>
+<body style="background-color: #f8f9fa; padding: 20px; font-family: Arial, sans-serif;">
 
-                <p class="fw-bold">Employee Details:</p>
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <strong>Name:</strong> {{ $mailData['user']->name }}
-                    </li>
-                    <li class="list-group-item">
-                        <strong>Email:</strong> {{ $mailData['user']->email }}
-                    </li>
-                    <li class="list-group-item">
-                        <strong>Mobile No:</strong> {{ $mailData['user']->mobile }}
-                    </li>
-                </ul>
-            </div>
-            
+    <div style="max-width: 600px; margin: 0 auto; background-color: white; border: 1px solid #ddd; border-radius: 5px;">
+        <div style="background-color: #007bff; color: white; padding: 15px; text-align: center; border-top-left-radius: 5px; border-top-right-radius: 5px;">
+            <h1 style="margin: 0; font-size: 20px;">Job Notification</h1>
+        </div>
+
+        <div style="padding: 20px;">
+            <h2 style="font-size: 18px;">Hello, {{ $mailData['employer']->name }}</h2>
+
+            <p style="font-weight: bold;">Job Title:</p>
+            <p>{{ $mailData['job']->title }}</p>
+
+            <p style="font-weight: bold;">Employee Details:</p>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 5px 0;"><strong>Name:</strong> {{ $mailData['user']->name }}</li>
+                <li style="padding: 5px 0;"><strong>Email:</strong> {{ $mailData['user']->email }}</li>
+                <li style="padding: 5px 0;"><strong>Mobile No:</strong> {{ $mailData['user']->mobile }}</li>
+            </ul>
         </div>
     </div>
 
-    <!-- Include Bootstrap JS (optional for interactive elements) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

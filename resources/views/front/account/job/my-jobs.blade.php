@@ -152,10 +152,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="featuredModalBody">
-                    <!-- Dynamic content will be injected here -->
+                   
                 </div>
                 <div class="modal-footer" id="featuredModalFooter">
-                    <!-- Dynamic footer buttons will be injected here -->
+               
                 </div>
             </div>
         </div>
@@ -171,11 +171,12 @@
                 button.addEventListener('click', function() {
                     const jobId = this.dataset.jobId;
                     const name =
-                        @json(auth()->user()->name); // Ensure this value is being passed correctly
+                        @json(auth()->user()->name); 
                     const email =
-                        @json(auth()->user()->email); // Ensure this value is being passed correctly
-                    const mobile = @json(auth()->user()->mobile); // Correct field for mobile number
+                        @json(auth()->user()->email); 
+                    const mobile = @json(auth()->user()->mobile); 
 
+                    
                     const modalBody = document.getElementById("featuredModalBody");
                     const modalFooter = document.getElementById("featuredModalFooter");
 
@@ -198,7 +199,7 @@
                             </form>
                         `;
 
-                        // Dynamically replace the placeholders with actual data
+                       
                         setTimeout(() => {
                             const payForm = document.getElementById('payForm');
                             payForm.action = payForm.action.replace('__name__',

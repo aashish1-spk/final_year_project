@@ -60,7 +60,7 @@ public function Companydestroy(Review $review)
         }
     }
 
-    // Optional: Also allow the reviewer themselves to delete their review
+   
     if ($review->reviewer_id === $user->id) {
         $review->delete();
         return back()->with('success', 'Your review was removed.');
@@ -98,7 +98,13 @@ public function reply(Request $request, $reviewId)
 public function reviewPage($job_id)
 {
     $job = Job::findOrFail($job_id);
-    return view('front.reviews.review', compact('job'));
+
+    // Check if the logged-in user has already reviewed this job
+    $hasReviewed = Review::where('job_id', $job_id)
+        ->where('reviewer_id', auth()->id())
+        ->exists();
+
+    return view('front.reviews.review', compact('job', 'hasReviewed'));
 }
 
 

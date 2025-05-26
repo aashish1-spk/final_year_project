@@ -1,0 +1,371 @@
+Date : 2025-04-29 18:04:16
+Directory : /Applications/XAMPP/xamppfiles/htdocs/job_portal
+Total : 263 files,  192795 codes, 1955 comments, 2924 blanks, all 197674 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| XML        |         41 |    148,598 |          2 |        135 |    148,735 |
+| CSS        |         14 |     24,169 |        195 |        634 |     24,998 |
+| JSON       |         25 |      9,130 |          0 |          3 |      9,133 |
+| PHP        |        158 |      8,797 |      1,669 |      2,045 |     12,511 |
+| HTML       |          2 |      2,006 |          0 |         62 |      2,068 |
+| JavaScript |         22 |         50 |         89 |         23 |        162 |
+| Markdown   |          1 |         45 |          0 |         22 |         67 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                                  | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                     |        263 |    192,795 |      1,955 |      2,924 |    197,674 |
+| . (Files)                                                                                                                             |          6 |      9,193 |          2 |         28 |      9,223 |
+| app                                                                                                                                   |         47 |      2,186 |        575 |        808 |      3,569 |
+| app/Console                                                                                                                           |          2 |         35 |         21 |         15 |         71 |
+| app/Console (Files)                                                                                                                   |          1 |         16 |          7 |          7 |         30 |
+| app/Console/Commands                                                                                                                  |          1 |         19 |         14 |          8 |         41 |
+| app/Exceptions                                                                                                                        |          1 |         17 |          9 |          5 |         31 |
+| app/Http                                                                                                                              |         26 |      1,767 |        456 |        650 |      2,873 |
+| app/Http (Files)                                                                                                                      |          1 |         43 |         21 |          7 |         71 |
+| app/Http/Controllers                                                                                                                  |         14 |      1,590 |        370 |        592 |      2,552 |
+| app/Http/Controllers (Files)                                                                                                          |          7 |      1,119 |        222 |        411 |      1,752 |
+| app/Http/Controllers/Admin                                                                                                            |          6 |        464 |        147 |        177 |        788 |
+| app/Http/Controllers/company 12-54-38-089                                                                                             |          1 |          7 |          1 |          4 |         12 |
+| app/Http/Middleware                                                                                                                   |         11 |        134 |         65 |         51 |        250 |
+| app/Mail                                                                                                                              |          2 |         66 |         28 |         16 |        110 |
+| app/Models                                                                                                                            |         11 |        219 |         18 |         93 |        330 |
+| app/Providers                                                                                                                         |          5 |         82 |         43 |         29 |        154 |
+| bootstrap                                                                                                                             |          1 |         17 |         30 |          9 |         56 |
+| config                                                                                                                                |         15 |        540 |        773 |        243 |      1,556 |
+| database                                                                                                                              |         31 |        648 |        152 |        147 |        947 |
+| database/factories                                                                                                                    |          3 |         49 |         30 |         14 |         93 |
+| database/migrations                                                                                                                   |         27 |        588 |        113 |        126 |        827 |
+| database/seeders                                                                                                                      |          1 |         11 |          9 |          7 |         27 |
+| public                                                                                                                                |         73 |    174,786 |        289 |        853 |    175,928 |
+| public (Files)                                                                                                                        |          1 |         14 |         30 |         12 |         56 |
+| public/assets                                                                                                                         |         36 |     87,379 |        129 |        420 |     87,928 |
+| public/assets 12.16.46                                                                                                                |         36 |     87,393 |        130 |        421 |     87,944 |
+| public/assets 12.16.46/css                                                                                                            |          5 |     11,761 |         97 |        286 |     12,144 |
+| public/assets 12.16.46/fonts                                                                                                          |         22 |     75,617 |          0 |        129 |     75,746 |
+| public/assets 12.16.46/fonts/fontello                                                                                                 |          1 |         58 |          0 |         47 |        105 |
+| public/assets 12.16.46/fonts/inter                                                                                                    |          2 |      1,333 |          0 |         62 |      1,395 |
+| public/assets 12.16.46/fonts/mont                                                                                                     |         18 |     74,213 |          0 |         18 |     74,231 |
+| public/assets 12.16.46/fonts/slick                                                                                                    |          1 |         13 |          0 |          2 |         15 |
+| public/assets 12.16.46/js                                                                                                             |          9 |         15 |         33 |          6 |         54 |
+| public/assets/css                                                                                                                     |          5 |     11,747 |         96 |        285 |     12,128 |
+| public/assets/fonts                                                                                                                   |         22 |     75,617 |          0 |        129 |     75,746 |
+| public/assets/fonts/fontello                                                                                                          |          1 |         58 |          0 |         47 |        105 |
+| public/assets/fonts/inter                                                                                                             |          2 |      1,333 |          0 |         62 |      1,395 |
+| public/assets/fonts/mont                                                                                                              |         18 |     74,213 |          0 |         18 |     74,231 |
+| public/assets/fonts/slick                                                                                                             |          1 |         13 |          0 |          2 |         15 |
+| public/assets/js                                                                                                                      |          9 |         15 |         33 |          6 |         54 |
+| resources                                                                                                                             |         58 |      5,207 |         74 |        741 |      6,022 |
+| resources/css                                                                                                                         |          1 |          0 |          0 |          1 |          1 |
+| resources/js                                                                                                                          |          2 |          4 |         23 |          8 |         35 |
+| resources/views                                                                                                                       |         55 |      5,203 |         51 |        732 |      5,986 |
+| resources/views (Files)                                                                                                               |          3 |        144 |          0 |         28 |        172 |
+| resources/views/Admin                                                                                                                 |         17 |      1,442 |          3 |        171 |      1,616 |
+| resources/views/Admin (Files)                                                                                                         |          2 |        162 |          0 |         17 |        179 |
+| resources/views/Admin/categories                                                                                                      |          3 |        193 |          0 |         25 |        218 |
+| resources/views/Admin/companies                                                                                                       |          1 |         85 |          0 |         12 |         97 |
+| resources/views/Admin/job-applications                                                                                                |          1 |        106 |          0 |          5 |        111 |
+| resources/views/Admin/job_types                                                                                                       |          3 |        187 |          0 |         21 |        208 |
+| resources/views/Admin/jobs                                                                                                            |          5 |        489 |          3 |         66 |        558 |
+| resources/views/Admin/users                                                                                                           |          2 |        220 |          0 |         25 |        245 |
+| resources/views/Auth                                                                                                                  |          1 |         36 |          0 |         10 |         46 |
+| resources/views/company 12-38-15-076                                                                                                  |          1 |          0 |          0 |          1 |          1 |
+| resources/views/email                                                                                                                 |          2 |        113 |          0 |         10 |        123 |
+| resources/views/front                                                                                                                 |         31 |      3,468 |         48 |        512 |      4,028 |
+| resources/views/front (Files)                                                                                                         |          5 |        698 |          5 |        122 |        825 |
+| resources/views/front/account                                                                                                         |         24 |      2,532 |         43 |        347 |      2,922 |
+| resources/views/front/account (Files)                                                                                                 |         17 |      1,543 |         28 |        248 |      1,819 |
+| resources/views/front/account/job                                                                                                     |          7 |        989 |         15 |         99 |      1,103 |
+| resources/views/front/layouts                                                                                                         |          1 |        137 |          0 |         28 |        165 |
+| resources/views/front/reviews                                                                                                         |          1 |        101 |          0 |         15 |        116 |
+| routes                                                                                                                                |          4 |        148 |         48 |         75 |        271 |
+| tests                                                                                                                                 |          4 |         41 |         10 |         19 |         70 |
+| tests (Files)                                                                                                                         |          2 |         20 |          3 |         10 |         33 |
+| tests/Feature                                                                                                                         |          1 |         11 |          4 |          5 |         20 |
+| tests/Unit                                                                                                                            |          1 |         10 |          3 |          4 |         17 |
+| vendor                                                                                                                                |         24 |         29 |          2 |          1 |         32 |
+| vendor/mpdf                                                                                                                           |         22 |         22 |          0 |          0 |         22 |
+| vendor/mpdf/mpdf                                                                                                                      |         22 |         22 |          0 |          0 |         22 |
+| vendor/mpdf/mpdf/tmp                                                                                                                  |         22 |         22 |          0 |          0 |         22 |
+| vendor/mpdf/mpdf/tmp/mpdf                                                                                                             |         22 |         22 |          0 |          0 |         22 |
+| vendor/mpdf/mpdf/tmp/mpdf/ttfontdata                                                                                                  |         22 |         22 |          0 |          0 |         22 |
+| vendor/spatie                                                                                                                         |          2 |          7 |          2 |          1 |         10 |
+| vendor/spatie/ignition                                                                                                                |          2 |          7 |          2 |          1 |         10 |
+| vendor/spatie/ignition/resources                                                                                                      |          2 |          7 |          2 |          1 |         10 |
+| vendor/spatie/ignition/resources/compiled                                                                                             |          2 |          7 |          2 |          1 |         10 |
++---------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                                              | language   | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/README.md                                                                            | Markdown   |         45 |          0 |         22 |         67 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Console/Commands/RemoveExpiredFeaturedJobs.php                                   | PHP        |         19 |         14 |          8 |         41 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Console/Kernel.php                                                               | PHP        |         16 |          7 |          7 |         30 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Exceptions/Handler.php                                                           | PHP        |         17 |          9 |          5 |         31 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/AccountController.php                                           | PHP        |        509 |        107 |        177 |        793 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/Admin/CategoryController.php                                    | PHP        |         50 |         11 |         14 |         75 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/Admin/DashboardController.php                                   | PHP        |         52 |          1 |          7 |         60 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/Admin/JobApplicationController.php                              | PHP        |         25 |          1 |         12 |         38 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/Admin/JobController.php                                         | PHP        |        170 |        125 |         88 |        383 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/Admin/JobTypeController.php                                     | PHP        |         48 |          0 |         15 |         63 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/Admin/UserController.php                                        | PHP        |        119 |          9 |         41 |        169 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/Controller.php                                                  | PHP        |          9 |          0 |          4 |         13 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/CvController.php                                                | PHP        |        165 |          5 |         35 |        205 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/HomeController.php                                              | PHP        |         28 |          1 |         16 |         45 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/JobsController.php                                              | PHP        |        181 |         98 |        107 |        386 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/PaymentController.php                                           | PHP        |        136 |          0 |         37 |        173 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/ReviewController.php                                            | PHP        |         91 |         11 |         35 |        137 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/company 12-54-38-089/CompanyAccountController.php               | PHP        |          7 |          1 |          4 |         12 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Kernel.php                                                                  | PHP        |         43 |         21 |          7 |         71 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Middleware/Authenticate.php                                                 | PHP        |         11 |          3 |          4 |         18 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Middleware/CheckAdmin.php                                                   | PHP        |         19 |          7 |          7 |         33 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Middleware/EncryptCookies.php                                               | PHP        |          8 |          6 |          4 |         18 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Middleware/PreventRequestsDuringMaintenance.php                             | PHP        |          8 |          6 |          4 |         18 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Middleware/RedirectIfAuthenticated.php                                      | PHP        |         20 |          5 |          6 |         31 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Middleware/RoleMiddleware.php                                               | PHP        |         15 |          1 |          5 |         21 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Middleware/TrimStrings.php                                                  | PHP        |         11 |          5 |          4 |         20 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Middleware/TrustHosts.php                                                   | PHP        |         12 |          5 |          4 |         21 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Middleware/TrustProxies.php                                                 | PHP        |         14 |         10 |          5 |         29 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Middleware/ValidateSignature.php                                            | PHP        |          8 |         11 |          4 |         23 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Middleware/VerifyCsrfToken.php                                              | PHP        |          8 |          6 |          4 |         18 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Mail/JobNotificationEmail.php                                                    | PHP        |         33 |         14 |          9 |         56 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Mail/ResetPasswordEmail.php                                                      | PHP        |         33 |         14 |          7 |         54 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/Category.php                                                              | PHP        |          7 |          1 |          4 |         12 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/Cv.php                                                                    | PHP        |         24 |          0 |          5 |         29 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/JobApplication.php                                                        | PHP        |         17 |          0 |          6 |         23 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/JobType.php                                                               | PHP        |         12 |          0 |          7 |         19 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/Notification.php                                                          | PHP        |         13 |          0 |          7 |         20 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/Payment.php                                                               | PHP        |         29 |          2 |         12 |         43 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/Review.php                                                                | PHP        |         19 |          0 |         14 |         33 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/ReviewReply.php                                                           | PHP        |         21 |          0 |          7 |         28 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/SavedJob.php                                                              | PHP        |         11 |          0 |          5 |         16 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/User.php                                                                  | PHP        |         34 |         15 |         11 |         60 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/job.php                                                                   | PHP        |         32 |          0 |         15 |         47 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Providers/AppServiceProvider.php                                                 | PHP        |         14 |          7 |          6 |         27 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Providers/AuthServiceProvider.php                                                | PHP        |         11 |         11 |          5 |         27 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Providers/BroadcastServiceProvider.php                                           | PHP        |         12 |          3 |          5 |         20 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Providers/EventServiceProvider.php                                               | PHP        |         21 |         12 |          6 |         39 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Providers/RouteServiceProvider.php                                               | PHP        |         24 |         10 |          7 |         41 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/bootstrap/app.php                                                                    | PHP        |         17 |         30 |          9 |         56 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/composer.json                                                                        | JSON       |         70 |          0 |          1 |         71 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/composer.lock                                                                        | JSON       |      9,025 |          0 |          1 |      9,026 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/app.php                                                                       | PHP        |         27 |        131 |         31 |        189 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/auth.php                                                                      | PHP        |         28 |         74 |         14 |        116 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/broadcasting.php                                                              | PHP        |         36 |         23 |         13 |         72 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/cache.php                                                                     | PHP        |         59 |         34 |         19 |        112 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/cors.php                                                                      | PHP        |          3 |         29 |          3 |         35 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/database.php                                                                  | PHP        |         83 |         47 |         22 |        152 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/filesystems.php                                                               | PHP        |         32 |         32 |         13 |         77 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/hashing.php                                                                   | PHP        |         14 |         32 |          9 |         55 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/logging.php                                                                   | PHP        |         79 |         34 |         19 |        132 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/mail.php                                                                      | PHP        |         61 |         54 |         20 |        135 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/queue.php                                                                     | PHP        |         51 |         42 |         17 |        110 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/sanctum.php                                                                   | PHP        |         17 |         53 |         14 |         84 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/services.php                                                                  | PHP        |         17 |         11 |          7 |         35 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/session.php                                                                   | PHP        |         23 |        157 |         35 |        215 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/config/view.php                                                                      | PHP        |         10 |         20 |          7 |         37 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/factories/CategoryFactory.php                                               | PHP        |         12 |          8 |          4 |         24 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/factories/JobTypeFactory.php                                                | PHP        |         12 |          8 |          4 |         24 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/factories/UserFactory.php                                                   | PHP        |         25 |         14 |          6 |         45 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2014_10_12_000000_create_users_table.php                         | PHP        |         26 |          6 |          4 |         36 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2014_10_12_100000_create_password_reset_tokens_table.php         | PHP        |         19 |          6 |          4 |         29 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2019_08_19_000000_create_failed_jobs_table.php                   | PHP        |         23 |          6 |          4 |         33 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2019_12_14_000001_create_personal_access_tokens_table.php        | PHP        |         24 |          6 |          4 |         34 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2024_12_10_052826_alter_users_table.php                          | PHP        |         19 |          6 |          4 |         29 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2024_12_27_063648_create_categories_table.php                    | PHP        |         20 |          6 |          4 |         30 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2024_12_27_063802_create_job_types_table.php                     | PHP        |         20 |          6 |          4 |         30 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2024_12_27_063832_create_jobs_table.php                          | PHP        |         33 |          6 |          5 |         44 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2024_12_27_111827_alter_jobs_table.php                           | PHP        |         21 |          6 |          8 |         35 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2024_12_28_042002_alter_jobs_table.php                           | PHP        |         20 |          6 |          6 |         32 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_01_22_123754_create_job_applications_table.php              | PHP        |         22 |          6 |          4 |         32 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_03_03_035534_create_saved_jobs_table.php                    | PHP        |         20 |          6 |          3 |         29 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_03_08_055235_update_role_column_in_users_table.php          | PHP        |         18 |          0 |          4 |         22 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_03_19_033118_add_is_active_to_users_table.php               | PHP        |         19 |          3 |          5 |         27 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_03_130455_create_cvs_table.php                           | PHP        |         25 |          7 |          5 |         37 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_04_020119_add_cv_file_path_to_cvs_table.php              | PHP        |         19 |          0 |          4 |         23 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_04_020350_add_cv_file_path_to_job_applications_table.php | PHP        |         19 |          0 |          4 |         23 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_07_021215_add_fields_to_cvs_table.php                    | PHP        |         30 |          0 |          4 |         34 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_08_122454_create_notifications_table.php                 | PHP        |         21 |          0 |          4 |         25 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_12_080357_add_pan_and_is_approved_to_users_table.php     | PHP        |         20 |          3 |          5 |         28 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_12_145854_add_featured_request_to_jobs_table.php         | PHP        |         19 |          3 |          5 |         27 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_14_022201_create_payments_table.php                      | PHP        |         31 |          0 |          6 |         37 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_17_141831_add_featured_until_to_jobs_table.php           | PHP        |         19 |          3 |          7 |         29 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_21_090723_remove_tidx_from_payments_table.php            | PHP        |         19 |          3 |          6 |         28 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_21_125540_create_reviews_table.php                       | PHP        |         23 |          6 |          4 |         33 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_23_085853_add_reply_to_reviews_table.php                 | PHP        |         18 |          7 |          4 |         29 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_23_090454_create_review_replies_table.php                | PHP        |         21 |          6 |          5 |         32 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/seeders/DatabaseSeeder.php                                                  | PHP        |         11 |          9 |          7 |         27 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/package.json                                                                         | JSON       |         13 |          0 |          1 |         14 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/phpunit.xml                                                                          | XML        |         30 |          2 |          1 |         33 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/css/slick-theme.css                                           | CSS        |        170 |          4 |         31 |        205 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/css/slick.css                                                 | CSS        |        104 |          1 |         15 |        120 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/css/style.css                                                 | CSS        |      9,951 |         86 |          2 |     10,039 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/css/style.min.css                                             | CSS        |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/css/video-js.css                                              | CSS        |      1,535 |          6 |        238 |      1,779 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/fontello/fontello.svg                                   | XML        |         58 |          0 |         47 |        105 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/inter/demo.html                                         | HTML       |      1,003 |          0 |         31 |      1,034 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/inter/stylesheet.css                                    | CSS        |        330 |          0 |         31 |        361 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-Black.svg                                     | XML        |      3,953 |          0 |          1 |      3,954 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-BlackItalic.svg                               | XML        |      4,454 |          0 |          1 |      4,455 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-Bold.svg                                      | XML        |      4,001 |          0 |          1 |      4,002 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-BoldItalic.svg                                | XML        |      4,028 |          0 |          1 |      4,029 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-Book.svg                                      | XML        |      4,072 |          0 |          1 |      4,073 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-BookItalic.svg                                | XML        |      4,156 |          0 |          1 |      4,157 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-ExtraLight.svg                                | XML        |      4,072 |          0 |          1 |      4,073 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-ExtraLightItalic.svg                          | XML        |      4,161 |          0 |          1 |      4,162 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-Heavy.svg                                     | XML        |      4,317 |          0 |          1 |      4,318 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-HeavyItalic.svg                               | XML        |      4,456 |          0 |          1 |      4,457 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-Light.svg                                     | XML        |      4,072 |          0 |          1 |      4,073 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-LightItalic.svg                               | XML        |      4,161 |          0 |          1 |      4,162 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-Regular.svg                                   | XML        |      4,056 |          0 |          1 |      4,057 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-RegularItalic.svg                             | XML        |      4,158 |          0 |          1 |      4,159 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-SemiBold.svg                                  | XML        |      4,006 |          0 |          1 |      4,007 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-SemiBoldItalic.svg                            | XML        |      4,028 |          0 |          1 |      4,029 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-Thin.svg                                      | XML        |      4,070 |          0 |          1 |      4,071 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/mont/Mont-ThinItalic.svg                                | XML        |      3,992 |          0 |          1 |      3,993 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/fonts/slick/slick.svg                                         | XML        |         13 |          0 |          2 |         15 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/js/bootstrap.bundle.5.1.3.min.js                              | JavaScript |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/js/custom.js                                                  | JavaScript |          3 |          0 |          4 |          7 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/js/instantpages.5.1.0.min.js                                  | JavaScript |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/js/jquery-3.6.0.min.js                                        | JavaScript |          1 |          1 |          0 |          2 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/js/lazyload.17.6.0.min.js                                     | JavaScript |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/js/lightbox.min.js                                            | JavaScript |          1 |          5 |          0 |          6 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/js/masonry.min.js                                             | JavaScript |          1 |          7 |          1 |          9 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/js/slick.min.js                                               | JavaScript |          1 |          0 |          1 |          2 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets 12.16.46/js/video.min.js                                               | JavaScript |          5 |         20 |          0 |         25 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/css/slick-theme.css                                                    | CSS        |        170 |          4 |         31 |        205 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/css/slick.css                                                          | CSS        |        104 |          1 |         15 |        120 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/css/style.css                                                          | CSS        |      9,937 |         85 |          1 |     10,023 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/css/style.min.css                                                      | CSS        |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/css/video-js.css                                                       | CSS        |      1,535 |          6 |        238 |      1,779 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/fontello/fontello.svg                                            | XML        |         58 |          0 |         47 |        105 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/inter/demo.html                                                  | HTML       |      1,003 |          0 |         31 |      1,034 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/inter/stylesheet.css                                             | CSS        |        330 |          0 |         31 |        361 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-Black.svg                                              | XML        |      3,953 |          0 |          1 |      3,954 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-BlackItalic.svg                                        | XML        |      4,454 |          0 |          1 |      4,455 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-Bold.svg                                               | XML        |      4,001 |          0 |          1 |      4,002 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-BoldItalic.svg                                         | XML        |      4,028 |          0 |          1 |      4,029 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-Book.svg                                               | XML        |      4,072 |          0 |          1 |      4,073 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-BookItalic.svg                                         | XML        |      4,156 |          0 |          1 |      4,157 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-ExtraLight.svg                                         | XML        |      4,072 |          0 |          1 |      4,073 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-ExtraLightItalic.svg                                   | XML        |      4,161 |          0 |          1 |      4,162 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-Heavy.svg                                              | XML        |      4,317 |          0 |          1 |      4,318 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-HeavyItalic.svg                                        | XML        |      4,456 |          0 |          1 |      4,457 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-Light.svg                                              | XML        |      4,072 |          0 |          1 |      4,073 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-LightItalic.svg                                        | XML        |      4,161 |          0 |          1 |      4,162 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-Regular.svg                                            | XML        |      4,056 |          0 |          1 |      4,057 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-RegularItalic.svg                                      | XML        |      4,158 |          0 |          1 |      4,159 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-SemiBold.svg                                           | XML        |      4,006 |          0 |          1 |      4,007 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-SemiBoldItalic.svg                                     | XML        |      4,028 |          0 |          1 |      4,029 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-Thin.svg                                               | XML        |      4,070 |          0 |          1 |      4,071 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/mont/Mont-ThinItalic.svg                                         | XML        |      3,992 |          0 |          1 |      3,993 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/fonts/slick/slick.svg                                                  | XML        |         13 |          0 |          2 |         15 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/js/bootstrap.bundle.5.1.3.min.js                                       | JavaScript |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/js/custom.js                                                           | JavaScript |          3 |          0 |          4 |          7 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/js/instantpages.5.1.0.min.js                                           | JavaScript |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/js/jquery-3.6.0.min.js                                                 | JavaScript |          1 |          1 |          0 |          2 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/js/lazyload.17.6.0.min.js                                              | JavaScript |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/js/lightbox.min.js                                                     | JavaScript |          1 |          5 |          0 |          6 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/js/masonry.min.js                                                      | JavaScript |          1 |          7 |          1 |          9 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/js/slick.min.js                                                        | JavaScript |          1 |          0 |          1 |          2 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/assets/js/video.min.js                                                        | JavaScript |          5 |         20 |          0 |         25 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/public/index.php                                                                     | PHP        |         14 |         30 |         12 |         56 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/css/app.css                                                                | CSS        |          0 |          0 |          1 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/js/app.js                                                                  | JavaScript |          1 |          0 |          1 |          2 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/js/bootstrap.js                                                            | JavaScript |          3 |         23 |          7 |         33 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/categories/create.blade.php                                    | PHP        |         52 |          0 |         10 |         62 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/categories/edit.blade.php                                      | PHP        |         58 |          0 |          7 |         65 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/categories/index.blade.php                                     | PHP        |         83 |          0 |          8 |         91 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/companies/pending.blade.php                                    | PHP        |         85 |          0 |         12 |         97 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/dashboard.blade.php                                            | PHP        |        130 |          0 |         13 |        143 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/job-applications/list.blade.php                                | PHP        |        106 |          0 |          5 |        111 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/job_types/create.blade.php                                     | PHP        |         48 |          0 |          6 |         54 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/job_types/edit.blade.php                                       | PHP        |         56 |          0 |          7 |         63 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/job_types/index.blade.php                                      | PHP        |         83 |          0 |          8 |         91 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/jobs/edit.blade.php                                            | PHP        |        157 |          0 |         32 |        189 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/jobs/featured_requests.blade.php                               | PHP        |         94 |          0 |          6 |        100 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/jobs/invoice.blade.php                                         | PHP        |         80 |          0 |         14 |         94 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/jobs/list.blade.php                                            | PHP        |        121 |          3 |          9 |        133 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/jobs/payment-details.blade.php                                 | PHP        |         37 |          0 |          5 |         42 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/sidebar.blade.php                                              | PHP        |         32 |          0 |          4 |         36 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/users/edit.blade.php                                           | PHP        |         76 |          0 |         11 |         87 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/users/list.blade.php                                           | PHP        |        144 |          0 |         14 |        158 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Auth/verify-email.blade.php                                          | PHP        |         36 |          0 |         10 |         46 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/company 12-38-15-076/dashboard.blade.php                             | PHP        |          0 |          0 |          1 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/company.blade.php                                                    | PHP        |          0 |          0 |          1 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/email/forgot-password.blade.php                                      | PHP        |         74 |          0 |          6 |         80 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/email/job-notification-email.blade.php                               | PHP        |         39 |          0 |          4 |         43 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/company-verify-email.blade.php                         | PHP        |         41 |          0 |          9 |         50 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/company_profile.blade.php                              | PHP        |         63 |          0 |          8 |         71 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/companyprofile.blade.php                               | PHP        |        170 |         15 |         27 |        212 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/companyregistration.blade.php                          | PHP        |        146 |          2 |         16 |        164 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/create-cv.blade.php                                    | PHP        |        151 |          4 |         31 |        186 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/cv-list.blade.php                                      | PHP        |         78 |          0 |          8 |         86 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/cv-pdf.blade.php                                       | PHP        |        179 |          0 |         34 |        213 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/dummyblade.php                                         | PHP        |         33 |          0 |          7 |         40 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/edit-cv.blade.php                                      | PHP        |        152 |          4 |         29 |        185 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/forgot-password.blade.php                              | PHP        |         42 |          0 |          7 |         49 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/job/create.blade.php                                   | PHP        |        267 |         12 |         33 |        312 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/job/edit.blade.php                                     | PHP        |        218 |          2 |         23 |        243 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/job/invoice.blade.php                                  | PHP        |         27 |          0 |          2 |         29 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/job/my-job-applications.blade.php                      | PHP        |        106 |          0 |          6 |        112 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/job/my-jobs.blade.php                                  | PHP        |        226 |          1 |         24 |        251 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/job/payment.blade.php                                  | PHP        |         34 |          0 |          6 |         40 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/job/saved-jobs.blade.php                               | PHP        |        111 |          0 |          5 |        116 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/login.blade.php                                        | PHP        |         50 |          0 |          7 |         57 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/notifications.blade.php                                | PHP        |         51 |          0 |          8 |         59 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/profile.blade.php                                      | PHP        |        118 |          0 |         15 |        133 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/registration-options.blade.php                         | PHP        |         41 |          2 |          5 |         48 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/registration.blade.php                                 | PHP        |        121 |          1 |         15 |        137 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/reset-password.blade.php                               | PHP        |         50 |          0 |         10 |         60 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/sidebar.blade.php                                      | PHP        |         57 |          0 |         12 |         69 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/contact.blade.php                                              | PHP        |          0 |          0 |          1 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/home.blade.php                                                 | PHP        |        151 |          0 |         33 |        184 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/jobDetail.blade.php                                            | PHP        |        373 |          0 |         36 |        409 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/jobs.blade.php                                                 | PHP        |        162 |          5 |         48 |        215 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/layouts/app.blade.php                                          | PHP        |        137 |          0 |         28 |        165 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/message.blade.php                                              | PHP        |         12 |          0 |          4 |         16 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/reviews/review.blade.php                                       | PHP        |        101 |          0 |         15 |        116 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/khalti.blade.php                                                     | PHP        |         33 |          0 |          4 |         37 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/welcome.blade.php                                                    | PHP        |        111 |          0 |         23 |        134 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/routes/api.php                                                                       | PHP        |          6 |         10 |          4 |         20 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/routes/channels.php                                                                  | PHP        |          5 |         10 |          4 |         19 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/routes/console.php                                                                   | PHP        |          6 |         10 |          4 |         20 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/routes/web.php                                                                       | PHP        |        131 |         18 |         63 |        212 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/tests/CreatesApplication.php                                                         | PHP        |         13 |          3 |          6 |         22 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/tests/Feature/ExampleTest.php                                                        | PHP        |         11 |          4 |          5 |         20 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/tests/TestCase.php                                                                   | PHP        |          7 |          0 |          4 |         11 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/tests/Unit/ExampleTest.php                                                           | PHP        |         10 |          3 |          4 |         17 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensed.GDEFdata.json               | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensed.GPOSdata.json               | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensed.GSUB.arab.DFLT.json         | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensed.GSUB.arab.KUR .json         | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensed.GSUB.arab.SND .json         | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensed.GSUB.arab.URD .json         | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensed.GSUB.nko .DFLT.json         | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensed.GSUBdata.json               | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensed.cw127.json                  | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensed.mtx.json                    | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensedB.GDEFdata.json              | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensedB.GPOSdata.json              | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensedB.GSUB.arab.DFLT.json        | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensedB.GSUB.arab.KUR .json        | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensedB.GSUB.arab.SND .json        | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensedB.GSUB.arab.URD .json        | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensedB.GSUB.nko .DFLT.json        | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensedB.GSUBdata.json              | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensedB.cw127.json                 | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavusanscondensedB.mtx.json                   | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavuserifcondensed.mtx.json                   | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/mpdf/mpdf/tmp/mpdf/ttfontdata/dejavuserifcondensedB.mtx.json                  | JSON       |          1 |          0 |          0 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/spatie/ignition/resources/compiled/ignition.css                               | CSS        |          1 |          2 |          0 |          3 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vendor/spatie/ignition/resources/compiled/ignition.js                                | JavaScript |          6 |          0 |          1 |          7 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/vite.config.js                                                                       | JavaScript |         10 |          0 |          2 |         12 |
+| Total                                                                                                                                 |            |    192,795 |      1,955 |      2,924 |    197,674 |
++---------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

@@ -37,6 +37,12 @@
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <a href="{{ route('admin.jobs.featured.list') }}" class="btn btn-primary">
+                                            View Featured Job List
+                                        </a>
+                                    </div>
+                                    
                                     <tbody>
                                         @foreach ($featuredRequests as $job)
                                             <tr>

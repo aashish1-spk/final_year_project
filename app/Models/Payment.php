@@ -22,17 +22,16 @@ class Payment extends Model
         'order_name',
     ];
 
-    /**
-     * A payment belongs to a user.
-     */
+     // A payment belongs to a user.
+     
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * A payment belongs to a job.
-     */
+    
+     // A payment belongs to a job.
+     
     public function job(): BelongsTo
     {
         return $this->belongsTo(Job::class);

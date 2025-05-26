@@ -26,8 +26,18 @@
                         </div>
                         <div style="margin-top: -10px;">
                         </div>
-                        
                     </div>
+
+                 
+                    <form method="GET" action="{{ route('admin.users') }}" class="mb-3 d-flex justify-content-start" style="max-width: 400px;">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" placeholder="Search users..." value="{{ request('search') }}">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </form>
+                    
+                    
+
                     <div class="table-responsive">
                         <table class="table ">
                             <thead class="bg-light">
@@ -43,12 +53,8 @@
                                 @if ($users->isNotEmpty())
                                     @foreach ($users as $user)
                                     <tr class="active">
-                                        <td>
-                                            {{ $user->id }}
-                                        </td>
-                                        <td>
-                                            <div class="job-name fw-500">{{ $user->name }}</div>
-                                        </td>
+                                        <td>{{ $user->id }}</td>
+                                        <td><div class="job-name fw-500">{{ $user->name }}</div></td>
                                         <td>{{ $user->email }} </td>
                                         <td>
                                             @if ($user->role == 'user')
@@ -61,7 +67,6 @@
                                                 Unknown Role
                                             @endif
                                         </td>
-                           
                                         <td>
                                             <div class="action-dots ">
                                                 <button href="#" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
@@ -80,26 +85,21 @@
                                                             </a>
                                                         @endif
                                                     </li>
-                                                                                       </ul>
+                                                </ul>
                                             </div>
                                         </td>
                                     </tr>         
                                     @endforeach
                                 @endif
-
-                              
-                               
                             </tbody>
-                            
                         </table>
                     </div>
 
                     <div>
-                        {{ $users->links() }}  
+                        {{ $users->appends(['search' => request('search')])->links() }}  
                     </div>
                 </div>
-                </div>                          
-            </div>
+            </div>                          
         </div>
     </div>
 </section>
@@ -132,7 +132,7 @@
             });
         }
     }
-    
+
     function activateUser(id) {
         if (confirm("Are you sure you want to activate this user?")) {
             $.ajax({
@@ -157,5 +157,5 @@
             });
         }
     }
-    </script>
+</script>
 @endsection

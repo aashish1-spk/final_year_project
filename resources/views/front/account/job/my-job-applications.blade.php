@@ -63,7 +63,32 @@
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li><a class="dropdown-item" href="{{ route('jobDetail', $jobApplication->job_id) }}"> <i class="fa fa-eye" aria-hidden="true"></i> View</a></li>
                                                         <li><a class="dropdown-item" href="#" onclick="removeJob({{ $jobApplication->id }})"><i class="fa fa-trash" aria-hidden="true"></i> Remove job</a></li>
-                                                        <li><a class="dropdown-item" href="{{ route('jobReviewPage', $jobApplication->job_id) }}"><i class="fa fa-star" aria-hidden="true"></i> Review and Ask Question</a></li>
+                                                        {{-- <li><a class="dropdown-item" href="{{ route('jobReviewPage', $jobApplication->job_id) }}"><i class="fa fa-star" aria-hidden="true"></i> Review and Ask Question</a></li> --}}
+                                                   
+                                                    
+                                                    
+                                                        @php
+                                                        $hasReviewed = \App\Models\Review::where('job_id', $jobApplication->job_id)
+                                                            ->where('reviewer_id', auth()->id())
+                                                            ->exists();
+                                                        @endphp
+                                                    
+                                                    <li>
+                                                        @if($hasReviewed)
+                                                            <a class="dropdown-item disabled" href="javascript:void(0)" style="pointer-events: none; opacity: 0.5;">
+                                                                <i class="fa fa-star" aria-hidden="true"></i> Already Reviewed
+                                                            </a>
+                                                        @else
+                                                            <a class="dropdown-item" href="{{ route('jobReviewPage', $jobApplication->job_id) }}">
+                                                                <i class="fa fa-star" aria-hidden="true"></i> Review and Ask Question
+                                                            </a>
+                                                        @endif
+                                                    </li>
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
                                                     </ul>
                                                 </div>
                                             </td>

@@ -54,14 +54,14 @@
                                                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                    <!-- Edit Option -->
+                                                  
                                                     <li>
                                                         <a class="dropdown-item" href="{{ route('categories.edit', $category->id) }}">
                                                             <i class="fa fa-pencil-alt me-2"></i> Edit
                                                         </a>
                                                     </li>
 
-                                                    <!-- Delete Option -->
+                                                  
                                                     <li>
                                                         <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');">
                                                             @csrf

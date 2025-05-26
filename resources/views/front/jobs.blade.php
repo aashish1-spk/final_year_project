@@ -41,7 +41,7 @@
                                 <option value="{{ $category->id }}" {{ (Request::get('category') == $category->id) ? 'selected' : '' }}>
                                     {{ $category->name }}
                                 </option>
-                                                                @endforeach
+                                 @endforeach
                             @endif
 
                         </select>

@@ -10020,3 +10020,76 @@ footer .nav-link {
   content: '';
 }
 /* '' */
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+/* For Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* For Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+/* Ensure consistent padding for card body */
+.card {
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+}
+
+/* Standard spacing for breadcrumb */
+.breadcrumb {
+  background-color: #f8f9fa;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+
+/* Align card headers and controls */
+.card .d-flex {
+  align-items: center;
+  padding-bottom: 1rem;
+}
+
+/* Remove negative margins */
+.card .d-flex > div:last-child {
+  margin-top: 0 !important;
+}
+
+/* Table spacing */
+.table {
+  margin-bottom: 0;
+}
+
+/* General spacing helpers */
+.py-5 {
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+}
+
+/* Container padding fix */
+.container {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Dropdown spacing fix */
+.dropdown-menu {
+  min-width: 160px;
+}
+
+/* Make sure rows and columns are spaced properly */
+.row > [class*="col-"] {
+  margin-bottom: 1rem;
+}
+

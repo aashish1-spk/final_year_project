@@ -152,7 +152,7 @@
         if (isValid) {
             this.submit(); // Submit the form normally
         } else {
-            // Optionally, you could display a general message for errors
+            
             alert('Please fix the errors before submitting the form.');
         }
     });

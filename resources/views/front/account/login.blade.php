@@ -16,9 +16,6 @@
         <p class="mb-0 pb-0" >{{ session()->get('error') }}</p>
         </div>
         @endif
-
-
-
         <div class="row d-flex justify-content-center">
             <div class="col-md-5">
                 <div class="card shadow border-0 p-5">

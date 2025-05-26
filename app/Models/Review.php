@@ -9,11 +9,9 @@ class Review extends Model
 {
     use HasFactory;
 
-    // App\Models\Review.php
-
-// In the Review model (App\Models\Review)
+    
 public function user() {
-    return $this->belongsTo(User::class, 'reviewer_id'); // Update to 'reviewer_id'
+    return $this->belongsTo(User::class, 'reviewer_id'); 
 }
 
 public function job()

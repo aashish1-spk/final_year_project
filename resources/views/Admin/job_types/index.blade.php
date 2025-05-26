@@ -54,14 +54,14 @@
                                                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                    <!-- Edit Option -->
+                                                   
                                                     <li>
                                                         <a class="dropdown-item" href="{{ route('job_types.edit', $jobType->id) }}">
                                                             <i class="fa fa-pencil-alt me-2"></i> Edit
                                                         </a>
                                                     </li>
 
-                                                    <!-- Delete Option -->
+                                                  
                                                     <li>
                                                         <form action="{{ route('job_types.destroy', $jobType->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this job type?');">
                                                             @csrf

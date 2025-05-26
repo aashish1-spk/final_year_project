@@ -9,7 +9,7 @@ class AddCvFilePathToCvsTable extends Migration
     public function up()
     {
         Schema::table('cvs', function (Blueprint $table) {
-            $table->string('cv_file_path')->nullable(); // Add a column to store the file path
+            $table->string('cv_file_path')->nullable(); 
         });
     }
 

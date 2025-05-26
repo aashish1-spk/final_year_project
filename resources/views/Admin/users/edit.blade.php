@@ -22,15 +22,7 @@
             <div class="col-lg-9">
                 @include('front.message')
 
-                <!-- Display Success Message -->
-                @if(session('success'))
-                    <p class="alert alert-success">{{ session('success') }}</p>
-                @endif
-                
-                <!-- Display Error Message -->
-                @if(session('error'))
-                    <p class="alert alert-danger">{{ session('error') }}</p>
-                @endif
+             
 
                 <div class="card border-0 shadow mb-4">
                     <div class="card-body card-form">

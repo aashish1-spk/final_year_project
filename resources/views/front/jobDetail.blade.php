@@ -95,13 +95,6 @@
                     </div>
 
 
-
-
-
-
-
-
-
                     <div class="reviews-section mt-5 p-4 bg-light rounded shadow">
                         <h3 class="mb-4">Comment and Job Reviews</h3>
 
@@ -203,10 +196,6 @@
                         @endif
                     </div>
 
-
-
-
-                    {{-- Applicants section visible only to the job creator --}}
                     @auth
                         @if (auth()->user()->id == $job->user_id)
                             <div class="card shadow border-0 mt-4">
@@ -239,7 +228,7 @@
                                                 <td>
                                                     @if ($application->cv_file_path)
                                                         <a href="{{ route('cv.downloadCVCompany', ['id' => $application->cv_file_path]) }}"
-                                                            class="btn btn-sm btn-success" target="_blank">Download PDF</a>
+                                                            class="btn btn-sm btn-success" target="_blank">generate PDF</a>
                                                     @else
                                                         <span>No CV uploaded</span>
                                                     @endif
@@ -312,7 +301,7 @@
                             <div class="card shadow-lg border-0 rounded-3">
                                 <div class="card-header text-white border-0 rounded-top"
                                     style="background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);">
-                                    <h5 class="mb-0 fw-bold text-uppercase">📢 Send Notification to Applicants</h5>
+                                    <h5 class="mb-0 fw-bold text-uppercase"> Send Notification to Applicants</h5>
                                 </div>
 
                                 @php

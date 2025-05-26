@@ -20,9 +20,9 @@ class Cv extends Model
         'certifications',
         'languages',
         'references',
-        'github_link',       // Added field
-        'linkedin_link',     // Added field
-        'user_id',           // Add this to the fillable property
-        'cv_file_path',      // Add cv_file_path here
+        'github_link',       
+        'linkedin_link',    
+        'user_id',           
+        'cv_file_path',     
     ];
 }

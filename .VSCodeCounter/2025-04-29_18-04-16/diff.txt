@@ -1,0 +1,66 @@
+Date : 2025-04-29 18:04:16
+Directory : /Applications/XAMPP/xamppfiles/htdocs/job_portal
+Total : 21 files,  -27 codes, -19 comments, 17 blanks, all -29 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| PHP      |         21 |        -27 |        -19 |         17 |        -29 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                       | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                          |         21 |        -27 |        -19 |         17 |        -29 |
+| app                                                                                                                        |          8 |          0 |        -13 |         -3 |        -16 |
+| app/Http                                                                                                                   |          3 |          0 |         -4 |         -9 |        -13 |
+| app/Http/Controllers                                                                                                       |          3 |          0 |         -4 |         -9 |        -13 |
+| app/Http/Controllers (Files)                                                                                               |          1 |          0 |         -1 |          1 |          0 |
+| app/Http/Controllers/Admin                                                                                                 |          2 |          0 |         -3 |        -10 |        -13 |
+| app/Models                                                                                                                 |          5 |          0 |         -9 |          6 |         -3 |
+| database                                                                                                                   |          3 |          0 |         -4 |          4 |          0 |
+| database/migrations                                                                                                        |          3 |          0 |         -4 |          4 |          0 |
+| resources                                                                                                                  |         10 |        -27 |         -2 |         16 |        -13 |
+| resources/views                                                                                                            |         10 |        -27 |         -2 |         16 |        -13 |
+| resources/views/Admin                                                                                                      |          5 |        -23 |          0 |         23 |          0 |
+| resources/views/Admin (Files)                                                                                              |          1 |         -1 |          0 |          2 |          1 |
+| resources/views/Admin/categories                                                                                           |          1 |         -2 |          0 |          2 |          0 |
+| resources/views/Admin/companies                                                                                            |          1 |         -5 |          0 |          4 |         -1 |
+| resources/views/Admin/job_types                                                                                            |          1 |         -2 |          0 |          2 |          0 |
+| resources/views/Admin/jobs                                                                                                 |          1 |        -13 |          0 |         13 |          0 |
+| resources/views/front                                                                                                      |          5 |         -4 |         -2 |         -7 |        -13 |
+| resources/views/front (Files)                                                                                              |          1 |         -1 |          0 |        -10 |        -11 |
+| resources/views/front/account                                                                                              |          4 |         -3 |         -2 |          3 |         -2 |
+| resources/views/front/account (Files)                                                                                      |          3 |         -1 |         -1 |         -1 |         -3 |
+| resources/views/front/account/job                                                                                          |          1 |         -2 |         -1 |          4 |          1 |
++----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                                   | language | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/Admin/JobController.php                              | PHP      |          0 |          0 |        -11 |        -11 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/Admin/UserController.php                             | PHP      |          0 |         -3 |          1 |         -2 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Http/Controllers/ReviewController.php                                 | PHP      |          0 |         -1 |          1 |          0 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/Notification.php                                               | PHP      |          0 |         -1 |          1 |          0 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/Payment.php                                                    | PHP      |          0 |         -4 |          3 |         -1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/Review.php                                                     | PHP      |          0 |         -2 |          0 |         -2 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/ReviewReply.php                                                | PHP      |          0 |         -1 |          1 |          0 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/app/Models/job.php                                                        | PHP      |          0 |         -1 |          1 |          0 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_08_122454_create_notifications_table.php      | PHP      |          0 |         -1 |          1 |          0 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_14_022201_create_payments_table.php           | PHP      |          0 |         -1 |          1 |          0 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/database/migrations/2025_04_21_090723_remove_tidx_from_payments_table.php | PHP      |          0 |         -2 |          2 |          0 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/categories/index.blade.php                          | PHP      |         -2 |          0 |          2 |          0 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/companies/pending.blade.php                         | PHP      |         -5 |          0 |          4 |         -1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/dashboard.blade.php                                 | PHP      |         -1 |          0 |          2 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/job_types/index.blade.php                           | PHP      |         -2 |          0 |          2 |          0 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/Admin/jobs/edit.blade.php                                 | PHP      |        -13 |          0 |         13 |          0 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/companyprofile.blade.php                    | PHP      |          0 |         -1 |          1 |          0 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/dummyblade.php                              | PHP      |         -1 |          0 |          1 |          0 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/job/my-jobs.blade.php                       | PHP      |         -2 |         -1 |          4 |          1 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/account/login.blade.php                             | PHP      |          0 |          0 |         -3 |         -3 |
+| /Applications/XAMPP/xamppfiles/htdocs/job_portal/resources/views/front/jobDetail.blade.php                                 | PHP      |         -1 |          0 |        -10 |        -11 |
+| Total                                                                                                                      |          |        -27 |        -19 |         17 |        -29 |
++----------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

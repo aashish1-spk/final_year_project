@@ -5,7 +5,7 @@
     <div class="container py-5">
         <div class="row">
             <div class="col">
-                <nav aria-label="breadcrumb" class=" rounded-3 p-3 mb-4">
+                <nav aria-label="breadcrumb" class="rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><a href="{{ route("admin.dashboard") }}">Home</a></li>
                         <li class="breadcrumb-item active">Jobs</li>
@@ -25,11 +25,9 @@
                             <div>
                                 <h3 class="fs-4 mb-1">Job Applications</h3>
                             </div>
-                            <div style="margin-top: -10px;">
-                            </div>                            
                         </div>
                         <div class="table-responsive">
-                            <table class="table ">
+                            <table class="table">
                                 <thead class="bg-light">
                                     <tr>
                                         <th scope="col">Job Title</th>
@@ -45,38 +43,26 @@
                                         <tr>
                                             <td>
                                                 <p>{{ $application->job->title }}</p>
-                                                {{-- <p>Applicants: {{ $job->applications->count() }}</p> --}}
                                             </td>
                                             <td>{{ $application->user->name }}</td>
-                                            <td>
-                                                {{ $application->employer->name }}
-                                            </td>
+                                            <td>{{ $application->employer->name }}</td>
                                             <td>{{ \Carbon\Carbon::parse($application->applied_date)->format('d M, Y') }}</td>
                                             <td>
-                                                <div class="action-dots ">
-                                                    <button href="#" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                <form action="{{ route('admin.jobApplications.destroy') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this job application?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <input type="hidden" name="id" value="{{ $application->id }}">
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="fa fa-trash" aria-hidden="true"></i> Delete
                                                     </button>
-                                                    <ul class="dropdown-menu dropdown-menu-end">
-                                                        {{-- <li><a class="dropdown-item" onclick="deleteJobApplication({{ $application->id }})" href="javascript:void(0);"  ><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></li> --}}
-
-
-                                                        <li>
-                                                            <form action="{{ route('admin.jobApplications.destroy') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this job application?');">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <input type="hidden" name="id" value="{{ $application->id }}">
-                                                                <button type="submit" class="dropdown-item" style="border: none; background: none; cursor: pointer;">
-                                                                    <i class="fa fa-trash" aria-hidden="true"></i> Delete
-                                                                </button>
-                                                            </form>
-                                                        </li>
-                                                        
-                                                    </ul>
-                                                </div>
+                                                </form>
                                             </td>
                                         </tr>
                                         @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="5" class="text-center">No job applications found.</td>
+                                        </tr>
                                     @endif
                                 </tbody>                                
                             </table>
@@ -92,20 +78,6 @@
 </section>
 @endsection
 
-@section('customJs')
-{{-- <script type="text/javascript">
-    function deleteJobApplication(id) {
-        if (confirm("Are you sure you want to delete?")) {
-            $.ajax({
-                url: '{{ route("admin.jobApplications.destroy") }}',
-                type: 'delete',
-                data: { id: id },
-                dataType: 'json',
-                success: function(response) {
-                    window.location.href = "{{ route('admin.jobApplications') }}";
-                }
-            });
-        }
-    }
-</script> --}}
+@section('customCss')
+
 @endsection

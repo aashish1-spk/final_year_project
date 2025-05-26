@@ -17,22 +17,22 @@ class CategoryController extends Controller
 
     public function create()
     {
-        // Return the view to create a new category
+        
         return view('admin.categories.create');
     }
 
     public function store(Request $request)
     {
-        // Validate the incoming request data
+   
         $request->validate([
             'name' => 'required|unique:categories,name',
-            'status' => 'required|in:0,1' // Ensuring status is either 0 or 1 (inactive or active)
+            'status' => 'required|in:0,1' 
         ]);
 
         // Create a new category
         Category::create([
             'name' => $request->name,
-            'status' => $request->status, // Store the status
+            'status' => $request->status, 
         ]);
 
         // Redirect back with success message
@@ -41,7 +41,7 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        // Return the view to edit the category
+       
         return view('admin.categories.edit', compact('category'));
     }
 
@@ -49,14 +49,14 @@ class CategoryController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'name' => 'required|unique:categories,name,' . $category->id, // Ignore the current category when checking for uniqueness
-            'status' => 'required|in:0,1' // Ensuring status is either 0 or 1 (inactive or active)
+            'name' => 'required|unique:categories,name,' . $category->id, 
+            'status' => 'required|in:0,1' 
         ]);
 
-        // Update the category with the new name and status
+        
         $category->update([
             'name' => $request->name,
-            'status' => $request->status, // Update the status
+            'status' => $request->status, 
         ]);
 
         // Redirect back with success message

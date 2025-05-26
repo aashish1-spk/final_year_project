@@ -22,7 +22,7 @@
 
                 <!-- Main Content Section -->
                 <div class="col-lg-9">
-                    @include('front.message') <!-- For Success/Error Messages -->
+                    @include('front.message') 
 
                     <!-- Notifications List -->
                     <div class="card border-0 shadow mb-4">
