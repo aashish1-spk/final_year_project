@@ -84,7 +84,7 @@ class AccountController extends Controller
             'password' => 'required'
         ]);
 
-       
+
         if ($validator->passes()) {
             // Attempt to authenticate the user with email and password
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -99,16 +99,16 @@ class AccountController extends Controller
 
                 // Check if the user is active
                 if ($user->is_active) {
-                  
+
                     return redirect()->route('account.profile');
                 } else {
                     // Log the user out if inactive
                     Auth::logout();
-                    
+
                     return redirect()->route('account.login')->with('error', 'Your account has been deactivated.');
                 }
             } else {
-           
+
                 return redirect()->route('account.login')->with('error', 'Either email or password is incorrect');
             }
         } else {
@@ -320,7 +320,7 @@ class AccountController extends Controller
         // Validate the input
         $validator = Validator::make($request->all(), [
             'old_password' => 'required|string',
-            'new_password' => 'required|string|min:8|confirmed', 
+            'new_password' => 'required|string|min:8|confirmed',
         ]);
 
         // If validation fails, redirect back with errors
@@ -586,7 +586,7 @@ class AccountController extends Controller
 
     public function savedJobs()
     {
-      
+
 
         $savedJobs = SavedJob::where([
             'user_id' => Auth::user()->id

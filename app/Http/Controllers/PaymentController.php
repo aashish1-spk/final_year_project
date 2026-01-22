@@ -147,8 +147,11 @@ class PaymentController extends Controller
 
 
         session()->forget([
-            'khalti_order_id', 'khalti_job_id', 'khalti_name',
-            'khalti_email', 'khalti_phone'
+            'khalti_order_id',
+            'khalti_job_id',
+            'khalti_name',
+            'khalti_email',
+            'khalti_phone'
         ]);
 
         $job = Job::find($payment->job_id);

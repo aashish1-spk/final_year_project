@@ -261,7 +261,7 @@
                                     </li>
                                     <li>Vacancy: <span>{{ $job->vacancy }}</span></li>
                                     @if (!empty($job->salary))
-                                        <li>Salary: <span>Rs. {{ number_format($job->salary) }}</span></li>
+                                        <li>Salary: <span>Rs. {{ number_format((float) $job->salary) }}</span></li>
                                     @endif
 
                                     <li>Location: <span>{{ $job->location }}</span></li>
